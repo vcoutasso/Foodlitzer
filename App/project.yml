@@ -1,0 +1,24 @@
+name: Spider-Verse
+
+settings:
+  DEVELOPMENT_TEAM: H7BM7N56V5
+  CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: true
+
+options:
+  bundleIdPrefix: com.vcoutasso
+
+targets:
+  Spider-Verse:
+    type: application
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: Spider-Verse
+    preBuildScripts:
+      - name: SwiftLint
+        script: |
+          "${PODS_ROOT}/SwiftLint/swiftlint" --config ../config/swiftlint.yml
+      - name: SwiftGen
+        script: |
+          "${PODS_ROOT}/SwiftGen/bin/swiftgen" config run --config ../config/swiftgen.yml
+

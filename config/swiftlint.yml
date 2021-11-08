@@ -1,0 +1,15 @@
+excluded:
+    - ../App/Spider-Verse/Resources/
+    - ../App/Pods
+disabled_rules:
+    - trailing_comma
+    - trailing_whitespace
+    - identifier_name
+opt_in_rules:
+    - yoda_condition
+    - unused_import
+    - unused_declaration
+    - unavailable_function
+    - empty_string
+    - file_name
+    - file_name_no_space
