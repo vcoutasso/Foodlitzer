@@ -98,4 +98,5 @@ Pods/
 
 **/Generated/*.swift
 
+App/vendor
 .bundle
