@@ -1,9 +1,10 @@
 all: generate open
 
 generate:
-	@ echo "\033[1;37mGenerating project files and installing dependencies\033[0m"
+	@ echo "\033[1;37mRunning bundle install\033[0m"
 	@ bundle config set --local path 'vendor/bundle'
-	@ bundle install --gemfile=App/Gemfile
+	@ bundle install --quiet --gemfile=App/Gemfile
+	@ echo "\033[1;37mGenerating project files and installing dependencies\033[0m"
 	@ (cd App; xcodegen -c && pod install)
 	@ echo "\033[1;37mRunning SwiftGen\033[0m"
 	@ App/Pods/SwiftGen/bin/swiftgen config run --config config/swiftgen.yml
