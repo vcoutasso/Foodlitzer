@@ -16,7 +16,7 @@ open:
 
 clean:
 	@ echo "\033[1;37mCleaning up project files\033[0m"
-	@ rm -rf App/Spider-Verse.xc* App/Podfile.lock App/Pods .bundle
+	@ rm -rf App/Spider-Verse.xc* App/Podfile.lock App/Pods App/vendor .bundle
 	@ find App/Spider-Verse/Resources/Generated ! -name '.gitkeep' -type f -exec rm -f {} +
 
 remake: clean generate open
