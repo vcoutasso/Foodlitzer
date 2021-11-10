@@ -1,0 +1,30 @@
+name: Build
+
+on: 
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build:
+    runs-on: macos-11.0
+    name: Build
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: List available Xcode versions
+        run: ls /Applications | grep Xcode
+
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_13.0.app && /usr/bin/xcodebuild -version
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Generate project
+        run: make generate
+
+      - name: Build project
+        run : xcodebuild build -scheme SPider-Verse -destination platform\=iOS\ Simulator,OS\=14.0,name\=iPhone\ 13 | xcpretty
