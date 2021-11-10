@@ -14,6 +14,7 @@ protocol MultiplePhotoPicker {
     var isPresented: Bool { get }
 
     func clearSelection()
+    func handle(error: Error?)
     func selectPhoto(_ image: UIImage)
     func dismiss()
 }
@@ -49,6 +50,10 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
         selectedImages.removeAll()
     }
 
+    func handle(error: Error?) {
+        debugPrint("Could not load image. Got error: '\(String(describing: error?.localizedDescription))'")
+    }
+
     func selectPhoto(_ image: UIImage) {
         selectedImages.append(image)
     }
@@ -62,7 +67,7 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
     final class Coordinator: NSObject {
         // MARK: - Attributes
 
-        let photoPicker: MultiplePhotoPicker
+        private let photoPicker: MultiplePhotoPicker
 
         // MARK: - Object lifecycle
 
@@ -72,13 +77,17 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
     }
 }
 
-extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
+// MARK: - Inner types
+
+extension PhotoPickerRepresentable.Coordinator {
     // MARK: - Type aliases
 
     private typealias ResultType = UIImage
+}
 
-    // MARK: - Delegate methods
+// MARK: - Delegate methods
 
+extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         photoPicker.clearSelection()
         parseAndUpdatePickingResults(results)
@@ -88,18 +97,20 @@ extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
     // MARK: - Helper methods
 
     private func parseAndUpdatePickingResults(_ results: [PHPickerResult]) {
+        let loader: (PHPickerResult) -> Void = { [loadImageCompletionHandler] in
+            $0.itemProvider.loadObject(ofClass: ResultType.self, completionHandler: loadImageCompletionHandler)
+        }
+
         results.filter { $0.itemProvider.canLoadObject(ofClass: ResultType.self) }
-            .forEach {
-                $0.itemProvider.loadObject(ofClass: ResultType.self,
-                                           completionHandler: loadImageCompletionHandler(image:error:))
-            }
+            .forEach(loader)
     }
 
     private func loadImageCompletionHandler(image: NSItemProviderReading?, error: Error?) {
-        if let image = image as? UIImage {
-            photoPicker.selectPhoto(image)
-        } else if let error = error {
-            print("Could not load image. Got error: '\(error.localizedDescription)'")
+        guard let image = image as? UIImage else {
+            photoPicker.handle(error: error)
+            return
         }
+
+        photoPicker.selectPhoto(image)
     }
 }
