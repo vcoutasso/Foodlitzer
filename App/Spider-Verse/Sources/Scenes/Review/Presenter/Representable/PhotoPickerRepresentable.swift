@@ -42,7 +42,9 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
         Coordinator(photoPicker: self)
     }
 
-    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {
+        // Not needed
+    }
 
     // MARK: - Picker methods
 
