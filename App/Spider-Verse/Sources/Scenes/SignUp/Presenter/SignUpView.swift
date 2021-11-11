@@ -1,14 +1,7 @@
-//
-//  SignUpView.swift
-//  Spider-Verse
-//
-//  Created by Vinícius Couto on 11/11/21.
-//
-
 import SwiftUI
 
-struct SignUpView<ViewModel>: View where ViewModel: SignUpViewModelProtocol {
-    @ObservedObject var viewModel: ViewModel
+struct SignUpView<ViewModelType>: View where ViewModelType: SignUpViewModelProtocol {
+    @ObservedObject var viewModel: ViewModelType
 
     var body: some View {
         VStack {

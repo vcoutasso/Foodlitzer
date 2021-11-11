@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Spider-Verse
-//
-//  Created by Vinícius Couto on 08/11/21.
-//
-
 import SwiftUI
 
 struct ContentView: View {

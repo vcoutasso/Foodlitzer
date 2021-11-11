@@ -1,16 +1,7 @@
-//
-//  SignInViewTest.swift
-//  Spider-Verse
-//
-//  Created by Eros Maurilio on 11/11/21.
-//
-
 import SwiftUI
 
-struct SignInViewTest: View {
-    @State var email = ""
-    @State var password = ""
-    @ObservedObject var viewModel: SignInViewModel
+struct SignInViewTest<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
+    @ObservedObject var viewModel: ViewModelType
 
     var body: some View {
         NavigationView {
@@ -26,18 +17,16 @@ struct SignInViewTest: View {
                 }
             } else {
                 VStack {
-                    TextField("E-mail Adress", text: $email)
+                    TextField("E-mail Adress", text: $viewModel.email)
                         .padding()
                         .background(Color(.secondarySystemBackground))
 
-                    SecureField("Password", text: $password)
+                    SecureField("Password", text: $viewModel.password)
                         .padding()
                         .background(Color(.secondarySystemBackground))
 
                     Button {
-                        guard !email.isEmpty, !password.isEmpty else { return }
-
-                        viewModel.signIn(email: email, password: password)
+                        viewModel.signIn()
 
                     } label: {
                         Text("Sign In")
@@ -45,13 +34,11 @@ struct SignInViewTest: View {
                             .foregroundColor(.white)
                             .background(Color.black)
                     }
+                    .disabled(viewModel.isButtonDisabled)
                 }
                 .padding()
                 .navigationTitle("Sign In")
             }
-        }
-        .onAppear {
-            viewModel.signedIn = viewModel.isSignedIn
         }
     }
 }

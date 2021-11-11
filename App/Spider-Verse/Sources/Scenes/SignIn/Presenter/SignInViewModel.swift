@@ -1,34 +1,64 @@
-//
-//  SignInViewModel.swift
-//  Spider-Verse
-//
-//  Created by Eros Maurilio on 11/11/21.
-//
-
 import FirebaseAuth
-import Foundation
 
-class SignInViewModel: ObservableObject {
-    @Published var signedIn = false
-    let auth = Auth.auth()
+protocol SignInViewModelProtocol: ObservableObject {
+    var email: String { get set }
+    var password: String { get set }
+    var isButtonDisabled: Bool { get }
+    var isSignedIn: Bool { get }
 
-    var isSignedIn: Bool {
-        return auth.currentUser != nil
+    func signIn()
+    func logOut()
+}
+
+final class SignInViewModel: SignInViewModelProtocol {
+    // MARK: - Published Atributes
+
+    @Published var email: String
+    @Published var password: String
+
+    // MARK: - Computed Variables
+
+    var isButtonDisabled: Bool { email.isEmpty || password.isEmpty }
+    var isSignedIn: Bool { auth.currentUser != nil }
+
+    // MARK: - Private Atributes
+
+    private let auth = Auth.auth()
+
+    // MARK: - Object Lifecycle
+
+    init() {
+        self.email = ""
+        self.password = ""
     }
 
-    func signIn(email: String, password: String) {
+    // MARK: - Public Methods
+
+    func signIn() {
         auth.signIn(withEmail: email, password: password) { [weak self] result, error in
-            guard result != nil, error == nil else {
+            guard result != nil else {
+                if let error = error {
+                    debugPrint("Could not Sign in. Error: '\(error)'")
+                }
                 return
             }
 
             DispatchQueue.main.async {
-                self?.signedIn = true
+                self?.objectWillChange.send()
             }
         }
     }
 
     func logOut() {
         try? auth.signOut()
+        clearFields()
+        objectWillChange.send()
+    }
+
+    // MARK: - Helper Methods
+
+    private func clearFields() {
+        email = ""
+        password = ""
     }
 }
