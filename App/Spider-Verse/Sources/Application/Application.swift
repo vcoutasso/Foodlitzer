@@ -14,8 +14,8 @@ struct Application: App {
 
     var body: some Scene {
         WindowGroup {
-            // ContentView()
-            TestingPhotoPickerView()
+            let viewModel = SignInViewModel()
+            SignInViewTest(viewModel: viewModel)
         }
     }
 }

@@ -6,6 +6,8 @@ target 'Spider-Verse' do
 
   # Pods for Spider-Verse
   pod 'Firebase/Analytics'
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
   pod 'SwiftFormat/CLI'
   pod 'SwiftLint'
   pod 'SwiftGen'
