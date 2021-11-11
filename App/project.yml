@@ -30,6 +30,8 @@ targets:
   SpiderVerseTests:
     type: bundle.unit-test
     platform: iOS
+    settings:
+      HEADER_SEARCH_PATHS: "${SRCROOT}/Pods/Firebase/CoreOnly/Sources"
     sources: SpiderVerseTests
     dependencies:
       - target: SpiderVerse
@@ -40,6 +42,18 @@ schemes:
       config: Debug
       targets:
         SpiderVerse: all
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - name: SpiderVerseTests
+          randomExecutionOrder: true
+
+  SpiderVerseTests:
+    build:
+      config: Debug
+      targets:
+        SpiderVerseTests: all
     test:
       config: Debug
       gatherCoverageData: true
