@@ -5,10 +5,10 @@ protocol SignUpViewModelProtocol: ObservableObject {
     var emailText: String { get set }
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
+    var passwordsMatch: Bool { get }
 
     func isValid(email: String) -> Bool
     func isValid(password: String) -> Bool
-    func passwordMatches() -> Bool
 }
 
 final class SignUpViewModel: SignUpViewModelProtocol {
@@ -18,6 +18,12 @@ final class SignUpViewModel: SignUpViewModelProtocol {
     @Published var emailText: String
     @Published var passwordText: String
     @Published var confirmPasswordText: String
+
+    // MARK: - Computed attributes
+
+    var passwordsMatch: Bool {
+        passwordText == confirmPasswordText
+    }
 
     // MARK: - Object lifecycle
 
@@ -36,10 +42,6 @@ final class SignUpViewModel: SignUpViewModelProtocol {
 
     func isValid(password: String) -> Bool {
         validate(password, with: Strings.RegEx.ValidationPattern.password)
-    }
-
-    func passwordMatches() -> Bool {
-        passwordText == confirmPasswordText
     }
 
     // MARK: - Helper methods
