@@ -5,6 +5,7 @@ target 'Spider-Verse' do
   use_frameworks!
 
   # Pods for Spider-Verse
+  pod 'Firebase/Analytics'
   pod 'SwiftFormat/CLI'
   pod 'SwiftLint'
   pod 'SwiftGen'
