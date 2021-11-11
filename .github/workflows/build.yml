@@ -29,4 +29,4 @@ jobs:
       - name: Build project
         run : |
           cd App
-          xcodebuild build -scheme SpiderVerse -destination platform\=iOS\ Simulator,OS\=14.0,name\=iPhone\ 13 | xcpretty
+          xcodebuild build -scheme SpiderVerse -destination platform\=iOS\ Simulator,OS\=15.0,name\=iPhone\ 13 | xcpretty || exit ${PIPESTATUS[0]}
