@@ -100,3 +100,4 @@ Pods/
 
 App/vendor
 .bundle
+GoogleService-Info.plist
