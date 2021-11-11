@@ -1,10 +1,3 @@
-//
-//  SignUpViewModel.swift
-//  Spider-Verse
-//
-//  Created by Vinícius Couto on 11/11/21.
-//
-
 import Foundation
 
 protocol SignUpViewModelProtocol: ObservableObject {
@@ -12,6 +5,10 @@ protocol SignUpViewModelProtocol: ObservableObject {
     var emailText: String { get set }
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
+
+    func isValid(email: String) -> Bool
+    func isValid(password: String) -> Bool
+    func passwordMatches() -> Bool
 }
 
 final class SignUpViewModel: SignUpViewModelProtocol {

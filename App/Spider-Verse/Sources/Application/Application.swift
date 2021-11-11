@@ -1,10 +1,3 @@
-//
-//  Application.swift
-//  Spider-Verse
-//
-//  Created by Vinícius Couto on 08/11/21.
-//
-
 import Firebase
 import SwiftUI
 
@@ -14,9 +7,8 @@ struct Application: App {
 
     var body: some Scene {
         WindowGroup {
-            // ContentView()
-            // TestingPhotoPickerView()
-            SignUpView(viewModel: SignUpViewModel())
+            let viewModel = SignInViewModel()
+            SignInViewTest(viewModel: viewModel)
         }
     }
 }
