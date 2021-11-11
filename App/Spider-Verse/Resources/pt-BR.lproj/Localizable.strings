@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  Spider-Verse
+
+  Created by Vinícius Couto on 08/11/21.
+*/
+
+"signUp.name.placeholder" = "Insira seu nome aqui";
+"signUp.email.placeholder" = "Insira seu email aqui";
+"signUp.password.placeholder" = "Insira sua senha aqui";
+"signUp.confirmPassword.placeholder" = "Insira sua senha novamente";

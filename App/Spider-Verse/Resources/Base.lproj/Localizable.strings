@@ -4,3 +4,8 @@
 
   Created by Vinícius Couto on 08/11/21.
 */
+
+"signUp.name.placeholder" = "Insert your name here";
+"signUp.email.placeholder" = "Insert your  here";
+"signUp.password.placeholder" = "Insert your password here";
+"signUp.confirmPassword.placeholder" = "Insert your password again";
