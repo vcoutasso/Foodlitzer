@@ -13,8 +13,10 @@ struct SignUpView<ViewModelType>: View where ViewModelType: SignUpViewModelProto
     }
 }
 
-struct SignUpView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignUpView(viewModel: SignUpViewModel())
+#if DEBUG
+    struct SignUpView_Previews: PreviewProvider {
+        static var previews: some View {
+            SignUpView(viewModel: SignUpViewModel())
+        }
     }
-}
+#endif
