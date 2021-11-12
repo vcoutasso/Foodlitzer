@@ -9,6 +9,7 @@ target 'SpiderVerse' do
   pod 'SwiftFormat/CLI'
   pod 'SwiftLint'
   pod 'SwiftGen'
+  pod 'GooglePlaces'
 end
 
 post_install do |installer|
