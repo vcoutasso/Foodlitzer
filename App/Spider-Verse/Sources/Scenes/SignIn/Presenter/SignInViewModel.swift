@@ -1,10 +1,11 @@
-import FirebaseAuth
+import Foundation
 
 protocol SignInViewModelProtocol: ObservableObject {
     var email: String { get set }
     var password: String { get set }
     var isButtonDisabled: Bool { get }
-    var isSignedIn: Bool { get }
+    var backendAuthenticationService: BackendAuthenticationServiceProtocol { get set }
+    var isSignedIn: Bool { get set }
 
     func signIn()
     func logOut()
@@ -15,34 +16,29 @@ final class SignInViewModel: SignInViewModelProtocol {
 
     @Published var email: String
     @Published var password: String
+    @Published var isSignedIn: Bool
 
     // MARK: - Computed Variables
 
     var isButtonDisabled: Bool { email.isEmpty || password.isEmpty }
-    var isSignedIn: Bool { auth.currentUser != nil }
 
     // MARK: - Private Atributes
 
-    private let auth = Auth.auth()
+    internal var backendAuthenticationService: BackendAuthenticationServiceProtocol
 
     // MARK: - Object Lifecycle
 
-    init() {
+    init(backendAuthService: BackendAuthenticationServiceProtocol) {
         self.email = ""
         self.password = ""
+        self.backendAuthenticationService = backendAuthService
+        self.isSignedIn = backendAuthService.isAuthenticated
     }
 
     // MARK: - Public Methods
 
     func signIn() {
-        auth.signIn(withEmail: email, password: password) { [weak self] result, error in
-            guard result != nil else {
-                if let error = error {
-                    debugPrint("Could not Sign in. Error: '\(error)'")
-                }
-                return
-            }
-
+        backendAuthenticationService.execute(email: email, password: password) { [weak self] in
             DispatchQueue.main.async {
                 self?.objectWillChange.send()
             }
@@ -50,7 +46,7 @@ final class SignInViewModel: SignInViewModelProtocol {
     }
 
     func logOut() {
-        try? auth.signOut()
+        backendAuthenticationService.signOut()
         clearFields()
         objectWillChange.send()
     }

@@ -7,7 +7,8 @@ struct Application: App {
 
     var body: some Scene {
         WindowGroup {
-            let viewModel = SignInViewModel()
+            let usecase = SignInUseCase()
+            let viewModel = SignInViewModel(backendAuthService: usecase)
             SignInViewTest(viewModel: viewModel)
         }
     }
