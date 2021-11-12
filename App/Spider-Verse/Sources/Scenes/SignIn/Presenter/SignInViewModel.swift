@@ -4,8 +4,7 @@ protocol SignInViewModelProtocol: ObservableObject {
     var email: String { get set }
     var password: String { get set }
     var isButtonDisabled: Bool { get }
-    var backendAuthenticationService: BackendAuthenticationServiceProtocol { get set }
-    var isSignedIn: Bool { get set }
+    var isSignedIn: Bool { get }
 
     func signIn()
     func logOut()
@@ -24,7 +23,7 @@ final class SignInViewModel: SignInViewModelProtocol {
 
     // MARK: - Private Atributes
 
-    internal var backendAuthenticationService: BackendAuthenticationServiceProtocol
+    private let backendAuthenticationService: BackendAuthenticationServiceProtocol
 
     // MARK: - Object Lifecycle
 
@@ -39,16 +38,15 @@ final class SignInViewModel: SignInViewModelProtocol {
 
     func signIn() {
         backendAuthenticationService.execute(email: email, password: password) { [weak self] in
-            DispatchQueue.main.async {
-                self?.objectWillChange.send()
-            }
+            guard let this = self else { return }
+            this.updateSignedInStatus()
         }
     }
 
     func logOut() {
         backendAuthenticationService.signOut()
         clearFields()
-        objectWillChange.send()
+        updateSignedInStatus()
     }
 
     // MARK: - Helper Methods
@@ -56,5 +54,9 @@ final class SignInViewModel: SignInViewModelProtocol {
     private func clearFields() {
         email = ""
         password = ""
+    }
+
+    private func updateSignedInStatus() {
+        isSignedIn = backendAuthenticationService.isAuthenticated
     }
 }

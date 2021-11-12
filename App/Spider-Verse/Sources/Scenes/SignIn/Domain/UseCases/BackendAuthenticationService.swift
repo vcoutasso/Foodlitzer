@@ -16,7 +16,7 @@ final class SignInUseCase: BackendAuthenticationServiceProtocol {
 
     // MARK: - Public Methods
 
-    func execute(email: String, password: String, completion: @escaping () -> Void) {
+    func execute(email: String, password: String, completion: @escaping () -> Void) { // async await
         auth.signIn(withEmail: email, password: password) { result, error in
             guard result != nil else {
                 if let error = error {
