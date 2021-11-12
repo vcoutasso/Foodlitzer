@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SignInViewTest<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
+struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
     @ObservedObject var viewModel: ViewModelType
 
     var body: some View {
@@ -42,3 +42,11 @@ struct SignInViewTest<ViewModelType>: View where ViewModelType: SignInViewModelP
         }
     }
 }
+
+#if DEBUG
+    struct SignInView_Previews: PreviewProvider {
+        static var previews: some View {
+            SignInView(viewModel: SignInViewModel())
+        }
+    }
+#endif

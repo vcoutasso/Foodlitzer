@@ -1,9 +1,0 @@
-/* 
-  Strings.strings
-  Spider-Verse
-
-  Created by Vinícius Couto on 08/11/21.
-*/
-
-"regEx.validationPattern.email" = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}";
-"regEx.validationPattern.password" = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8, 20}$";

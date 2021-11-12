@@ -1,4 +1,4 @@
-name: Build
+name: Test
 
 on: 
   pull_request:
@@ -7,9 +7,9 @@ on:
       - develop
 
 jobs:
-  build:
+  unit_tests:
     runs-on: macos-11.0
-    name: Build
+    name: Unit Tests
     steps: 
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,4 +27,7 @@ jobs:
         run: make generate
 
       - name: Build project
-        run : xcodebuild build -workspace App/SpiderVerse.xcworkspace -scheme SpiderVerse -destination platform\=iOS\ Simulator,OS\=15.0,name\=iPhone\ 13
+        run : xcodebuild test -workspace App/SpiderVerse.xcworkspace -scheme SpiderVerse -destination platform\=iOS\ Simulator,OS\=15.0,name\=iPhone\ 13 | xcpretty
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1.2.1

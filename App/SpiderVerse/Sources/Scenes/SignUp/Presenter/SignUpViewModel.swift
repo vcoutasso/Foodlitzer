@@ -25,28 +25,30 @@ final class SignUpViewModel: SignUpViewModelProtocol {
         passwordText == confirmPasswordText
     }
 
+    // MARK: - Dependencies
+
+    private var emailValidationService: ValidateEmailUseCaseProtocol
+    private var passwordValidationService: ValidatePasswordUseCaseProtocol
+
     // MARK: - Object lifecycle
 
-    init() {
+    init(emailValidationService: ValidateEmailUseCaseProtocol,
+         passwordValidationService: ValidatePasswordUseCaseProtocol) {
         self.nameText = ""
         self.emailText = ""
         self.passwordText = ""
         self.confirmPasswordText = ""
+        self.emailValidationService = emailValidationService
+        self.passwordValidationService = passwordValidationService
     }
 
     // MARK: - Validation methods
 
     func isValid(email: String) -> Bool {
-        validate(email, with: Strings.RegEx.ValidationPattern.email)
+        emailValidationService.execute(using: email)
     }
 
     func isValid(password: String) -> Bool {
-        validate(password, with: Strings.RegEx.ValidationPattern.password)
-    }
-
-    // MARK: - Helper methods
-
-    private func validate(_ string: String, with regEx: String) -> Bool {
-        NSPredicate(format: "self matches %@", regEx).evaluate(with: string)
+        passwordValidationService.execute(using: password)
     }
 }
