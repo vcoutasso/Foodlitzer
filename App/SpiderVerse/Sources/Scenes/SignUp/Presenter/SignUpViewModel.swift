@@ -54,5 +54,5 @@ final class SignUpViewModel: SignUpViewModelProtocol {
 // FIXME: This should probably be elsewhere. Possibly Strings.strings
 private enum RegExPatterns {
     static let email = #"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,64}"#
-    static let password = #"^.(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$"]"#
+    static let password = #"^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$"#
 }

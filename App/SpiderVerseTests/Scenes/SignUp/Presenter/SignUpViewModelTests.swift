@@ -9,7 +9,8 @@ final class SignUpViewModelTests: XCTestCase {
     func testIsValidEmailShouldAllowValidAddresses() {
         // Given
         let validList = Fixtures.EmailAddresses.validEmails
-        let resultStub = [Bool](repeating: true, count: validList.count)
+        let resultStub = true
+        let expectedResult = [Bool](repeating: resultStub, count: validList.count)
         var actualResult = [Bool]()
 
         // When
@@ -19,13 +20,14 @@ final class SignUpViewModelTests: XCTestCase {
         }
 
         // Then
-        XCTAssertEqual(resultStub, actualResult)
+        XCTAssertEqual(expectedResult, actualResult)
     }
 
     func testIsValidEmailShouldForbidInvalidAddresses() {
         // Given
         let invalidList = Fixtures.EmailAddresses.invalidEmails
-        let resultStub = [Bool](repeating: false, count: invalidList.count)
+        let resultStub = false
+        let expectedResult = [Bool](repeating: resultStub, count: invalidList.count)
         var actualResult = [Bool]()
 
         // When
@@ -35,13 +37,14 @@ final class SignUpViewModelTests: XCTestCase {
         }
 
         // Then
-        XCTAssertEqual(resultStub, actualResult)
+        XCTAssertEqual(expectedResult, actualResult)
     }
 
     func testIsValidPasswordShouldAllowValidPasswords() {
         // Given
         let validList = Fixtures.Passwords.validPasswords
-        let resultStub = [Bool](repeating: true, count: validList.count)
+        let resultStub = true
+        let expectedResult = [Bool](repeating: resultStub, count: validList.count)
         var actualResult = [Bool]()
 
         // When
@@ -51,13 +54,14 @@ final class SignUpViewModelTests: XCTestCase {
         }
 
         // Then
-        XCTAssertEqual(resultStub, actualResult)
+        XCTAssertEqual(expectedResult, actualResult)
     }
 
     func testIsValidPasswordShouldForbidInvalidPasswords() {
         // Given
         let invalidList = Fixtures.Passwords.invalidPasswords
-        let resultStub = [Bool](repeating: false, count: invalidList.count)
+        let resultStub = false
+        let expectedResult = [Bool](repeating: resultStub, count: invalidList.count)
         var actualResult = [Bool]()
 
         // When
@@ -67,6 +71,6 @@ final class SignUpViewModelTests: XCTestCase {
         }
 
         // Then
-        XCTAssertEqual(resultStub, actualResult)
+        XCTAssertEqual(expectedResult, actualResult)
     }
 }

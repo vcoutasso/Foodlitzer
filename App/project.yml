@@ -31,6 +31,7 @@ targets:
     type: bundle.unit-test
     platform: iOS
     settings:
+      FRAMEWORK_SEARCH_PATHS: "$(inherited)"
       HEADER_SEARCH_PATHS: "${SRCROOT}/Pods/Firebase/CoreOnly/Sources"
     sources: SpiderVerseTests
     dependencies:

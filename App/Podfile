@@ -1,18 +1,14 @@
 platform :ios, '14.0'
+use_frameworks!
 inhibit_all_warnings!
 
 target 'SpiderVerse' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
-
-  # Pods for SpiderVerse
   pod 'Firebase/Analytics'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'SwiftFormat/CLI'
   pod 'SwiftLint'
   pod 'SwiftGen'
-
 end
 
 post_install do |installer|

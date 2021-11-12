@@ -35,13 +35,13 @@ struct Fixtures {
 
     enum Passwords {
         static let validPasswords = [
-            "th1sShouldBeValid!",
+            "ThisPasswordIsC0mpletelyValid123$!",
         ]
 
         static let invalidPasswords = [
             "",
             "2shorT!",
-            "waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaytoolongA1!",
+            "veryLongThatIsAlmostValid!",
             "noDIGITS",
             "alllowercase",
             "ALLUPPERCASE",
