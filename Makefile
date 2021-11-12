@@ -19,7 +19,7 @@ dependencies:
 
 clean:
 	@ echo "\033[1;37mCleaning up project files\033[0m"
-	@ rm -rf App/SpiderVerse.xc* App/Pods App/vendor .bundle
+	@ rm -rf App/*.xc* App/Pods App/vendor .bundle
 	@ find App/SpiderVerse/Resources/Generated ! -name '.gitkeep' -type f -exec rm -f {} +
 
 PRE_COMMIT=.git/hooks/pre-commit
