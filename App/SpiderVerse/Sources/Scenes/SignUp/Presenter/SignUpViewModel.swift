@@ -25,34 +25,30 @@ final class SignUpViewModel: SignUpViewModelProtocol {
         passwordText == confirmPasswordText
     }
 
+    // MARK: - Dependencies
+
+    private var emailValidationService: ValidateEmailUseCaseProtocol
+    private var passwordValidationService: ValidatePasswordUseCaseProtocol
+
     // MARK: - Object lifecycle
 
-    init() {
+    init(emailValidationService: ValidateEmailUseCaseProtocol,
+         passwordValidationService: ValidatePasswordUseCaseProtocol) {
         self.nameText = ""
         self.emailText = ""
         self.passwordText = ""
         self.confirmPasswordText = ""
+        self.emailValidationService = emailValidationService
+        self.passwordValidationService = passwordValidationService
     }
 
     // MARK: - Validation methods
 
     func isValid(email: String) -> Bool {
-        return validate(email, with: RegExPatterns.email)
+        emailValidationService.execute(using: email)
     }
 
     func isValid(password: String) -> Bool {
-        validate(password, with: RegExPatterns.password)
+        passwordValidationService.execute(using: password)
     }
-
-    // MARK: - Helper methods
-
-    private func validate(_ candidate: String, with regEx: String) -> Bool {
-        NSPredicate(format: "SELF MATCHES %@", regEx).evaluate(with: candidate)
-    }
-}
-
-// FIXME: This should probably be elsewhere. Possibly Strings.strings
-private enum RegExPatterns {
-    static let email = #"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,64}"#
-    static let password = #"^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$"#
 }

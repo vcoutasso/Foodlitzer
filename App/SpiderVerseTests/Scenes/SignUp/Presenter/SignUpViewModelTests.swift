@@ -4,7 +4,11 @@ import XCTest
 final class SignUpViewModelTests: XCTestCase {
     // MARK: - System under test
 
-    private let sut = SignUpViewModel()
+    // FIXME: Mock dependencies and test them separately
+    private let emailValidator = ValidateEmailUseCase()
+    private let passwordValidator = ValidatePasswordUseCase()
+    private lazy var sut = SignUpViewModel(emailValidationService: emailValidator,
+                                           passwordValidationService: passwordValidator)
 
     func testIsValidEmailShouldAllowValidAddresses() {
         // Given

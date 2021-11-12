@@ -16,7 +16,10 @@ struct SignUpView<ViewModelType>: View where ViewModelType: SignUpViewModelProto
 #if DEBUG
     struct SignUpView_Previews: PreviewProvider {
         static var previews: some View {
-            SignUpView(viewModel: SignUpViewModel())
+            let emailValidator = ValidateEmailUseCase()
+            let passwordValidator = ValidatePasswordUseCase()
+            SignUpView(viewModel: SignUpViewModel(emailValidationService: emailValidator,
+                                                  passwordValidationService: passwordValidator))
         }
     }
 #endif
