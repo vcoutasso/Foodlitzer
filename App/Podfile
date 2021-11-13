@@ -11,6 +11,7 @@ target 'Spider-Verse' do
   pod 'SwiftFormat/CLI'
   pod 'SwiftLint'
   pod 'SwiftGen'
+  pod 'Firebase/Database'
 
 end
 
