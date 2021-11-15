@@ -18,6 +18,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
                 .padding()
 
             Button {
+                // FIXME: Não sai automaticamente, muda view
                 viewModel.logOut()
 
             } label: {

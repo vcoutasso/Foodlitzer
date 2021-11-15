@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SignInViewTest<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
+struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
     @ObservedObject var viewModel: ViewModelType
     @State private var isTapped = false
 
@@ -37,9 +37,18 @@ struct SignInViewTest<ViewModelType>: View where ViewModelType: SignInViewModelP
         }
         .padding()
         .sheet(isPresented: $isTapped) {
-            let usecase = BackendUserCreationService()
-            let viewModel = SignUpViewModel(service: usecase)
+            let viewModel = SignUpViewModel(emailValidationService: ValidateEmailUseCase(),
+                                            passwordValidationService: ValidatePasswordUseCase(),
+                                            backendService: BackendUserCreationService())
             SignUpView(viewModel: viewModel)
         }
     }
 }
+
+#if DEBUG
+    struct SignInView_Previews: PreviewProvider {
+        static var previews: some View {
+            SignInView(viewModel: SignInViewModel(backendAuthService: SignInUseCase()))
+        }
+    }
+#endif

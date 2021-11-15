@@ -1,4 +1,8 @@
-name: Spider-Verse
+name: SpiderVerse
+
+configs:
+  Debug: debug
+  Release: release
 
 settings:
   DEVELOPMENT_TEAM: H7BM7N56V5
@@ -8,12 +12,13 @@ options:
   bundleIdPrefix: com.vcoutasso
 
 targets:
-  Spider-Verse:
+  SpiderVerse:
     type: application
     platform: iOS
     deploymentTarget: 14.0
-    sources:
-      - path: Spider-Verse
+    settings:
+      TARGETED_DEVICE_FAMILY: 1
+    sources: SpiderVerse
     preBuildScripts:
       - name: SwiftLint
         script: |
@@ -22,3 +27,37 @@ targets:
         script: |
           "${PODS_ROOT}/SwiftGen/bin/swiftgen" config run --config ../config/swiftgen.yml
 
+  SpiderVerseTests:
+    type: bundle.unit-test
+    platform: iOS
+    settings:
+      FRAMEWORK_SEARCH_PATHS: "$(inherited)"
+      HEADER_SEARCH_PATHS: "${SRCROOT}/Pods/Firebase/CoreOnly/Sources"
+    sources: SpiderVerseTests
+    dependencies:
+      - target: SpiderVerse
+
+schemes:
+  SpiderVerse:
+    build:
+      config: Debug
+      targets:
+        SpiderVerse: all
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - name: SpiderVerseTests
+          randomExecutionOrder: true
+
+  SpiderVerseTests:
+    build:
+      config: Debug
+      targets:
+        SpiderVerseTests: all
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - name: SpiderVerseTests
+          randomExecutionOrder: true

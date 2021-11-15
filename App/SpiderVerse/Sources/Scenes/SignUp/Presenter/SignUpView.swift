@@ -22,7 +22,7 @@ struct SignUpView<ViewModelType>: View where ViewModelType: SignUpViewModelProto
                 .background(Color(.secondarySystemBackground))
 
             Button {
-                // FIXME: permissão negada
+                // FIXME: permissão negada/ não vai o bagulho direto
                 viewModel.signUp()
             } label: {
                 Text("Sign UP")
@@ -35,3 +35,15 @@ struct SignUpView<ViewModelType>: View where ViewModelType: SignUpViewModelProto
         .padding()
     }
 }
+
+#if DEBUG
+    struct SignUpView_Previews: PreviewProvider {
+        static var previews: some View {
+            let emailValidator = ValidateEmailUseCase()
+            let passwordValidator = ValidatePasswordUseCase()
+            SignUpView(viewModel: SignUpViewModel(emailValidationService: emailValidator,
+                                                  passwordValidationService: passwordValidator,
+                                                  backendService: BackendUserCreationService()))
+        }
+    }
+#endif

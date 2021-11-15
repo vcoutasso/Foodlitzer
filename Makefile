@@ -12,15 +12,15 @@ generate:
 	@ (cd App; xcodegen -c && pod install --deployment)
 
 open:
-	@ open App/Spider-Verse.xcworkspace
+	@ open App/SpiderVerse.xcworkspace
 
 dependencies:
 	@ (cd App; pod install)
 
 clean:
 	@ echo "\033[1;37mCleaning up project files\033[0m"
-	@ rm -rf App/Spider-Verse.xc* App/Pods App/vendor .bundle
-	@ find App/Spider-Verse/Resources/Generated ! -name '.gitkeep' -type f -exec rm -f {} +
+	@ rm -rf App/*.xc* App/Pods App/vendor .bundle
+	@ find App/SpiderVerse/Resources/Generated ! -name '.gitkeep' -type f -exec rm -f {} +
 
 PRE_COMMIT=.git/hooks/pre-commit
 hooks:

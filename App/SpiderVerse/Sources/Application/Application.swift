@@ -1,4 +1,3 @@
-import Firebase
 import SwiftUI
 
 @main
@@ -16,18 +15,9 @@ struct Application: App {
                 case .loggedIn:
                     ProfileView(viewModel: ProfileViewModel(sessionService: sessionService))
                 case .loggedOut:
-                    SignInViewTest(viewModel: viewModel)
+                    SignInView(viewModel: viewModel)
                 }
             }
         }
-    }
-}
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil)
-        -> Bool {
-        FirebaseApp.configure()
-        return true
     }
 }

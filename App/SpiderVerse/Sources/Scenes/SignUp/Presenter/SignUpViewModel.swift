@@ -7,13 +7,11 @@ protocol SignUpViewModelProtocol: ObservableObject {
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
     var state: Registration.State { get }
-
-    init(service: BackendUserCreationServiceProtocol)
+    var passwordsMatch: Bool { get }
 
     func signUp()
     func isValid(email: String) -> Bool
     func isValid(password: String) -> Bool
-    func passwordMatches() -> Bool
 }
 
 final class SignUpViewModel: SignUpViewModelProtocol {
@@ -33,36 +31,44 @@ final class SignUpViewModel: SignUpViewModelProtocol {
 
     private var subscription = Set<AnyCancellable>()
 
-    // MARK: - ?
+    // MARK: - Computed attributes
 
-    let service: BackendUserCreationServiceProtocol
+    var passwordsMatch: Bool {
+        passwordText == confirmPasswordText
+    }
+
+    // MARK: - Dependencies
+
+    private let emailValidationService: ValidateEmailUseCaseProtocol
+    private let passwordValidationService: ValidatePasswordUseCaseProtocol
+    private let backendService: BackendUserCreationServiceProtocol
 
     // MARK: - Object lifecycle
 
-    init(service: BackendUserCreationServiceProtocol) {
+    init(emailValidationService: ValidateEmailUseCaseProtocol,
+         passwordValidationService: ValidatePasswordUseCaseProtocol,
+         backendService: BackendUserCreationService) {
         self.nameText = ""
         self.emailText = ""
         self.passwordText = ""
         self.confirmPasswordText = ""
-        self.service = service
+        self.backendService = backendService
+        self.emailValidationService = emailValidationService
+        self.passwordValidationService = passwordValidationService
     }
 
     // MARK: - Validation methods
 
     func isValid(email: String) -> Bool {
-        validate(email, with: Strings.RegEx.ValidationPattern.email)
+        emailValidationService.execute(using: email)
     }
 
     func isValid(password: String) -> Bool {
-        validate(password, with: Strings.RegEx.ValidationPattern.password)
+        passwordValidationService.execute(using: password)
     }
 
-    func passwordMatches() -> Bool {
-        passwordText == confirmPasswordText
-    }
-
-    func register() {
-        service
+    private func register() {
+        backendService
             .register(with: userDetails)
             .sink { [weak self] result in
 
@@ -78,14 +84,8 @@ final class SignUpViewModel: SignUpViewModelProtocol {
             .store(in: &subscription)
     }
 
-    // MARK: - Helper methods
-
-    private func validate(_ string: String, with regEx: String) -> Bool {
-        NSPredicate(format: "self matches %@", regEx).evaluate(with: string)
-    }
-
     func signUp() {
-        if passwordMatches() {
+        if passwordsMatch {
             userDetails.email = emailText
             userDetails.password = passwordText
             userDetails.name = nameText
