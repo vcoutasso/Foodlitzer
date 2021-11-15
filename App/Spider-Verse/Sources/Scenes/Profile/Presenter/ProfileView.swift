@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-struct ProfileView: View {
-    @EnvironmentObject var sessionService: SessionServiceUseCase
+struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelProtocol {
+    @ObservedObject private(set) var viewModel: ViewModelType
 
     var body: some View {
         VStack {
-            Text("Name: \(sessionService.userDetails?.name ?? "N/A")")
+            Text("Name: \(viewModel.userName ?? "N/A")")
                 .padding()
-            Text("Email: \(sessionService.userDetails?.email ?? "N/A")")
+            Text("Email: \(viewModel.userEmail ?? "N/A")")
                 .padding()
 
             Button {
-                sessionService.logOut()
+                viewModel.logOut()
 
             } label: {
                 Text("Logout")
@@ -33,7 +33,6 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
-            .environmentObject(SessionServiceUseCase())
+        ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
     }
 }

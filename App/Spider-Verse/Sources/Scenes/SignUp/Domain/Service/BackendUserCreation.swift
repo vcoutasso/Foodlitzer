@@ -3,18 +3,16 @@ import Firebase
 import FirebaseDatabase
 import Foundation
 
-enum RegistrationKeys: String {
-    case name
-    case email
-    case pic
-}
-
 protocol BackendUserCreationServiceProtocol {
     func register(with details: RegistrationDetails) -> AnyPublisher<Void, Error>
 }
 
 final class BackendUserCreationService: BackendUserCreationServiceProtocol {
+    // MARK: - Atributes
+
     let auth = Auth.auth()
+
+    // MARK: - Public Methods
 
     func register(with details: RegistrationDetails) -> AnyPublisher<Void, Error> {
         Deferred {
@@ -25,8 +23,8 @@ final class BackendUserCreationService: BackendUserCreationServiceProtocol {
                     } else {
                         if let uid = result?.user.uid {
                             let values = [
-                                RegistrationKeys.name.rawValue: details.name,
-                                RegistrationKeys.email.rawValue: details.email,
+                                Registration.Keys.name.rawValue: details.name,
+                                Registration.Keys.email.rawValue: details.email,
                             ] as [String: Any]
 
                             Database.database()

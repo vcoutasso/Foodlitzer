@@ -4,10 +4,8 @@ protocol SignInViewModelProtocol: ObservableObject {
     var email: String { get set }
     var password: String { get set }
     var isButtonDisabled: Bool { get }
-    var isSignedIn: Bool { get }
 
     func signIn()
-    func logOut()
 }
 
 final class SignInViewModel: SignInViewModelProtocol {
@@ -43,18 +41,7 @@ final class SignInViewModel: SignInViewModelProtocol {
         }
     }
 
-    func logOut() {
-        backendAuthenticationService.signOut()
-        clearFields()
-        updateSignedInStatus()
-    }
-
     // MARK: - Helper Methods
-
-    private func clearFields() {
-        email = ""
-        password = ""
-    }
 
     private func updateSignedInStatus() {
         isSignedIn = backendAuthenticationService.isAuthenticated

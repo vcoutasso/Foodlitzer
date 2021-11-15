@@ -1,24 +1,15 @@
 import Combine
 import Foundation
 
-enum RegistrationState {
-    case successfull
-    case failed(error: Error)
-    case notAvaliable
-}
-
 protocol SignUpViewModelProtocol: ObservableObject {
     var nameText: String { get set }
     var emailText: String { get set }
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
-    var service: BackendUserCreationServiceProtocol { get }
-    var userDetails: RegistrationDetails { get }
-    var state: RegistrationState { get }
+    var state: Registration.State { get }
 
     init(service: BackendUserCreationServiceProtocol)
 
-    func register()
     func signUp()
     func isValid(email: String) -> Bool
     func isValid(password: String) -> Bool
@@ -33,11 +24,18 @@ final class SignUpViewModel: SignUpViewModelProtocol {
     @Published var passwordText: String
     @Published var confirmPasswordText: String
 
-    let service: BackendUserCreationServiceProtocol
-    var state: RegistrationState = .notAvaliable
+    // MARK: - Stored Variables
+
+    var state: Registration.State = .notAvaliable
     var userDetails = RegistrationDetails.new
 
+    // MARK: - Private Atribute
+
     private var subscription = Set<AnyCancellable>()
+
+    // MARK: - ?
+
+    let service: BackendUserCreationServiceProtocol
 
     // MARK: - Object lifecycle
 
@@ -71,7 +69,7 @@ final class SignUpViewModel: SignUpViewModelProtocol {
                 switch result {
                 case let .failure(error):
                     self?.state = .failed(error: error)
-                    print(error)
+                    debugPrint(error)
                 default: break
                 }
             } receiveValue: { [weak self] in

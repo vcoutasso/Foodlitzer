@@ -22,6 +22,7 @@ struct SignUpView<ViewModelType>: View where ViewModelType: SignUpViewModelProto
                 .background(Color(.secondarySystemBackground))
 
             Button {
+                // FIXME: permissão negada
                 viewModel.signUp()
             } label: {
                 Text("Sign UP")

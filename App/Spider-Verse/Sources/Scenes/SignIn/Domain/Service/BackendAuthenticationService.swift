@@ -7,7 +7,7 @@ protocol BackendAuthenticationServiceProtocol {
 }
 
 final class SignInUseCase: BackendAuthenticationServiceProtocol {
-    // MARK: - Private Atributes
+    // MARK: - Atributes
 
     let auth = Auth.auth()
     var isAuthenticated: Bool { auth.currentUser != nil }

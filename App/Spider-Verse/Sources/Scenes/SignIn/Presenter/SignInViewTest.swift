@@ -14,9 +14,8 @@ struct SignInViewTest<ViewModelType>: View where ViewModelType: SignInViewModelP
                 .padding()
                 .background(Color(.secondarySystemBackground))
 
-            Button {
-                viewModel.signIn()
-
+            NavigationLink {
+                ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
             } label: {
                 Text("Sign In")
                     .frame(width: 200, height: 50)
