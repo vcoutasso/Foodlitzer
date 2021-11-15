@@ -1,3 +1,5 @@
+import Foundation
+
 struct RegistrationDetails {
     var name: String
     var email: String

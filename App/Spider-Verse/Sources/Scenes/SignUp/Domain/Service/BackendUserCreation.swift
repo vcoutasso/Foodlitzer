@@ -1,9 +1,12 @@
 import Combine
 import Firebase
 import FirebaseDatabase
+import Foundation
 
 enum RegistrationKeys: String {
     case name
+    case email
+    case pic
 }
 
 protocol BackendUserCreationServiceProtocol {
@@ -21,7 +24,10 @@ final class BackendUserCreationService: BackendUserCreationServiceProtocol {
                         promise(.failure(err))
                     } else {
                         if let uid = result?.user.uid {
-                            let values = [RegistrationKeys.name.rawValue: details.name] as [String: Any]
+                            let values = [
+                                RegistrationKeys.name.rawValue: details.name,
+                                RegistrationKeys.email.rawValue: details.email,
+                            ] as [String: Any]
 
                             Database.database()
                                 .reference()

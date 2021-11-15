@@ -4,8 +4,6 @@ protocol BackendAuthenticationServiceProtocol {
     var isAuthenticated: Bool { get }
 
     func execute(email: String, password: String, completion: @escaping () -> Void)
-
-    func signOut()
 }
 
 final class SignInUseCase: BackendAuthenticationServiceProtocol {
@@ -26,9 +24,5 @@ final class SignInUseCase: BackendAuthenticationServiceProtocol {
             }
             completion()
         }
-    }
-
-    func signOut() { // TODO: Isso não pode estar aqui futuramente!
-        try? auth.signOut()
     }
 }

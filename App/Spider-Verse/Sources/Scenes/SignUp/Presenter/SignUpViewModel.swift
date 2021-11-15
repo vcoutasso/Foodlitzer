@@ -13,7 +13,8 @@ protocol SignUpViewModelProtocol: ObservableObject {
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
     var service: BackendUserCreationServiceProtocol { get }
-    var userDetails: RegistrationDetails { get set }
+    var userDetails: RegistrationDetails { get }
+    var state: RegistrationState { get }
 
     init(service: BackendUserCreationServiceProtocol)
 
@@ -24,7 +25,7 @@ protocol SignUpViewModelProtocol: ObservableObject {
     func passwordMatches() -> Bool
 }
 
-final class SignUpViewModel: ObservableObject, SignUpViewModelProtocol {
+final class SignUpViewModel: SignUpViewModelProtocol {
     // MARK: - Published Attributes
 
     @Published var nameText: String
@@ -70,6 +71,7 @@ final class SignUpViewModel: ObservableObject, SignUpViewModelProtocol {
                 switch result {
                 case let .failure(error):
                     self?.state = .failed(error: error)
+                    print(error)
                 default: break
                 }
             } receiveValue: { [weak self] in
@@ -84,8 +86,8 @@ final class SignUpViewModel: ObservableObject, SignUpViewModelProtocol {
         NSPredicate(format: "self matches %@", regEx).evaluate(with: string)
     }
 
-    private func signUp() {
-        if isValid(email: emailText), isValid(password: passwordText), passwordMatches() {
+    func signUp() {
+        if passwordMatches() {
             userDetails.email = emailText
             userDetails.password = passwordText
             userDetails.name = nameText

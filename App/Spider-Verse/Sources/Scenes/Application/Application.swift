@@ -4,12 +4,22 @@ import SwiftUI
 @main
 struct Application: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject var sessionService = SessionServiceUseCase()
 
     var body: some Scene {
         WindowGroup {
             let usecase = SignInUseCase()
             let viewModel = SignInViewModel(backendAuthService: usecase)
-            SignInViewTest(viewModel: viewModel)
+
+            NavigationView {
+                switch sessionService.state {
+                case .loggedIn:
+                    ProfileView()
+                        .environmentObject(sessionService)
+                case .loggedOut:
+                    SignInViewTest(viewModel: viewModel)
+                }
+            }
         }
     }
 }
