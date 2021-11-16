@@ -18,6 +18,7 @@ targets:
     deploymentTarget: 14.0
     settings:
       TARGETED_DEVICE_FAMILY: 1
+      INFOPLIST_FILE: SpiderVerse/Supporting-Files/Info.plist
     sources: SpiderVerse
     preBuildScripts:
       - name: SwiftLint
@@ -40,21 +41,8 @@ targets:
 schemes:
   SpiderVerse:
     build:
-      config: Debug
       targets:
         SpiderVerse: all
-    test:
-      config: Debug
-      gatherCoverageData: true
-      targets:
-        - name: SpiderVerseTests
-          randomExecutionOrder: true
-
-  SpiderVerseTests:
-    build:
-      config: Debug
-      targets:
-        SpiderVerseTests: all
     test:
       config: Debug
       gatherCoverageData: true
