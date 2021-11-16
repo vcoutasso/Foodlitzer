@@ -21,7 +21,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             }
 
             Button {
-                // FIXME: Sign In está clicavel e entrando na home mesmo quando os dados estão incorretos. Anteriormente estava com navigation link, porém o metodo sigIn não estava implementado, tornando impossível de atualizar a view com os dados do usuário.
+                // FIXME: Sign In está clicavel e entrando na home mesmo quando os dados estão incorretos.
                 viewModel.signIn()
                 isShowingProfileView.toggle()
             } label: {
