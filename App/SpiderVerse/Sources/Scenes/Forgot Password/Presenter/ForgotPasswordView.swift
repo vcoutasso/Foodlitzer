@@ -1,6 +1,7 @@
 import SwiftUI
 
-struct ForgotPasswordView: View {
+struct ForgotPasswordView<ViewModelType>: View where ViewModelType: ForgotPasswordViewModelProtocol {
+    @ObservedObject var viewModel: ViewModelType
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -8,13 +9,13 @@ struct ForgotPasswordView: View {
             Text("Forgot Password")
                 .font(.title)
 
-            TextField("E-mail Adress", text: .constant(""))
+            TextField("E-mail Adress", text: $viewModel.email)
                 .keyboardType(.emailAddress)
                 .padding()
                 .background(Color(.secondarySystemBackground))
 
             Button {
-                // Reset action here
+                viewModel.sendPasswordReset()
                 presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("Send Password Reset")
@@ -28,6 +29,6 @@ struct ForgotPasswordView: View {
 
 struct ForgotPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        ForgotPasswordView()
+        ForgotPasswordView(viewModel: ForgotPasswordViewModel(service: ForgotPasswordService()))
     }
 }

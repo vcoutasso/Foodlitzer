@@ -4,6 +4,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
     @ObservedObject var viewModel: ViewModelType
     @State private var showSignUpView = false
     @State private var showResetPasswordView = false
+    @State private var isShowingProfileView = false
 
     var body: some View {
         VStack {
@@ -19,8 +20,10 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
                 showResetPasswordView.toggle()
             }
 
-            NavigationLink {
-                ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
+            Button {
+                // FIXME: Sign In está clicavel e entrando na home mesmo quando os dados estão incorretos. Anteriormente estava com navigation link, porém o metodo sigIn não estava implementado, tornando impossível de atualizar a view com os dados do usuário.
+                viewModel.signIn()
+                isShowingProfileView.toggle()
             } label: {
                 Text("Sign In")
                     .frame(width: 200, height: 50)
@@ -48,7 +51,10 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             SignUpView(viewModel: viewModel)
         }
         .sheet(isPresented: $showResetPasswordView) {
-            ForgotPasswordView()
+            ForgotPasswordView(viewModel: ForgotPasswordViewModel(service: ForgotPasswordService()))
+        }
+        .sheet(isPresented: $isShowingProfileView) {
+            ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
         }
     }
 }
