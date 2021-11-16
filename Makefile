@@ -15,15 +15,16 @@ open:
 	@ open App/SpiderVerse.xcworkspace
 
 dependencies:
+	@ rm App/Podfile.lock
 	@ (cd App; pod install)
 
 clean:
 	@ echo "\033[1;37mCleaning up project files\033[0m"
-	@ rm -rf App/SpiderVerse.xc* App/Pods App/vendor .bundle
+	@ rm -rf App/*.xc* App/Pods App/vendor .bundle
 	@ find App/SpiderVerse/Resources/Generated ! -name '.gitkeep' -type f -exec rm -f {} +
 
 PRE_COMMIT=.git/hooks/pre-commit
 hooks:
 	@ if [ ! -e $(PRE_COMMIT) ]; then echo "\033[1;37mDownloading git pre-commit hook file\033[0m" && curl -s https://gist.githubusercontent.com/vcoutasso/5933653035713e5e9a53be8e93e5ac0b/raw/fbcf7fd7a50a569e55bd68ed9bb31ac9a70a3d45/pre-commit > $(PRE_COMMIT) && sed -i "" "s/Pods/App\/Pods/g" $(PRE_COMMIT) && chmod +x $(PRE_COMMIT) && sed -i "" "s/--swiftversion 5/--config config\/swiftformat/g" $(PRE_COMMIT); else echo "File already exists. Remove and run \`make hooks\` again to create a new one."; fi
 
-remake: clean generate open
+remake: dependencies clean generate open

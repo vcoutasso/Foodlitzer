@@ -6,8 +6,18 @@ struct Application: App {
 
     var body: some Scene {
         WindowGroup {
-            let viewModel = SignInViewModel()
-            SignInView(viewModel: viewModel)
+            let usecase = SignInUseCase()
+            let viewModel = SignInViewModel(backendAuthService: usecase)
+            let sessionService = SessionServiceUseCase()
+
+            NavigationView {
+                switch sessionService.state {
+                case .loggedIn:
+                    ProfileView(viewModel: ProfileViewModel(sessionService: sessionService))
+                case .loggedOut:
+                    SignInView(viewModel: viewModel)
+                }
+            }
         }
     }
 }
