@@ -2,7 +2,8 @@ import SwiftUI
 
 struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
     @ObservedObject var viewModel: ViewModelType
-    @State private var isTapped = false
+    @State private var showSignUpView = false
+    @State private var showResetPasswordView = false
 
     var body: some View {
         VStack {
@@ -13,6 +14,10 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             SecureField("Password", text: $viewModel.password)
                 .padding()
                 .background(Color(.secondarySystemBackground))
+
+            Button("Forgot Password?") {
+                showResetPasswordView.toggle()
+            }
 
             NavigationLink {
                 ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
@@ -26,7 +31,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             .padding(.vertical, 16)
 
             Button {
-                isTapped.toggle()
+                showSignUpView.toggle()
 
             } label: {
                 Text("Sign UP")
@@ -36,11 +41,14 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             }
         }
         .padding()
-        .sheet(isPresented: $isTapped) {
+        .sheet(isPresented: $showSignUpView) {
             let viewModel = SignUpViewModel(emailValidationService: ValidateEmailUseCase(),
                                             passwordValidationService: ValidatePasswordUseCase(),
                                             backendService: BackendUserCreationService())
             SignUpView(viewModel: viewModel)
+        }
+        .sheet(isPresented: $showResetPasswordView) {
+            ForgotPasswordView()
         }
     }
 }
