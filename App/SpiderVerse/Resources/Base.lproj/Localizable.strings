@@ -6,6 +6,6 @@
 */
 
 "signUp.name.placeholder" = "Insert your name here";
-"signUp.email.placeholder" = "Insert your  here";
+"signUp.email.placeholder" = "Insert your e-mail here";
 "signUp.password.placeholder" = "Insert your password here";
 "signUp.confirmPassword.placeholder" = "Insert your password again";
