@@ -101,3 +101,4 @@ Pods/
 App/vendor
 .bundle
 GoogleService-Info.plist
+GooglePlaces-Info.plist

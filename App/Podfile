@@ -7,10 +7,12 @@ target 'SpiderVerse' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
+
+  pod 'GooglePlaces'
+
   pod 'SwiftFormat/CLI'
   pod 'SwiftLint'
   pod 'SwiftGen'
-
 end
 
 post_install do |installer|
