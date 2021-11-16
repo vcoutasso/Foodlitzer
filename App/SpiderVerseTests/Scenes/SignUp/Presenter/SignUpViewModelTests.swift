@@ -1,3 +1,4 @@
+import Combine
 @testable import SpiderVerse
 import XCTest
 
@@ -7,10 +8,21 @@ final class SignUpViewModelTests: XCTestCase {
     // FIXME: Mock dependencies and test them separately
     private let emailValidator = ValidateEmailUseCase()
     private let passwordValidator = ValidatePasswordUseCase()
-    private let backendService = BackendUserCreationService()
+    private let backendServiceDummy = BackendServiceDummy()
     private lazy var sut = SignUpViewModel(emailValidationService: emailValidator,
                                            passwordValidationService: passwordValidator,
-                                           backendService: backendService)
+                                           backendService: backendServiceDummy)
+
+    // MARK: - Test doubles
+
+    final class BackendServiceDummy: BackendUserCreationServiceProtocol {
+        func register(with details: RegistrationDetails) -> AnyPublisher<Void, Error> {
+            PassthroughSubject<Void, Error>()
+                .eraseToAnyPublisher()
+        }
+    }
+
+    // MARK: - Unit tests
 
     func testIsValidEmailShouldAllowValidAddresses() {
         // Given

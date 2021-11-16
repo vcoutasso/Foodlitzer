@@ -47,7 +47,7 @@ final class SignUpViewModel: SignUpViewModelProtocol {
 
     init(emailValidationService: ValidateEmailUseCaseProtocol,
          passwordValidationService: ValidatePasswordUseCaseProtocol,
-         backendService: BackendUserCreationService) {
+         backendService: BackendUserCreationServiceProtocol) {
         self.nameText = ""
         self.emailText = ""
         self.passwordText = ""
