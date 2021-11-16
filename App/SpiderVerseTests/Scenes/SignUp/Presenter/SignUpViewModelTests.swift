@@ -7,8 +7,10 @@ final class SignUpViewModelTests: XCTestCase {
     // FIXME: Mock dependencies and test them separately
     private let emailValidator = ValidateEmailUseCase()
     private let passwordValidator = ValidatePasswordUseCase()
+    private let backendService = BackendUserCreationService()
     private lazy var sut = SignUpViewModel(emailValidationService: emailValidator,
-                                           passwordValidationService: passwordValidator)
+                                           passwordValidationService: passwordValidator,
+                                           backendService: backendService)
 
     func testIsValidEmailShouldAllowValidAddresses() {
         // Given
