@@ -14,7 +14,7 @@ final class SessionServiceUseCase: SessionServiceProtocol {
     // MARK: - Published Atributes
 
     @Published var state: Session
-        .State = .loggedOut // session state não deveria ser compartilhado com outras viewModels?
+        .State = .loggedOut
     var userDetails: UserProfileDetails?
 
     // MARK: - Private Atribute
@@ -37,7 +37,7 @@ final class SessionServiceUseCase: SessionServiceProtocol {
     func getCurrentUser() -> UserProfileDetails? {
         guard let currentUser = auth.currentUser else { return nil }
 
-        // TODO: resolver o unwrap, displayName não mostra nome do usuário
+        // FIXME: resolver o unwrap, displayName não mostra nome do usuário
         return UserProfileDetails(name: currentUser.displayName ?? "n/a", email: currentUser.email ?? "n/a")
     }
 }

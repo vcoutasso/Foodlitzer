@@ -22,7 +22,7 @@ struct SignUpView<ViewModelType>: View where ViewModelType: SignUpViewModelProto
                 .background(Color(.secondarySystemBackground))
 
             Button {
-                // FIXME: permissão negada/ não vai o bagulho direto
+                // FIXME: Precisa mostrar quais são os requisitos ou o que está sendo negado para a criação de conta, além disso não está indo direto para a "home" quando a conta é criada
                 viewModel.signUp()
             } label: {
                 Text("Sign UP")

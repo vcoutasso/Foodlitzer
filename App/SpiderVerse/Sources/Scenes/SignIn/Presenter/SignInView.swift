@@ -2,7 +2,9 @@ import SwiftUI
 
 struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
     @ObservedObject var viewModel: ViewModelType
-    @State private var isTapped = false
+    @State private var showSignUpView = false
+    @State private var showResetPasswordView = false
+    @State private var isShowingProfileView = false
 
     var body: some View {
         VStack {
@@ -14,8 +16,14 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
                 .padding()
                 .background(Color(.secondarySystemBackground))
 
-            NavigationLink {
-                ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
+            Button("Forgot Password?") {
+                showResetPasswordView.toggle()
+            }
+
+            Button {
+                // FIXME: Sign In está clicavel e entrando na home mesmo quando os dados estão incorretos.
+                viewModel.signIn()
+                isShowingProfileView.toggle()
             } label: {
                 Text("Sign In")
                     .frame(width: 200, height: 50)
@@ -26,7 +34,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             .padding(.vertical, 16)
 
             Button {
-                isTapped.toggle()
+                showSignUpView.toggle()
 
             } label: {
                 Text("Sign UP")
@@ -36,11 +44,17 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             }
         }
         .padding()
-        .sheet(isPresented: $isTapped) {
+        .sheet(isPresented: $showSignUpView) {
             let viewModel = SignUpViewModel(emailValidationService: ValidateEmailUseCase(),
                                             passwordValidationService: ValidatePasswordUseCase(),
                                             backendService: BackendUserCreationService())
             SignUpView(viewModel: viewModel)
+        }
+        .sheet(isPresented: $showResetPasswordView) {
+            ForgotPasswordView(viewModel: ForgotPasswordViewModel(service: ForgotPasswordService()))
+        }
+        .sheet(isPresented: $isShowingProfileView) {
+            ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
         }
     }
 }

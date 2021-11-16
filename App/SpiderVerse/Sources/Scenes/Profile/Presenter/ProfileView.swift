@@ -1,10 +1,3 @@
-//
-//  ProfileView.swift
-//  Spider-Verse
-//
-//  Created by Eros Maurilio on 13/11/21.
-//
-
 import SwiftUI
 
 struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelProtocol {
@@ -18,7 +11,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
                 .padding()
 
             Button {
-                // FIXME: Não sai automaticamente, muda view
+                // FIXME: Não sai automaticamente, desloga da conta, porem não atualiza a viewm precisa voltar para a tela de login.
                 viewModel.logOut()
 
             } label: {

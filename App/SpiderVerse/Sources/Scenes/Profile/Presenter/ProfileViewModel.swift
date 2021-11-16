@@ -8,14 +8,17 @@ protocol ProfileViewModelProtocol: ObservableObject {
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {
+    // MARK: - Published Atributes
+
     @Published var userName: String?
     @Published var userEmail: String?
 
-    private var userDetails: UserProfileDetails? {
-        sessionService.userDetails
-    }
+    // MARK: - Private Atributes
 
+    private var userDetails: UserProfileDetails? { sessionService.userDetails }
     private let sessionService: SessionServiceProtocol
+
+    // MARK: - Object Lifecycle
 
     init(sessionService: SessionServiceProtocol) {
         self.sessionService = sessionService
@@ -24,6 +27,8 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         self.userName = currentUser?.name
         self.userEmail = currentUser?.email
     }
+
+    // MARK: - Public Method
 
     func logOut() {
         sessionService.logOut()
