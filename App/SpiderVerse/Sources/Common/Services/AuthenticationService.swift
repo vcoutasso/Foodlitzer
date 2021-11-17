@@ -2,10 +2,10 @@ import FirebaseAuth
 
 // TODO: Move this stuff outta here
 
-typealias AuthenticationResult = Result<AppUser, AuthenticationError>
+typealias AuthenticationResult = Result<AppUser?, AuthenticationError>
 
 protocol AuthenticationServiceProtocol {
-    var currentUser: User? { get }
+    var appUser: AppUser? { get }
     var isUserSignedIn: Bool { get }
 
     func signIn(withEmail email: String,
@@ -27,10 +27,15 @@ enum AuthenticationError: Error {
     case unknown
 }
 
+// TODO: Review if both currentUser and appUser are necessary (or even a good idea)
 final class AuthenticationService: AuthenticationServiceProtocol, ObservableObject {
     // MARK: - Properties
 
     @Published var currentUser: User?
+
+    var appUser: AppUser? {
+        appUser(from: currentUser)
+    }
 
     var isUserSignedIn: Bool {
         currentUser != nil
@@ -154,7 +159,9 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
     }
 
     // FIXME: Empty strings should not be allowed
-    private func appUser(from user: User) -> AppUser {
-        AppUser(id: user.uid, name: user.displayName ?? "", email: user.email ?? "")
+    private func appUser(from user: User?) -> AppUser? {
+        guard let user = user else { return nil }
+
+        return AppUser(id: user.uid, name: user.displayName ?? "", email: user.email ?? "")
     }
 }

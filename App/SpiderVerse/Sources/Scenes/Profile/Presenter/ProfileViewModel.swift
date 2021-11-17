@@ -10,11 +10,11 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     // MARK: - Published Atributes
 
     var userName: String? {
-        authenticationService.currentUser?.displayName
+        authenticationService.appUser?.name
     }
 
     var userEmail: String? {
-        authenticationService.currentUser?.email
+        authenticationService.appUser?.email
     }
 
     // MARK: - Dependencies
