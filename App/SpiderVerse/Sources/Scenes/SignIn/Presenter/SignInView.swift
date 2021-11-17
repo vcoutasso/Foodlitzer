@@ -1,6 +1,6 @@
 import SwiftUI
 
-// TODO: Find a better way to do this
+// TODO: Extract this into specialized views (custom modifiers maybe?)
 private enum LayoutMetrics {
     static let buttonWidth: CGFloat = 200
     static let buttonHeight: CGFloat = 50
@@ -10,7 +10,7 @@ private enum LayoutMetrics {
 struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
     // MARK: - Attributes
 
-    @ObservedObject var viewModel: ViewModelType
+    @ObservedObject private(set) var viewModel: ViewModelType
 
     // MARK: - Views
 

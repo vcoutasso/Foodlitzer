@@ -12,7 +12,7 @@
 "signIn.password.placeholder" = "Password";
 "signIn.forgotPassword.placeholder" = "Forgot password?";
 
-"register.name.placeholder" = "Insert your name here";
-"register.email.placeholder" = "Insert your e-mail here";
-"register.password.placeholder" = "Insert your password here";
-"register.confirmPassword.placeholder" = "Insert your password again";
+"register.name.placeholder" = "Name";
+"register.email.placeholder" = "E-mail";
+"register.password.placeholder" = "Password";
+"register.confirmPassword.placeholder" = "Confirm password";

@@ -68,7 +68,7 @@ final class SignInViewModel: SignInViewModelProtocol {
 
     // MARK: - Helper Methods
 
-    private func updateSignedInStatus() {
+    func updateSignedInStatus() {
         isSignedIn = backendAuthenticationService.isAuthenticated
         shouldPresentProfileView = isSignedIn
         if !isSignedIn {

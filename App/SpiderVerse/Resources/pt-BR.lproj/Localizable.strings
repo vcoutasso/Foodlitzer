@@ -12,7 +12,7 @@
 "signIn.password.placeholder" = "Senha";
 "signIn.forgotPassword.placeholder" = "Esqueceu a senha?";
 
-"register.name.placeholder" = "Insira seu nome aqui";
-"register.email.placeholder" = "Insira seu email aqui";
-"register.password.placeholder" = "Insira sua senha aqui";
-"register.confirmPassword.placeholder" = "Insira sua senha novamente";
+"register.name.placeholder" = "Nome";
+"register.email.placeholder" = "E-mail";
+"register.password.placeholder" = "Senha";
+"register.confirmPassword.placeholder" = "Confirme a senha";
