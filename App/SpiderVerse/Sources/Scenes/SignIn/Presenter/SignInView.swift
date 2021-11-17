@@ -96,7 +96,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
 #if DEBUG
     struct SignInView_Previews: PreviewProvider {
         static var previews: some View {
-            SignInView(viewModel: SignInViewModel(backendAuthService: SignInUseCase()))
+            SignInView(viewModel: SignInViewModel(authenticationService: AuthenticationService()))
         }
     }
 #endif
