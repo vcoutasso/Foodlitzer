@@ -116,7 +116,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     }
 
     private func setUserDisplayName() {
-        authenticationService.updateCurrentUserDisplayName(with: nameText) { [weak self] error in
+        authenticationService.updateDisplayName(with: nameText) { [weak self] error in
             if error == nil {
                 // TODO: Go to home
             } else {

@@ -1,38 +1,28 @@
-import Combine
 import Foundation
+
 protocol ForgotPasswordViewModelProtocol: ObservableObject {
-    var service: ForgotPasswordServiceProtocol { get }
     var email: String { get set }
 
     func sendPasswordReset()
 }
 
 final class ForgotPasswordViewModel: ForgotPasswordViewModelProtocol {
+    // MARK: - Published variables
+
     @Published var email: String
 
-    var service: ForgotPasswordServiceProtocol
-    private var subscription = Set<AnyCancellable>()
+    // MARK: - Dependencies
 
-    init(service: ForgotPasswordServiceProtocol) {
+    private var authenticationService: AuthenticationServiceProtocol
+
+    init(authenticationService: AuthenticationServiceProtocol) {
         self.email = ""
-        self.service = service
+        self.authenticationService = authenticationService
     }
 
+    // TODO: Properly test this functionality
     func sendPasswordReset() {
-        service
-            .sendPasswordReset(to: email)
-            .sink { res in
-
-                switch res {
-                case let .failure(err):
-                    print("Failed: \(err)")
-
-                default: break
-                }
-            } receiveValue: {
-                print("Sent password reset Request")
-            }
-            .store(in: &subscription)
+        authenticationService.resetPassword()
     }
 }
 
@@ -40,6 +30,6 @@ final class ForgotPasswordViewModel: ForgotPasswordViewModelProtocol {
 
 enum ForgotPasswordViewModelFactory {
     static func make() -> ForgotPasswordViewModel {
-        ForgotPasswordViewModel(service: ForgotPasswordService())
+        ForgotPasswordViewModel(authenticationService: AuthenticationService())
     }
 }

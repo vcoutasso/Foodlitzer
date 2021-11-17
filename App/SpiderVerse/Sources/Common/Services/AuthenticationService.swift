@@ -14,9 +14,10 @@ protocol AuthenticationServiceProtocol {
     func createAccount(withEmail email: String,
                        password: String,
                        completion: @escaping (AuthenticationResult) -> Void)
-    func updateCurrentUserDisplayName(with name: String,
-                                      completion: @escaping (Error?) -> Void)
+    func updateDisplayName(with name: String,
+                           completion: @escaping (Error?) -> Void)
     func signOut()
+    func resetPassword()
 }
 
 enum AuthenticationError: Error {
@@ -101,7 +102,7 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
         }
     }
 
-    func updateCurrentUserDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
+    func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
         if let currentUser = currentUser {
             let changeRequest = currentUser.createProfileChangeRequest()
             changeRequest.displayName = name
@@ -120,6 +121,19 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
             try defaultAuth.signOut()
         } catch {
             debugPrint("Error trying to sign out: \(error.localizedDescription)")
+        }
+    }
+
+    // TODO: Handle completion
+    func resetPassword() {
+        if let email = currentUser?.email {
+            defaultAuth.sendPasswordReset(withEmail: email) { error in
+                if let nsError = (error as NSError?) {
+                    debugPrint("Error trying to reset password: \(nsError.localizedDescription)")
+                }
+            }
+        } else {
+            debugPrint("Error trying to reset password: User not signed in.")
         }
     }
 
