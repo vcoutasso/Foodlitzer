@@ -1,17 +1,19 @@
 import Combine
-import Foundation
 
 protocol RegisterViewModelProtocol: ObservableObject {
+    // User input
     var nameText: String { get set }
     var emailText: String { get set }
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
+    // Registration state
     var state: Registration.State { get }
-    var passwordsMatch: Bool { get }
-
-    func register()
-    func isValid(email: String) -> Bool
-    func isValid(password: String) -> Bool
+    // Presentation logic
+    var shouldPromptInvalidEmail: Bool { get }
+    var shouldPromptInvalidPassword: Bool { get }
+    var shouldPromptPasswordMismatch: Bool { get }
+    // View model methods
+    func handleRegisterButtonTapped()
 }
 
 final class RegisterViewModel: RegisterViewModelProtocol {
@@ -24,17 +26,38 @@ final class RegisterViewModel: RegisterViewModelProtocol {
 
     // MARK: - Stored Variables
 
-    var state: Registration.State = .notAvaliable
-    var userDetails = RegistrationDetails.new
+    private(set) var state: Registration.State = .notAvaliable
+    private(set) var userDetails = RegistrationDetails.new
 
-    // MARK: - Private Atribute
+    // MARK: - Private Atributes
 
     private var subscription = Set<AnyCancellable>()
+    private var invalidAttempt: Bool
 
-    // MARK: - Computed attributes
+    // MARK: - Computed variables
+
+    var shouldPromptInvalidEmail: Bool {
+        invalidAttempt && !isEmailValid
+    }
+
+    var shouldPromptInvalidPassword: Bool {
+        invalidAttempt && !isPasswordValid
+    }
+
+    var shouldPromptPasswordMismatch: Bool {
+        invalidAttempt && !passwordsMatch
+    }
 
     var passwordsMatch: Bool {
         passwordText == confirmPasswordText
+    }
+
+    var isEmailValid: Bool {
+        isValid(email: emailText)
+    }
+
+    var isPasswordValid: Bool {
+        isValid(password: passwordText)
     }
 
     // MARK: - Dependencies
@@ -52,6 +75,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         self.emailText = ""
         self.passwordText = ""
         self.confirmPasswordText = ""
+        self.invalidAttempt = false
         self.backendService = backendService
         self.emailValidationService = emailValidationService
         self.passwordValidationService = passwordValidationService
@@ -69,23 +93,32 @@ final class RegisterViewModel: RegisterViewModelProtocol {
 
     // MARK: - Account creation
 
-    func register() {
-        if passwordsMatch {
+    func handleRegisterButtonTapped() {
+        if isAttemptValid() {
+            invalidAttempt = false
+
             userDetails.email = emailText
             userDetails.password = passwordText
             userDetails.name = nameText
 
             createAccount()
+        } else {
+            invalidAttempt = true
         }
+
+        objectWillChange.send()
     }
 
     // MARK: - Helper methods
+
+    private func isAttemptValid() -> Bool {
+        isEmailValid && isPasswordValid && passwordsMatch
+    }
 
     private func createAccount() {
         backendService
             .register(with: userDetails)
             .sink { [weak self] result in
-
                 switch result {
                 case let .failure(error):
                     self?.state = .failed(error: error)

@@ -12,6 +12,8 @@
 "signIn.password.placeholder" = "Password";
 "signIn.forgotPassword.placeholder" = "Forgot password?";
 
+"signUp.createAccountButton.text" = "Create account";
+
 "register.name.placeholder" = "Name";
 "register.email.placeholder" = "E-mail";
 "register.password.placeholder" = "Password";
