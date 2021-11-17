@@ -20,6 +20,7 @@ final class SignInUseCase: BackendAuthenticationServiceProtocol {
                 if let error = error {
                     debugPrint("Could not Sign in. Error: '\(error)'")
                 }
+                completion()
                 return
             }
             completion()

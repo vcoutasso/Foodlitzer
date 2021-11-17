@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-protocol SignUpViewModelProtocol: ObservableObject {
+protocol RegisterViewModelProtocol: ObservableObject {
     var nameText: String { get set }
     var emailText: String { get set }
     var passwordText: String { get set }
@@ -9,12 +9,12 @@ protocol SignUpViewModelProtocol: ObservableObject {
     var state: Registration.State { get }
     var passwordsMatch: Bool { get }
 
-    func signUp()
+    func register()
     func isValid(email: String) -> Bool
     func isValid(password: String) -> Bool
 }
 
-final class SignUpViewModel: SignUpViewModelProtocol {
+final class RegisterViewModel: RegisterViewModelProtocol {
     // MARK: - Published Attributes
 
     @Published var nameText: String
@@ -67,7 +67,21 @@ final class SignUpViewModel: SignUpViewModelProtocol {
         passwordValidationService.execute(using: password)
     }
 
-    private func register() {
+    // MARK: - Account creation
+
+    func register() {
+        if passwordsMatch {
+            userDetails.email = emailText
+            userDetails.password = passwordText
+            userDetails.name = nameText
+
+            createAccount()
+        }
+    }
+
+    // MARK: - Helper methods
+
+    private func createAccount() {
         backendService
             .register(with: userDetails)
             .sink { [weak self] result in
@@ -83,14 +97,14 @@ final class SignUpViewModel: SignUpViewModelProtocol {
             }
             .store(in: &subscription)
     }
+}
 
-    func signUp() {
-        if passwordsMatch {
-            userDetails.email = emailText
-            userDetails.password = passwordText
-            userDetails.name = nameText
+// MARK: - View Model Factory
 
-            register()
-        }
+enum RegisterViewModelFactory {
+    static func make() -> RegisterViewModel {
+        RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
+                          passwordValidationService: ValidatePasswordUseCase(),
+                          backendService: BackendUserCreationService())
     }
 }

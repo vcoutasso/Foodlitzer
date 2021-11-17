@@ -1,60 +1,94 @@
 import SwiftUI
 
+// TODO: Extract this into specialized views (custom modifiers maybe?)
+private enum LayoutMetrics {
+    static let buttonWidth: CGFloat = 200
+    static let buttonHeight: CGFloat = 50
+    static let buttonPadding: CGFloat = 16
+}
+
 struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
-    @ObservedObject var viewModel: ViewModelType
-    @State private var showSignUpView = false
-    @State private var showResetPasswordView = false
-    @State private var isShowingProfileView = false
+    // MARK: - Attributes
+
+    @ObservedObject private(set) var viewModel: ViewModelType
+
+    // MARK: - Views
 
     var body: some View {
         VStack {
-            TextField("E-mail Adress", text: $viewModel.email)
-                .padding()
-                .background(Color(.secondarySystemBackground))
+            emailField
 
-            SecureField("Password", text: $viewModel.password)
-                .padding()
-                .background(Color(.secondarySystemBackground))
+            passwordField
 
-            Button("Forgot Password?") {
-                showResetPasswordView.toggle()
+            if viewModel.shouldPromptInvalidCredentials {
+                invalidCredentials
             }
 
-            Button {
-                // FIXME: Sign In está clicavel e entrando na home mesmo quando os dados estão incorretos.
-                viewModel.signIn()
-                isShowingProfileView.toggle()
-            } label: {
-                Text("Sign In")
-                    .frame(width: 200, height: 50)
-                    .foregroundColor(.white)
-                    .background(Color.black)
-            }
-            .disabled(viewModel.isButtonDisabled)
-            .padding(.vertical, 16)
+            forgotPasswordButton
 
-            Button {
-                showSignUpView.toggle()
+            signInButton
 
-            } label: {
-                Text("Sign UP")
-                    .frame(width: 200, height: 50)
-                    .foregroundColor(.white)
-                    .background(Color.black)
-            }
+            registerButton
         }
         .padding()
-        .sheet(isPresented: $showSignUpView) {
-            let viewModel = SignUpViewModel(emailValidationService: ValidateEmailUseCase(),
-                                            passwordValidationService: ValidatePasswordUseCase(),
-                                            backendService: BackendUserCreationService())
-            SignUpView(viewModel: viewModel)
+        .sheet(isPresented: $viewModel.shouldPresentRegistrationView) {
+            RegisterView(viewModel: RegisterViewModelFactory.make())
         }
-        .sheet(isPresented: $showResetPasswordView) {
-            ForgotPasswordView(viewModel: ForgotPasswordViewModel(service: ForgotPasswordService()))
+        .sheet(isPresented: $viewModel.shouldPresentResetPasswordView) {
+            ForgotPasswordView(viewModel: ForgotPasswordViewModelFactory.make())
         }
-        .sheet(isPresented: $isShowingProfileView) {
-            ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
+        .sheet(isPresented: $viewModel.shouldPresentProfileView) {
+            ProfileView(viewModel: ProfileViewModelFactory.make())
+        }
+    }
+
+    private var emailField: some View {
+        TextField(Localizable.SignIn.Email.placeholder, text: $viewModel.email)
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .autocapitalization(.none)
+            .keyboardType(.emailAddress)
+    }
+
+    private var passwordField: some View {
+        SecureField(Localizable.SignIn.Password.placeholder, text: $viewModel.password)
+            .padding()
+            .background(Color(.secondarySystemBackground))
+    }
+
+    private var invalidCredentials: some View {
+        Text(Localizable.SignIn.InvalidCredentials.prompt)
+            .padding()
+            .foregroundColor(.red)
+    }
+
+    private var forgotPasswordButton: some View {
+        Button(Localizable.SignIn.ForgotPassword.placeholder) {
+            viewModel.handleForgotPasswordButtonTapped()
+        }
+    }
+
+    private var signInButton: some View {
+        Button {
+            viewModel.handleSignInButtonTapped()
+        } label: {
+            Text(Localizable.SignIn.SignInButton.text)
+                .frame(width: LayoutMetrics.buttonWidth, height: LayoutMetrics.buttonHeight)
+                .foregroundColor(.white)
+                .background(Color.black)
+        }
+        .disabled(viewModel.isButtonDisabled)
+        .padding(.vertical, LayoutMetrics.buttonPadding)
+    }
+
+    private var registerButton: some View {
+        Button {
+            viewModel.handleRegisterButtonTapped()
+        } label: {
+            Text(Localizable.SignIn.RegisterButton.text)
+                .frame(width: LayoutMetrics.buttonWidth, height: LayoutMetrics.buttonHeight)
+                .foregroundColor(.white)
+                .background(Color.black)
         }
     }
 }

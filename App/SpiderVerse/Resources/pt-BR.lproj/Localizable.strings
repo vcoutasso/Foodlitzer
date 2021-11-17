@@ -5,7 +5,14 @@
   Created by Vinícius Couto on 08/11/21.
 */
 
-"signUp.name.placeholder" = "Insira seu nome aqui";
-"signUp.email.placeholder" = "Insira seu email aqui";
-"signUp.password.placeholder" = "Insira sua senha aqui";
-"signUp.confirmPassword.placeholder" = "Insira sua senha novamente";
+"signIn.signInButton.text" = "Entrar";
+"signIn.registerButton.text" = "Criar conta nova";
+"signIn.invalidCredentials.prompt" = "Credenciais inválidas";
+"signIn.email.placeholder" = "Email";
+"signIn.password.placeholder" = "Senha";
+"signIn.forgotPassword.placeholder" = "Esqueceu a senha?";
+
+"register.name.placeholder" = "Nome";
+"register.email.placeholder" = "E-mail";
+"register.password.placeholder" = "Senha";
+"register.confirmPassword.placeholder" = "Confirme a senha";
