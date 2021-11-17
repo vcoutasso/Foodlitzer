@@ -2,9 +2,6 @@ import SwiftUI
 
 struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
     @ObservedObject var viewModel: ViewModelType
-    @State private var showRegisterView = false
-    @State private var showResetPasswordView = false
-    @State private var isShowingProfileView = false
 
     var body: some View {
         VStack {
@@ -19,13 +16,12 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
                 .background(Color(.secondarySystemBackground))
 
             Button(Localizable.SignIn.ForgotPassword.placeholder) {
-                showResetPasswordView.toggle()
+                viewModel.handleForgotPasswordButtonTapped()
             }
 
             Button {
-                // FIXME: Sign In está clicavel e entrando na home mesmo quando os dados estão incorretos.
-                viewModel.signIn()
-                // isShowingProfileView.toggle()
+                // TODO: Let the user know the credentials are invalid
+                viewModel.handleSignInButtonTapped()
             } label: {
                 Text(Localizable.SignIn.SignInButton.text)
                     .frame(width: 200, height: 50)
@@ -36,8 +32,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             .padding(.vertical, 16)
 
             Button {
-                showRegisterView.toggle()
-
+                viewModel.handleRegisterButtonTapped()
             } label: {
                 Text(Localizable.SignIn.RegisterButton.text)
                     .frame(width: 200, height: 50)
@@ -46,16 +41,16 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             }
         }
         .padding()
-        .sheet(isPresented: $showRegisterView) {
+        .sheet(isPresented: $viewModel.shouldPresentRegistrationView) {
             let viewModel = RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
                                               passwordValidationService: ValidatePasswordUseCase(),
                                               backendService: BackendUserCreationService())
             RegisterView(viewModel: viewModel)
         }
-        .sheet(isPresented: $showResetPasswordView) {
+        .sheet(isPresented: $viewModel.shouldPresentResetPasswordView) {
             ForgotPasswordView(viewModel: ForgotPasswordViewModel(service: ForgotPasswordService()))
         }
-        .sheet(isPresented: $isShowingProfileView) {
+        .sheet(isPresented: $viewModel.shouldPresentProfileView) {
             ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
         }
     }

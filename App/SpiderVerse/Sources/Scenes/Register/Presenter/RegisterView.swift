@@ -8,16 +8,19 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
             TextField(Localizable.Register.Name.placeholder, text: $viewModel.nameText)
                 .padding()
                 .background(Color(.secondarySystemBackground))
+                .autocapitalization(.words)
 
             TextField(Localizable.Register.Email.placeholder, text: $viewModel.emailText)
                 .padding()
                 .background(Color(.secondarySystemBackground))
+                .autocapitalization(.none)
+                .keyboardType(.emailAddress)
 
-            TextField(Localizable.Register.Password.placeholder, text: $viewModel.passwordText)
+            SecureField(Localizable.Register.Password.placeholder, text: $viewModel.passwordText)
                 .padding()
                 .background(Color(.secondarySystemBackground))
 
-            TextField(Localizable.Register.ConfirmPassword.placeholder, text: $viewModel.confirmPasswordText)
+            SecureField(Localizable.Register.ConfirmPassword.placeholder, text: $viewModel.confirmPasswordText)
                 .padding()
                 .background(Color(.secondarySystemBackground))
 
