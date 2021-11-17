@@ -35,3 +35,11 @@ final class ForgotPasswordViewModel: ForgotPasswordViewModelProtocol {
             .store(in: &subscription)
     }
 }
+
+// MARK: - View Model Factory
+
+enum ForgotPasswordViewModelFactory {
+    static func make() -> ForgotPasswordViewModel {
+        ForgotPasswordViewModel(service: ForgotPasswordService())
+    }
+}

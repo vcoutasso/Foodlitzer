@@ -98,3 +98,13 @@ final class RegisterViewModel: RegisterViewModelProtocol {
             .store(in: &subscription)
     }
 }
+
+// MARK: - View Model Factory
+
+enum RegisterViewModelFactory {
+    static func make() -> RegisterViewModel {
+        RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
+                          passwordValidationService: ValidatePasswordUseCase(),
+                          backendService: BackendUserCreationService())
+    }
+}

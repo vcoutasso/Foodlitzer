@@ -7,6 +7,7 @@
 
 "signIn.signInButton.text" = "Entrar";
 "signIn.registerButton.text" = "Criar conta nova";
+"signIn.invalidCredentials.prompt" = "Credenciais inválidas";
 "signIn.email.placeholder" = "Email";
 "signIn.password.placeholder" = "Senha";
 "signIn.forgotPassword.placeholder" = "Esqueceu a senha?";

@@ -1,7 +1,6 @@
 import SwiftUI
 
 // TODO: Find a better way to do this
-
 private enum LayoutMetrics {
     static let buttonWidth: CGFloat = 200
     static let buttonHeight: CGFloat = 50
@@ -20,6 +19,10 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             emailField
 
             passwordField
+
+            if viewModel.shouldPromptInvalidCredentials {
+                invalidCredentials
+            }
 
             forgotPasswordButton
 
@@ -53,6 +56,12 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             .background(Color(.secondarySystemBackground))
     }
 
+    private var invalidCredentials: some View {
+        Text(Localizable.SignIn.InvalidCredentials.prompt)
+            .padding()
+            .foregroundColor(.red)
+    }
+
     private var forgotPasswordButton: some View {
         Button(Localizable.SignIn.ForgotPassword.placeholder) {
             viewModel.handleForgotPasswordButtonTapped()
@@ -61,7 +70,6 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
 
     private var signInButton: some View {
         Button {
-            // TODO: Let the user know the credentials are invalid
             viewModel.handleSignInButtonTapped()
         } label: {
             Text(Localizable.SignIn.SignInButton.text)
@@ -82,28 +90,6 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
                 .foregroundColor(.white)
                 .background(Color.black)
         }
-    }
-}
-
-// TODO: Take this elsewhere
-
-enum RegisterViewModelFactory {
-    static func make() -> RegisterViewModel {
-        RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
-                          passwordValidationService: ValidatePasswordUseCase(),
-                          backendService: BackendUserCreationService())
-    }
-}
-
-enum ForgotPasswordViewModelFactory {
-    static func make() -> ForgotPasswordViewModel {
-        ForgotPasswordViewModel(service: ForgotPasswordService())
-    }
-}
-
-enum ProfileViewModelFactory {
-    static func make() -> ProfileViewModel {
-        ProfileViewModel(sessionService: SessionServiceUseCase())
     }
 }
 

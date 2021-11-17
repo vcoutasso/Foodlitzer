@@ -34,3 +34,11 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         sessionService.logOut()
     }
 }
+
+// MARK: - View Model Factory
+
+enum ProfileViewModelFactory {
+    static func make() -> ProfileViewModel {
+        ProfileViewModel(sessionService: SessionServiceUseCase())
+    }
+}

@@ -2,16 +2,16 @@ import Combine
 @testable import SpiderVerse
 import XCTest
 
-final class SignUpViewModelTests: XCTestCase {
+final class RegisterViewModelTests: XCTestCase {
     // MARK: - System under test
 
     // FIXME: Mock dependencies and test them separately
     private let emailValidator = ValidateEmailUseCase()
     private let passwordValidator = ValidatePasswordUseCase()
     private let backendServiceDummy = BackendServiceDummy()
-    private lazy var sut = SignUpViewModel(emailValidationService: emailValidator,
-                                           passwordValidationService: passwordValidator,
-                                           backendService: backendServiceDummy)
+    private lazy var sut = RegisterViewModel(emailValidationService: emailValidator,
+                                             passwordValidationService: passwordValidator,
+                                             backendService: backendServiceDummy)
 
     // MARK: - Test doubles
 
