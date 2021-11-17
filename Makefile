@@ -15,8 +15,7 @@ open:
 	@ open App/SpiderVerse.xcworkspace
 
 dependencies:
-	@ rm App/Podfile.lock
-	@ (cd App; pod install)
+	@ rm App/Podfile.lock 2> /dev/null; cd App; pod install
 
 clean:
 	@ echo "\033[1;37mCleaning up project files\033[0m"
