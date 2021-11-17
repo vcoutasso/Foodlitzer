@@ -5,7 +5,13 @@
   Created by Vinícius Couto on 08/11/21.
 */
 
-"signUp.name.placeholder" = "Insert your name here";
-"signUp.email.placeholder" = "Insert your e-mail here";
-"signUp.password.placeholder" = "Insert your password here";
-"signUp.confirmPassword.placeholder" = "Insert your password again";
+"signIn.signInButton.text" = "Sign In";
+"signIn.registerButton.text" = "Create new account";
+"signIn.email.placeholder" = "Email";
+"signIn.password.placeholder" = "Password";
+"signIn.forgotPassword.placeholder" = "Forgot password?";
+
+"register.name.placeholder" = "Insert your name here";
+"register.email.placeholder" = "Insert your e-mail here";
+"register.password.placeholder" = "Insert your password here";
+"register.confirmPassword.placeholder" = "Insert your password again";
