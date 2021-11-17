@@ -6,8 +6,6 @@ protocol RegisterViewModelProtocol: ObservableObject {
     var emailText: String { get set }
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
-    // Registration state
-    var state: Registration.State { get }
     // Presentation logic
     var shouldPromptInvalidEmail: Bool { get }
     var shouldPromptInvalidPassword: Bool { get }
@@ -26,6 +24,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
 
     // MARK: - Stored Variables
 
+    // TODO: Review if `state` and `userDetails` really necessary
     private(set) var state: Registration.State = .notAvaliable
     private(set) var userDetails = RegistrationDetails.new
 
@@ -48,15 +47,15 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         invalidAttempt && !passwordsMatch
     }
 
-    var passwordsMatch: Bool {
+    private var passwordsMatch: Bool {
         passwordText == confirmPasswordText
     }
 
-    var isEmailValid: Bool {
+    private var isEmailValid: Bool {
         isValid(email: emailText)
     }
 
-    var isPasswordValid: Bool {
+    private var isPasswordValid: Bool {
         isValid(password: passwordText)
     }
 
