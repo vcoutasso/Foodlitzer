@@ -22,15 +22,8 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     @Published var passwordText: String
     @Published var confirmPasswordText: String
 
-    // MARK: - Stored Variables
-
-    // TODO: Review if `state` and `userDetails` really necessary
-    private(set) var state: Registration.State = .notAvaliable
-    private(set) var userDetails = RegistrationDetails.new
-
     // MARK: - Private Atributes
 
-    private var subscription = Set<AnyCancellable>()
     private var invalidAttempt: Bool
 
     // MARK: - Computed variables
@@ -63,19 +56,19 @@ final class RegisterViewModel: RegisterViewModelProtocol {
 
     private let emailValidationService: ValidateEmailUseCaseProtocol
     private let passwordValidationService: ValidatePasswordUseCaseProtocol
-    private let backendService: BackendUserCreationServiceProtocol
+    private let authenticationService: AuthenticationServiceProtocol
 
     // MARK: - Object lifecycle
 
     init(emailValidationService: ValidateEmailUseCaseProtocol,
          passwordValidationService: ValidatePasswordUseCaseProtocol,
-         backendService: BackendUserCreationServiceProtocol) {
+         authenticationService: AuthenticationServiceProtocol) {
         self.nameText = ""
         self.emailText = ""
         self.passwordText = ""
         self.confirmPasswordText = ""
         self.invalidAttempt = false
-        self.backendService = backendService
+        self.authenticationService = authenticationService
         self.emailValidationService = emailValidationService
         self.passwordValidationService = passwordValidationService
     }
@@ -96,10 +89,6 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         if isAttemptValid() {
             invalidAttempt = false
 
-            userDetails.email = emailText
-            userDetails.password = passwordText
-            userDetails.name = nameText
-
             createAccount()
         } else {
             invalidAttempt = true
@@ -114,20 +103,26 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         isEmailValid && isPasswordValid && passwordsMatch
     }
 
+    // TODO: Improve validation handling
     private func createAccount() {
-        backendService
-            .register(with: userDetails)
-            .sink { [weak self] result in
-                switch result {
-                case let .failure(error):
-                    self?.state = .failed(error: error)
-                    debugPrint(error)
-                default: break
-                }
-            } receiveValue: { [weak self] in
-                self?.state = .successfull
+        authenticationService.createAccount(withEmail: emailText, password: passwordText) { [weak self] result in
+            switch result {
+            case .success:
+                self?.setUserDisplayName()
+            case .failure:
+                self?.invalidAttempt = true
             }
-            .store(in: &subscription)
+        }
+    }
+
+    private func setUserDisplayName() {
+        authenticationService.updateCurrentUserDisplayName(with: nameText) { [weak self] error in
+            if error == nil {
+                // TODO: Go to home
+            } else {
+                self?.invalidAttempt = true
+            }
+        }
     }
 }
 
@@ -137,6 +132,6 @@ enum RegisterViewModelFactory {
     static func make() -> RegisterViewModel {
         RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
                           passwordValidationService: ValidatePasswordUseCase(),
-                          backendService: BackendUserCreationService())
+                          authenticationService: AuthenticationService())
     }
 }

@@ -49,11 +49,10 @@ final class SignInViewModel: SignInViewModelProtocol {
     // MARK: - Event Methods
 
     func handleSignInButtonTapped() {
-        shouldPromptInvalidCredentials = false
-        authenticationService.signIn(withEmail: email, password: password) { [weak self] result in
-            guard let self = self else { return }
+        resetFlags()
 
-            self.signInCallback(result: result)
+        authenticationService.signIn(withEmail: email, password: password) { [weak self] result in
+            self?.signInCallback(result: result)
         }
     }
 
@@ -66,6 +65,13 @@ final class SignInViewModel: SignInViewModelProtocol {
     }
 
     // MARK: - Helper Methods
+
+    func resetFlags() {
+        shouldPromptInvalidCredentials = false
+        shouldPresentProfileView = false
+        shouldPresentRegistrationView = false
+        shouldPresentResetPasswordView = false
+    }
 
     func signInCallback(result: AuthenticationResult) {
         switch result {

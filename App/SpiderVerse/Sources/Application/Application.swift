@@ -1,19 +1,18 @@
 import SwiftUI
 
 struct Application: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var delegate
+
+    @StateObject private var authenticationService = AuthenticationService()
 
     var body: some Scene {
         WindowGroup {
-            let sessionService = SessionServiceUseCase()
-
             NavigationView {
-                switch sessionService.state {
-                case .loggedIn:
-                    let viewModel = ProfileViewModel(sessionService: sessionService)
+                if authenticationService.isUserSignedIn {
+                    let viewModel = ProfileViewModel(authenticationService: authenticationService)
                     ProfileView(viewModel: viewModel)
-                case .loggedOut:
-                    let viewModel = SignInViewModel(authenticationService: AuthenticationService())
+                } else {
+                    let viewModel = SignInViewModel(authenticationService: authenticationService)
                     SignInView(viewModel: viewModel)
                 }
             }

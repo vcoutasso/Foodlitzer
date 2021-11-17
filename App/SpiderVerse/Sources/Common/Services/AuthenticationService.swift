@@ -11,10 +11,11 @@ protocol AuthenticationServiceProtocol {
     func signIn(withEmail email: String,
                 password: String,
                 completion: @escaping (AuthenticationResult) -> Void)
-
     func createAccount(withEmail email: String,
                        password: String,
                        completion: @escaping (AuthenticationResult) -> Void)
+    func updateCurrentUserDisplayName(with name: String,
+                                      completion: @escaping (Error?) -> Void)
     func signOut()
 }
 
@@ -25,10 +26,10 @@ enum AuthenticationError: Error {
     case unknown
 }
 
-final class AuthenticationService: AuthenticationServiceProtocol {
+final class AuthenticationService: AuthenticationServiceProtocol, ObservableObject {
     // MARK: - Properties
 
-    var currentUser: User?
+    @Published var currentUser: User?
 
     var isUserSignedIn: Bool {
         currentUser != nil
@@ -97,6 +98,20 @@ final class AuthenticationService: AuthenticationServiceProtocol {
             }
 
             completion(result)
+        }
+    }
+
+    func updateCurrentUserDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
+        if let currentUser = currentUser {
+            let changeRequest = currentUser.createProfileChangeRequest()
+            changeRequest.displayName = name
+            changeRequest.commitChanges { error in
+                if let nsError = (error as NSError?) {
+                    debugPrint("Error trying to update display name: \(nsError.localizedDescription)")
+                }
+
+                completion(error)
+            }
         }
     }
 

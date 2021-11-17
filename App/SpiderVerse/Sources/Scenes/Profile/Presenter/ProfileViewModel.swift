@@ -3,35 +3,35 @@ import Foundation
 protocol ProfileViewModelProtocol: ObservableObject {
     var userName: String? { get }
     var userEmail: String? { get }
-
-    func logOut()
+    func signOut()
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {
     // MARK: - Published Atributes
 
-    @Published var userName: String?
-    @Published var userEmail: String?
+    var userName: String? {
+        authenticationService.currentUser?.displayName
+    }
 
-    // MARK: - Private Atributes
+    var userEmail: String? {
+        authenticationService.currentUser?.email
+    }
 
-    private var userDetails: UserProfileDetails? { sessionService.userDetails }
-    private let sessionService: SessionServiceProtocol
+    // MARK: - Dependencies
+
+    private let authenticationService: AuthenticationServiceProtocol
 
     // MARK: - Object Lifecycle
 
-    init(sessionService: SessionServiceProtocol) {
-        self.sessionService = sessionService
-
-        let currentUser = sessionService.getCurrentUser()
-        self.userName = currentUser?.name
-        self.userEmail = currentUser?.email
+    init(authenticationService: AuthenticationServiceProtocol) {
+        self.authenticationService = authenticationService
     }
 
     // MARK: - Public Method
 
-    func logOut() {
-        sessionService.logOut()
+    func signOut() {
+        authenticationService.signOut()
+        objectWillChange.send()
     }
 }
 
@@ -39,6 +39,6 @@ final class ProfileViewModel: ProfileViewModelProtocol {
 
 enum ProfileViewModelFactory {
     static func make() -> ProfileViewModel {
-        ProfileViewModel(sessionService: SessionServiceUseCase())
+        ProfileViewModel(authenticationService: AuthenticationService())
     }
 }

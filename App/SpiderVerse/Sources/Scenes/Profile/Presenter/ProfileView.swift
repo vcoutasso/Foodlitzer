@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelProtocol {
+    // MARK: - View model
+
     @ObservedObject private(set) var viewModel: ViewModelType
+
+    // MARK: - Views
 
     var body: some View {
         VStack {
@@ -11,9 +15,8 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
                 .padding()
 
             Button {
-                // FIXME: Não sai automaticamente, desloga da conta, porem não atualiza a viewm precisa voltar para a tela de login.
-                viewModel.logOut()
-
+                // TODO: This should take the user back to the login screen
+                viewModel.signOut()
             } label: {
                 Text("Logout")
                     .frame(width: 200, height: 50)
@@ -25,8 +28,10 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView(viewModel: ProfileViewModel(sessionService: SessionServiceUseCase()))
+#if DEBUG
+    struct ProfileView_Previews: PreviewProvider {
+        static var previews: some View {
+            ProfileView(viewModel: ProfileViewModel(authenticationService: AuthenticationService()))
+        }
     }
-}
+#endif

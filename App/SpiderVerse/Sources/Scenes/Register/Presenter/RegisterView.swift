@@ -78,7 +78,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
             let passwordValidator = ValidatePasswordUseCase()
             RegisterView(viewModel: RegisterViewModel(emailValidationService: emailValidator,
                                                       passwordValidationService: passwordValidator,
-                                                      backendService: BackendUserCreationService()))
+                                                      authenticationService: AuthenticationService()))
         }
     }
 #endif
