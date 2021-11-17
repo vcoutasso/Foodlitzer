@@ -32,29 +32,28 @@ final class SignInViewModel: SignInViewModelProtocol {
 
     // MARK: - Private Atributes
 
-    private let backendAuthenticationService: BackendAuthenticationServiceProtocol
-    private var isSignedIn: Bool
+    private let authenticationService: AuthenticationServiceProtocol
 
     // MARK: - Object Lifecycle
 
-    init(backendAuthService: BackendAuthenticationServiceProtocol) {
+    init(authenticationService: AuthenticationServiceProtocol) {
         self.email = ""
         self.password = ""
         self.shouldPromptInvalidCredentials = false
         self.shouldPresentProfileView = false
         self.shouldPresentRegistrationView = false
         self.shouldPresentResetPasswordView = false
-        self.backendAuthenticationService = backendAuthService
-        self.isSignedIn = backendAuthService.isAuthenticated
+        self.authenticationService = authenticationService
     }
 
     // MARK: - Event Methods
 
     func handleSignInButtonTapped() {
         shouldPromptInvalidCredentials = false
-        backendAuthenticationService.execute(email: email, password: password) { [weak self] in
-            guard let this = self else { return }
-            this.updateSignedInStatus()
+        authenticationService.signIn(withEmail: email, password: password) { [weak self] result in
+            guard let self = self else { return }
+
+            self.signInCallback(result: result)
         }
     }
 
@@ -68,10 +67,11 @@ final class SignInViewModel: SignInViewModelProtocol {
 
     // MARK: - Helper Methods
 
-    func updateSignedInStatus() {
-        isSignedIn = backendAuthenticationService.isAuthenticated
-        shouldPresentProfileView = isSignedIn
-        if !isSignedIn {
+    func signInCallback(result: AuthenticationResult) {
+        switch result {
+        case .success:
+            shouldPresentProfileView = true
+        case .failure:
             shouldPromptInvalidCredentials = true
         }
     }

@@ -13,8 +13,7 @@ struct Application: App {
                     let viewModel = ProfileViewModel(sessionService: sessionService)
                     ProfileView(viewModel: viewModel)
                 case .loggedOut:
-                    let usecase = SignInUseCase()
-                    let viewModel = SignInViewModel(backendAuthService: usecase)
+                    let viewModel = SignInViewModel(authenticationService: AuthenticationService())
                     SignInView(viewModel: viewModel)
                 }
             }

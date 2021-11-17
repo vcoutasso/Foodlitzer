@@ -1,15 +1,20 @@
 import FirebaseAuth
 
+// TODO: Move this stuff outta here
+
+typealias AuthenticationResult = Result<AppUser, AuthenticationError>
+
 protocol AuthenticationServiceProtocol {
     var currentUser: User? { get }
+    var isUserSignedIn: Bool { get }
 
     func signIn(withEmail email: String,
                 password: String,
-                completion: @escaping (Result<User, AuthenticationError>) -> Void)
+                completion: @escaping (AuthenticationResult) -> Void)
 
     func createAccount(withEmail email: String,
                        password: String,
-                       completion: @escaping (Result<User, AuthenticationError>) -> Void)
+                       completion: @escaping (AuthenticationResult) -> Void)
     func signOut()
 }
 
@@ -24,6 +29,10 @@ final class AuthenticationService: AuthenticationServiceProtocol {
     // MARK: - Properties
 
     var currentUser: User?
+
+    var isUserSignedIn: Bool {
+        currentUser != nil
+    }
 
     // MARK: - Private properties
 
@@ -41,12 +50,14 @@ final class AuthenticationService: AuthenticationServiceProtocol {
     // TODO: Refactor to avoid duplication
     func signIn(withEmail email: String,
                 password: String,
-                completion: @escaping (Result<User, AuthenticationError>) -> Void) {
-        defaultAuth.signIn(withEmail: email, password: password) { authResult, error in
-            var result: Result<User, AuthenticationError> = .failure(.unknown)
+                completion: @escaping (AuthenticationResult) -> Void) {
+        defaultAuth.signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+
+            var result: AuthenticationResult = .failure(.unknown)
 
             if let authResult = authResult {
-                result = .success(authResult.user)
+                result = .success(self.appUser(from: authResult.user))
             } else if let error = (error as NSError?) {
                 debugPrint("Error trying to sign in: \(error.localizedDescription)")
 
@@ -64,12 +75,14 @@ final class AuthenticationService: AuthenticationServiceProtocol {
 
     func createAccount(withEmail email: String,
                        password: String,
-                       completion: @escaping (Result<User, AuthenticationError>) -> Void) {
-        defaultAuth.createUser(withEmail: email, password: password) { authResult, error in
-            var result: Result<User, AuthenticationError> = .failure(.unknown)
+                       completion: @escaping (AuthenticationResult) -> Void) {
+        defaultAuth.createUser(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+
+            var result: AuthenticationResult = .failure(.unknown)
 
             if let authResult = authResult {
-                result = .success(authResult.user)
+                result = .success(self.appUser(from: authResult.user))
             } else if let error = (error as NSError?) {
                 debugPrint("Error trying to create account: \(error.localizedDescription)")
 
@@ -109,5 +122,10 @@ final class AuthenticationService: AuthenticationServiceProtocol {
                 self.currentUser = user
             }
         }
+    }
+
+    // FIXME: Empty strings should not be allowed
+    private func appUser(from user: User) -> AppUser {
+        AppUser(id: user.uid, name: user.displayName ?? "", email: user.email ?? "")
     }
 }
