@@ -1,4 +1,3 @@
-
 import Combine
 import GooglePlaces
 import MapKit
@@ -15,6 +14,7 @@ class PlacesListViewModel: ObservableObject {
     @Published var places: [Place] = []
 
     private var placesClient: GMSPlacesClient!
+    private var locationManager: CLLocationManager?
 
     init() {
         self.placesClient = GMSPlacesClient.shared()
@@ -25,16 +25,15 @@ class PlacesListViewModel: ObservableObject {
 
         placesClient
             .findPlaceLikelihoodsFromCurrentLocation(withPlaceFields: placeFields) { [weak self] placeLikelihoodList, error in
-                defer {
-                    self?.objectWillChange.send()
-                }
-                guard let strongSelf = self else {
+                guard let strongSelf = self else { return }
+
+                if let error = error {
+                    print("Current place error: \(error.localizedDescription)")
                     return
                 }
 
-                guard error == nil else {
-                    print("Current place error: \(error?.localizedDescription ?? "")")
-                    return
+                defer {
+                    strongSelf.objectWillChange.send()
                 }
 
                 if let placeLikelihoodList = placeLikelihoodList {
@@ -46,51 +45,45 @@ class PlacesListViewModel: ObservableObject {
 
                         strongSelf.placesClient?.fetchPlace(fromPlaceID: placeID,
                                                             placeFields: fields,
-                                                            sessionToken: nil, callback: {
-                                                                (place: GMSPlace?, error: Error?) in
-                                                                    if let error = error {
-                                                                        print("An error occurred: \(error.localizedDescription)")
-                                                                        return
-                                                                    }
-                                                                    if let place = place,
-                                                                       let photoMetadata: GMSPlacePhotoMetadata = place
-                                                                       .photos?[0] {
-                                                                        // Get the metadata for the first photo in the place photo metadata list.
-
-                                                                        // Call loadPlacePhoto to display the bitmap and attribution.
-                                                                        strongSelf.placesClient?
-                                                                            .loadPlacePhoto(photoMetadata,
-                                                                                            callback: { photo, error -> Void in
-                                                                                                if let error = error {
-                                                                                                    // TODO: Handle the error.
-                                                                                                    print("Error loading photo metadata: \(error.localizedDescription)")
-                                                                                                    return
-                                                                                                } else {
-                                                                                                    // Display the first image and its attributions.
-                                                                                                    let myPlace =
-                                                                                                        Place(name: place
-                                                                                                            .name ?? "",
-                                                                                                            address: place
-                                                                                                                .formattedAddress ??
-                                                                                                                "",
-                                                                                                            image: photo ??
-                                                                                                                UIImage(),
-                                                                                                            attributions: photoMetadata
-                                                                                                                .attributions ??
-                                                                                                                NSAttributedString(),
-                                                                                                            id: placeID)
-                                                                                                    strongSelf.places
-                                                                                                        .append(myPlace)
-                                                                                                }
-                                                                                            })
-                                                                    }
-                                                            })
+                                                            sessionToken: nil) { [placeID] place, error in
+                            strongSelf.fetchPlaceCallback(placeID: placeID, place: place, error: error)
+                        }
                     }
                 }
             }
     }
 
-    var locationManager: CLLocationManager?
+    private func fetchPlaceCallback(placeID: String, place: GMSPlace?, error: Error?) {
+        if let error = error {
+            print("An error occurred: \(error.localizedDescription)")
+            return
+        }
+
+        if let place = place,
+           let photoMetadata: GMSPlacePhotoMetadata = place.photos?[0] {
+            // Get the metadata for the first photo in the place photo metadata list.
+
+            // Call loadPlacePhoto to display the bitmap and attribution.
+            if let client = placesClient {
+                client.loadPlacePhoto(photoMetadata) { photo, error -> Void in
+                    if let error = error {
+                        // TODO: Handle the error.
+                        print("Error loading photo metadata: \(error.localizedDescription)")
+                        return
+                    } else {
+                        // Display the first image and its attributions.
+                        let myPlace = Place(name: place.name ?? "",
+                                            address: place.formattedAddress ?? "",
+                                            image: photo ?? UIImage(),
+                                            attributions: photoMetadata.attributions ??
+                                                NSAttributedString(),
+                                            id: placeID)
+                        self.places.append(myPlace)
+                    }
+                }
+            }
+        }
+    }
 
     func checkIfLocationServicesIsEnabled() {
         if CLLocationManager.locationServicesEnabled() {

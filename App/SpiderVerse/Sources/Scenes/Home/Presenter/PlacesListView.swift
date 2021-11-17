@@ -27,8 +27,10 @@ struct PlacesListView: View {
     }
 }
 
-struct PlacesListView_Previews: PreviewProvider {
-    static var previews: some View {
-        PlacesListView(viewModel: PlacesListViewModel())
+#if DEBUG
+    struct PlacesListView_Previews: PreviewProvider {
+        static var previews: some View {
+            PlacesListView(viewModel: PlacesListViewModel())
+        }
     }
-}
+#endif
