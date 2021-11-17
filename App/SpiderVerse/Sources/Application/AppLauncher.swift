@@ -3,7 +3,7 @@ import SwiftUI
 @main
 enum AppLauncher {
     static func main() throws {
-        if NSClassFromString("XCTestCase") == nil {
+        if NSClassFromString("XCTest") == nil {
             Application.main()
         } else {
             TestApp.main()

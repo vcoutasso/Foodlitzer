@@ -5,15 +5,16 @@ struct Application: App {
 
     var body: some Scene {
         WindowGroup {
-            let usecase = SignInUseCase()
-            let viewModel = SignInViewModel(backendAuthService: usecase)
             let sessionService = SessionServiceUseCase()
 
             NavigationView {
                 switch sessionService.state {
                 case .loggedIn:
-                    ProfileView(viewModel: ProfileViewModel(sessionService: sessionService))
+                    let viewModel = ProfileViewModel(sessionService: sessionService)
+                    ProfileView(viewModel: viewModel)
                 case .loggedOut:
+                    let usecase = SignInUseCase()
+                    let viewModel = SignInViewModel(backendAuthService: usecase)
                     SignInView(viewModel: viewModel)
                 }
             }

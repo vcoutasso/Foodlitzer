@@ -7,9 +7,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil)
         -> Bool {
         // GooglePlaces configuration
-        guard let path = Bundle.main.path(forResource: "GooglePlaces-Info", ofType: "plist"),
-              let plistContent = NSDictionary(contentsOfFile: path),
-              let placesAPIKey = plistContent["API_KEY"] as? String else { return false }
+        guard let path = Bundle.main.path(forResource: Strings.GooglePlaces.infoFilename,
+                                          ofType: Strings.GooglePlaces.infoFileExtension),
+            let plistContent = NSDictionary(contentsOfFile: path),
+            let placesAPIKey = plistContent[Strings.GooglePlaces.apiKey] as? String else { return false }
 
         GMSPlacesClient.provideAPIKey(placesAPIKey)
 
