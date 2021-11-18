@@ -44,51 +44,33 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         passwordText == confirmPasswordText
     }
 
-    private var isEmailValid: Bool {
-        isValid(email: emailText)
-    }
+    private var isEmailValid: Bool
 
-    private var isPasswordValid: Bool {
-        isValid(password: passwordText)
-    }
+    private var isPasswordValid: Bool
 
     // MARK: - Dependencies
 
-    private let emailValidationService: ValidateEmailUseCaseProtocol
-    private let passwordValidationService: ValidatePasswordUseCaseProtocol
     private let authenticationService: AuthenticationServiceProtocol
 
     // MARK: - Object lifecycle
 
-    init(emailValidationService: ValidateEmailUseCaseProtocol,
-         passwordValidationService: ValidatePasswordUseCaseProtocol,
-         authenticationService: AuthenticationServiceProtocol) {
+    init(authenticationService: AuthenticationServiceProtocol) {
         self.nameText = ""
         self.emailText = ""
         self.passwordText = ""
         self.confirmPasswordText = ""
         self.invalidAttempt = false
+        self.isEmailValid = false
+        self.isPasswordValid = false
         self.authenticationService = authenticationService
-        self.emailValidationService = emailValidationService
-        self.passwordValidationService = passwordValidationService
-    }
-
-    // MARK: - Validation methods
-
-    func isValid(email: String) -> Bool {
-        emailValidationService.execute(using: email)
-    }
-
-    func isValid(password: String) -> Bool {
-        passwordValidationService.execute(using: password)
     }
 
     // MARK: - Account creation
 
     func handleRegisterButtonTapped() {
-        if isAttemptValid() {
-            invalidAttempt = false
+        resetFlags()
 
+        if isAttemptValid() {
             createAccount()
         } else {
             invalidAttempt = true
@@ -109,10 +91,32 @@ final class RegisterViewModel: RegisterViewModelProtocol {
             switch result {
             case .success:
                 self?.setUserDisplayName()
-            case .failure:
-                self?.invalidAttempt = true
+            case let .failure(error):
+                self?.updateFailureFlags(for: error)
             }
         }
+    }
+
+    private func resetFlags() {
+        invalidAttempt = false
+        isEmailValid = true
+        isPasswordValid = true
+    }
+
+    private func updateFailureFlags(for error: AuthenticationError) {
+        invalidAttempt = true
+
+        // TODO: Review if name can be flagged invalid as well
+        switch error {
+        case .invalidPassword:
+            isPasswordValid = false
+        case .invalidEmail:
+            isEmailValid = false
+        default:
+            break
+        }
+
+        objectWillChange.send()
     }
 
     private func setUserDisplayName() {
@@ -130,8 +134,6 @@ final class RegisterViewModel: RegisterViewModelProtocol {
 
 enum RegisterViewModelFactory {
     static func make() -> RegisterViewModel {
-        RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
-                          passwordValidationService: ValidatePasswordUseCase(),
-                          authenticationService: AuthenticationService())
+        RegisterViewModel(authenticationService: AuthenticationService())
     }
 }
