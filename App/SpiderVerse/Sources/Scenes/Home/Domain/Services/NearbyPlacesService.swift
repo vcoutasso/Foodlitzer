@@ -1,27 +1,5 @@
 import Foundation
 
-struct GooglePlace: Decodable, Identifiable {
-    let id: UUID = .init()
-    let placeID: String
-    let name: String
-    let rating: Float
-    let totalRatings: Int
-    let types: [String]
-    let vicinity: String
-    let priceLevel: Int
-
-    enum CodingKeys: String, CodingKey {
-        case placeID = "place_id"
-        case totalRatings = "user_ratings_total"
-        case priceLevel = "price_level"
-
-        case name
-        case rating
-        case types
-        case vicinity
-    }
-}
-
 protocol NearbyPlacesServiceProtocol {
     func getNearbyPlaces(latitude: String, longitude: String) async -> [GooglePlace]
 }

@@ -86,6 +86,7 @@ class GetRequestService<T>: GetRequestServiceProtocol where T: Decodable {
             }
 
             guard let decodedData = try? self.decoder.decode(T.self, from: data) else {
+                print(String(decoding: data, as: UTF8.self))
                 completion(.failure(.decodingError))
                 return
             }

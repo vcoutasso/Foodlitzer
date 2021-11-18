@@ -1,4 +1,3 @@
-import Combine
 import MapKit
 
 final class PlacesListViewModel: ObservableObject {
@@ -8,39 +7,34 @@ final class PlacesListViewModel: ObservableObject {
 
     // MARK: - Private properties
 
-    private var locationManager: CLLocationManager?
+    private var locationManager: CLLocationManager
     private var nearbyPlacesService: NearbyPlacesServiceProtocol
 
     // MARK: Object lifecycle
 
     init(nearbyPlacesService: NearbyPlacesServiceProtocol) {
+        self.locationManager = CLLocationManager()
         self.nearbyPlacesService = nearbyPlacesService
     }
 
     func handleButtonTapped() {
-        if isLocationServicesEnabled() {
+        if let coordinate = locationManager.location?.coordinate {
             Task(priority: .medium) { [weak self] in
-                self?.places = await nearbyPlacesService.getNearbyPlaces(latitude: "-25.4386042",
-                                                                         longitude: "-49.2688011")
-                print(self?.places)
+                self?.places = await nearbyPlacesService.getNearbyPlaces(latitude: "\(coordinate.latitude.description)",
+                                                                         longitude: "\(coordinate.longitude.description)")
             }
         }
     }
 
-    func isLocationServicesEnabled() -> Bool {
+    func checkIfLocationServicesAreEnabled() {
         if CLLocationManager.locationServicesEnabled() {
-            locationManager = CLLocationManager()
-            checkLocationAuthorization()
-            return true
+            checkLocationAuthorizationStatus()
         } else {
-            debugPrint("Localition services disabled")
-            return false
+            debugPrint("Location services disabled")
         }
     }
 
-    private func checkLocationAuthorization() {
-        guard let locationManager = locationManager else { return }
-
+    private func checkLocationAuthorizationStatus() {
         switch locationManager.authorizationStatus {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
@@ -49,7 +43,7 @@ final class PlacesListViewModel: ObservableObject {
         case .denied:
             debugPrint("Location authorization status denied")
         case .authorizedAlways, .authorizedWhenInUse:
-            break
+            locationManager.startUpdatingLocation()
         @unknown default:
             break
         }

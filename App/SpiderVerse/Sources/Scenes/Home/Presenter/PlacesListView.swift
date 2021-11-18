@@ -11,9 +11,9 @@ struct PlacesListView: View {
                 } label: {
                     Text("hello")
                 }
-                ForEach(viewModel.places) { place in
-                    Text(place.name)
-                    Text(place.vicinity)
+                ForEach(viewModel.places, id: \.self.placeID) { place in
+                    Text(place.name ?? "")
+                    Text(place.address ?? "")
 
                     // Image(uiImage: place.image)
                     //    .resizable()
@@ -22,7 +22,7 @@ struct PlacesListView: View {
                 }
 
             }.onAppear {
-                // viewModel.checkIfLocationServicesIsEnabled()
+                viewModel.checkIfLocationServicesAreEnabled()
             }
         }
     }
