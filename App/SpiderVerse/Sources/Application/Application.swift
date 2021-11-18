@@ -12,8 +12,10 @@ struct Application: App {
                     let viewModel = ProfileViewModel(authenticationService: authenticationService)
                     ProfileView(viewModel: viewModel)
                 } else {
-                    let viewModel = SignInViewModel(authenticationService: authenticationService)
-                    SignInView(viewModel: viewModel)
+                    // let viewModel = SignInViewModel(authenticationService: authenticationService)
+                    // SignInView(viewModel: viewModel)
+                    let viewModel = PlacesListViewModel(nearbyPlacesService: NearbyPlacesService())
+                    PlacesListView(viewModel: viewModel)
                 }
             }
         }

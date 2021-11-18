@@ -1,27 +1,28 @@
 import SwiftUI
 
 struct PlacesListView: View {
-    @ObservedObject var viewModel: PlacesListViewModel
+    @MainActor var viewModel: PlacesListViewModel
+
     var body: some View {
         ScrollView {
             VStack {
                 Button {
-                    viewModel.handleButtonTap()
+                    viewModel.handleButtonTapped()
                 } label: {
                     Text("hello")
                 }
                 ForEach(viewModel.places) { place in
                     Text(place.name)
-                    Text(place.address)
+                    Text(place.vicinity)
 
-                    Image(uiImage: place.image)
-                        .resizable()
-                        .frame(width: 120, height: 120, alignment: .center)
-                    Text(place.attributions.string)
+                    // Image(uiImage: place.image)
+                    //    .resizable()
+                    //    .frame(width: 120, height: 120, alignment: .center)
+                    // Text(place.attributions.string)
                 }
 
             }.onAppear {
-                viewModel.checkIfLocationServicesIsEnabled()
+                // viewModel.checkIfLocationServicesIsEnabled()
             }
         }
     }
@@ -30,7 +31,7 @@ struct PlacesListView: View {
 #if DEBUG
     struct PlacesListView_Previews: PreviewProvider {
         static var previews: some View {
-            PlacesListView(viewModel: PlacesListViewModel())
+            PlacesListView(viewModel: PlacesListViewModel(nearbyPlacesService: NearbyPlacesService()))
         }
     }
 #endif
