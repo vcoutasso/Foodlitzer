@@ -43,14 +43,16 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
 
     // MARK: - Private properties
 
-    private var authStateListener: AuthStateDidChangeListenerHandle?
-    private let defaultAuth = Auth.auth()
+    private lazy var authStateListener: AuthStateDidChangeListenerHandle = {
+        defaultAuth.addStateDidChangeListener { [weak self] _, user in
+            guard let self = self else { return }
 
-    // MARK: - Object lifecycle
-
-    init() {
-        registerStateListener()
-    }
+            if let user = user {
+                self.currentUser = user
+            }
+        }
+    }()
+    private lazy var defaultAuth = Auth.auth()
 
     // MARK: - Authentication methods
 
@@ -139,22 +141,6 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
             }
         } else {
             debugPrint("Error trying to reset password: User not signed in.")
-        }
-    }
-
-    // MARK: - Helper methods
-
-    private func registerStateListener() {
-        if let handle = authStateListener {
-            defaultAuth.removeStateDidChangeListener(handle)
-        }
-
-        authStateListener = defaultAuth.addStateDidChangeListener { [weak self] _, user in
-            guard let self = self else { return }
-
-            if let user = user {
-                self.currentUser = user
-            }
         }
     }
 
