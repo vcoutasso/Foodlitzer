@@ -3,10 +3,10 @@ import SwiftUI
 struct HeaderComponent: View {
     var body: some View {
         HStack {
-            NavigationLink {
+            Button {
                 // Destination Here
             } label: {
-                Image(systemName: Strings.Symbols.search)
+                Image(systemName: "magnifyingglass")
                     .font(.title3) // TODO: Change size
                     .foregroundColor(.black)
                     .padding()
@@ -19,7 +19,7 @@ struct HeaderComponent: View {
 
             Spacer()
 
-            NavigationLink {
+            Button {
                 // Destination Here
             } label: {
                 Image(systemName: "gear")

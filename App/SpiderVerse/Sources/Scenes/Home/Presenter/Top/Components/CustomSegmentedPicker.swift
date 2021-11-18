@@ -17,7 +17,7 @@ struct CustomSegmentedPicker: View {
             } label: {
                 VStack(spacing: 5) {
                     Text("Home")
-                        .font(.custom("SF Compact Medium", size: 17)) // Change font
+                        .font(.custom("SF Compact Medium", size: 14)) // Change font
                         .foregroundColor(atHome ? .black : .black.opacity(0.5))
                         .padding(.horizontal, 5)
 
@@ -42,7 +42,7 @@ struct CustomSegmentedPicker: View {
             } label: {
                 VStack(spacing: 5) {
                     Text("Restaurants")
-                        .font(.custom("SF Compact Medium", size: 17)) // Change font
+                        .font(.custom("SF Compact Medium", size: 14)) // Change font
                         .foregroundColor(atRestaurants ? .black : .black.opacity(0.5))
                         .padding(.horizontal, 5)
 
@@ -67,7 +67,7 @@ struct CustomSegmentedPicker: View {
             } label: {
                 VStack(spacing: 5) {
                     Text("Saved")
-                        .font(.custom("SF Compact Medium", size: 17)) // Change font
+                        .font(.custom("SF Compact Medium", size: 14)) // Change font
                         .foregroundColor(atSaved ? .black : .black.opacity(0.5))
                         .padding(.horizontal, 5)
 
@@ -81,7 +81,7 @@ struct CustomSegmentedPicker: View {
                 .fixedSize(horizontal: true, vertical: false)
             }
         }
-        .padding()
+        .padding(.horizontal, 50)
     }
 }
 
