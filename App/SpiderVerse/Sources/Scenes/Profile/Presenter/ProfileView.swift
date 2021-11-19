@@ -31,7 +31,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
 #if DEBUG
     struct ProfileView_Previews: PreviewProvider {
         static var previews: some View {
-            ProfileView(viewModel: ProfileViewModel(authenticationService: AuthenticationService()))
+            ProfileView(viewModel: ProfileViewModel(authenticationService: AuthenticationService.shared))
         }
     }
 #endif

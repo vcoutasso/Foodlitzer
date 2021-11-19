@@ -30,6 +30,6 @@ final class ForgotPasswordViewModel: ForgotPasswordViewModelProtocol {
 
 enum ForgotPasswordViewModelFactory {
     static func make() -> ForgotPasswordViewModel {
-        ForgotPasswordViewModel(authenticationService: AuthenticationService())
+        ForgotPasswordViewModel(authenticationService: AuthenticationService.shared)
     }
 }
