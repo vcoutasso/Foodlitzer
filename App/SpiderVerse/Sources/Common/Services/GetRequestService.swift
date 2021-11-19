@@ -64,6 +64,7 @@ class GetRequestService<T>: GetRequestServiceProtocol where T: Decodable {
 
     // MARK: - Helper methods
 
+    // TODO:
     private func fetchData(from request: URLRequest, completion: @escaping (Result<T, RequestError>) -> Void) {
         URLSession.shared.dataTask(with: request) { [weak self] data, urlResponse, error in
             guard let self = self else { return }

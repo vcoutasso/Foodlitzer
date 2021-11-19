@@ -1,27 +1,32 @@
 import MapKit
 
 final class PlacesListViewModel: ObservableObject {
-    // MARK: Published properties
-
-    @Published var places: [GooglePlace] = []
-
     // MARK: - Private properties
 
     private var locationManager: CLLocationManager
-    private var nearbyPlacesService: NearbyPlacesServiceProtocol
+    private var nearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol
 
     // MARK: Object lifecycle
 
-    init(nearbyPlacesService: NearbyPlacesServiceProtocol) {
+    init(nearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol) {
         self.locationManager = CLLocationManager()
-        self.nearbyPlacesService = nearbyPlacesService
+        self.nearbyRestaurantsUseCase = nearbyRestaurantsUseCase
     }
 
-    func handleButtonTapped() {
+    // MARK: - View events
+
+    func handleOnApper() {
+        checkIfLocationServicesAreEnabled()
+    }
+
+    func handleButtonTapped(completion: @escaping ([PlacesListView.Model]) -> Void) {
         if let coordinate = locationManager.location?.coordinate {
-            Task(priority: .medium) { [weak self] in
-                self?.places = await nearbyPlacesService.getNearbyPlaces(latitude: "\(coordinate.latitude.description)",
-                                                                         longitude: "\(coordinate.longitude.description)")
+            let latitude = coordinate.latitude.description
+            let longitude = coordinate.longitude.description
+
+            Task(priority: .medium) {
+                let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitude, longitude: longitude)
+                completion(restaurants.map { .init(name: $0.name, address: $0.address) })
             }
         }
     }
@@ -52,6 +57,11 @@ final class PlacesListViewModel: ObservableObject {
 
 enum PlacesListViewModelFactory {
     static func make() -> PlacesListViewModel {
-        PlacesListViewModel(nearbyPlacesService: NearbyPlacesService())
+        let remoteService = NearbyPlacesService()
+        let invalidTypes = ["lodging"]
+        let repository = NearbyRestaurantRepository(remoteService: remoteService, invalidTypes: invalidTypes)
+        let useCase = FetchNearbyRestaurantsUseCase(repository: repository)
+
+        return PlacesListViewModel(nearbyRestaurantsUseCase: useCase)
     }
 }

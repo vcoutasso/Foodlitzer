@@ -13,7 +13,8 @@ struct Application: App {
                     ProfileView(viewModel: viewModel)
                 } else {
                     let viewModel = SignInViewModel(authenticationService: authenticationService)
-                    SignInView(viewModel: viewModel)
+                    // SignInView(viewModel: viewModel)
+                    PlacesListView(viewModel: PlacesListViewModelFactory.make())
                 }
             }
         }
