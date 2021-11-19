@@ -38,7 +38,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             ForgotPasswordView(viewModel: ForgotPasswordViewModelFactory.make())
         }
         .sheet(isPresented: $viewModel.shouldPresentProfileView) {
-            ProfileView(viewModel: ProfileViewModelFactory.make())
+            ProfileView(viewModel: ProfileViewModelFactory.make(authenticationService: AuthenticationService.shared))
         }
     }
 
@@ -96,7 +96,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
 #if DEBUG
     struct SignInView_Previews: PreviewProvider {
         static var previews: some View {
-            SignInView(viewModel: SignInViewModel(authenticationService: AuthenticationService()))
+            SignInView(viewModel: SignInViewModel(authenticationService: AuthenticationService.shared))
         }
     }
 #endif

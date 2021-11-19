@@ -38,7 +38,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
 // MARK: - View Model Factory
 
 enum ProfileViewModelFactory {
-    static func make() -> ProfileViewModel {
-        ProfileViewModel(authenticationService: AuthenticationService())
+    static func make(authenticationService: AuthenticationServiceProtocol) -> ProfileViewModel {
+        ProfileViewModel(authenticationService: authenticationService)
     }
 }

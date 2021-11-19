@@ -134,6 +134,6 @@ final class RegisterViewModel: RegisterViewModelProtocol {
 
 enum RegisterViewModelFactory {
     static func make() -> RegisterViewModel {
-        RegisterViewModel(authenticationService: AuthenticationService())
+        RegisterViewModel(authenticationService: AuthenticationService.shared)
     }
 }

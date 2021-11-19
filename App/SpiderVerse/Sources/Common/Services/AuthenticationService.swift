@@ -29,6 +29,10 @@ enum AuthenticationError: Error {
 
 // TODO: Review if both currentUser and appUser are necessary (or even a good idea)
 final class AuthenticationService: AuthenticationServiceProtocol, ObservableObject {
+    // MARK: - Singleton
+
+    static let shared = AuthenticationService()
+
     // MARK: - Properties
 
     @Published var currentUser: User?
@@ -41,17 +45,15 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
         currentUser != nil
     }
 
+    // MARK: - Object lifecycle
+
+    private init() {
+        registerStateListener()
+    }
+
     // MARK: - Private properties
 
-    private lazy var authStateListener: AuthStateDidChangeListenerHandle = {
-        defaultAuth.addStateDidChangeListener { [weak self] _, user in
-            guard let self = self else { return }
-
-            if let user = user {
-                self.currentUser = user
-            }
-        }
-    }()
+    private var authStateListener: AuthStateDidChangeListenerHandle?
     private lazy var defaultAuth = Auth.auth()
 
     // MARK: - Authentication methods
@@ -141,6 +143,20 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
             }
         } else {
             debugPrint("Error trying to reset password: User not signed in.")
+        }
+    }
+
+    // MARK: - Helper methods
+
+    private func registerStateListener() {
+        if let handle = authStateListener {
+            defaultAuth.removeStateDidChangeListener(handle)
+        }
+
+        authStateListener = defaultAuth.addStateDidChangeListener { [weak self] _, user in
+            guard let self = self else { return }
+
+            self.currentUser = user
         }
     }
 
