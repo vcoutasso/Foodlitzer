@@ -1,56 +1,35 @@
-import MapKit
+import Foundation
 
 final class PlacesListViewModel: ObservableObject {
     // MARK: - Private properties
 
-    private var locationManager: CLLocationManager
+    private var userLocationUseCase: UserLocationUseCaseProtocol
     private var nearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol
 
     // MARK: Object lifecycle
 
-    init(nearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol) {
-        self.locationManager = CLLocationManager()
+    init(userLocationUseCase: UserLocationUseCaseProtocol,
+         nearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol) {
+        self.userLocationUseCase = userLocationUseCase
         self.nearbyRestaurantsUseCase = nearbyRestaurantsUseCase
     }
 
     // MARK: - View events
 
-    func handleOnApper() {
-        checkIfLocationServicesAreEnabled()
+    func handleOnAppear() {
+        userLocationUseCase.setup()
     }
 
     func handleButtonTapped(completion: @escaping ([PlacesListView.Model]) -> Void) {
-        if let coordinate = locationManager.location?.coordinate {
-            let latitude = coordinate.latitude.description
-            let longitude = coordinate.longitude.description
+        if let (latitude, longitude) = userLocationUseCase.execute() {
+            let latitudeDescription = latitude.description
+            let longitudeDescription = longitude.description
 
             Task(priority: .medium) {
-                let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitude, longitude: longitude)
+                let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitudeDescription,
+                                                                         longitude: longitudeDescription)
                 completion(restaurants.map { .init(name: $0.name, address: $0.address) })
             }
-        }
-    }
-
-    func checkIfLocationServicesAreEnabled() {
-        if CLLocationManager.locationServicesEnabled() {
-            checkLocationAuthorizationStatus()
-        } else {
-            debugPrint("Location services disabled")
-        }
-    }
-
-    private func checkLocationAuthorizationStatus() {
-        switch locationManager.authorizationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted:
-            debugPrint("Location authorization status restricted")
-        case .denied:
-            debugPrint("Location authorization status denied")
-        case .authorizedAlways, .authorizedWhenInUse:
-            locationManager.startUpdatingLocation()
-        @unknown default:
-            break
         }
     }
 }
@@ -60,8 +39,10 @@ enum PlacesListViewModelFactory {
         let remoteService = NearbyPlacesService()
         let invalidTypes = ["lodging"]
         let repository = NearbyRestaurantRepository(remoteService: remoteService, invalidTypes: invalidTypes)
-        let useCase = FetchNearbyRestaurantsUseCase(repository: repository)
+        let userLocationUseCase = UserLocationUseCase()
+        let nearbyRestaurantsUseCase = FetchNearbyRestaurantsUseCase(repository: repository)
 
-        return PlacesListViewModel(nearbyRestaurantsUseCase: useCase)
+        return PlacesListViewModel(userLocationUseCase: userLocationUseCase,
+                                   nearbyRestaurantsUseCase: nearbyRestaurantsUseCase)
     }
 }

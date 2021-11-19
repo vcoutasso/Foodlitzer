@@ -26,7 +26,7 @@ struct PlacesListView: View {
                 }
 
             }.onAppear {
-                viewModel.handleOnApper()
+                viewModel.handleOnAppear()
             }
         }
     }
