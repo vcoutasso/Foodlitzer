@@ -7,3 +7,10 @@
 "symbols.edit" = "pencil";
 "symbols.search" = "magnifyingglass";
 
+"tab.home" = "Home";
+"tab.restaurants" = "Restaurants";
+"tab.saved" = "Saved";
+
+"animation.segmentedPicker" = "Shape";
+
+"app.name" = "foodlitzer"

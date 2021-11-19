@@ -1,92 +1,115 @@
 import SwiftUI
 
 struct CustomSegmentedPicker: View {
+    // MARK: - State Atributes
+
     @State private var atHome = true
     @State private var atRestaurants = false
     @State private var atSaved = false
+
+    // MARK: - Animation Atribute
+
     @Namespace private var animation
+
+    // MARK: - Private Layout Metrics:
+
+    private var segmentedPadding: CGFloat = 5
+
+    // MARK: - View
 
     var body: some View {
         HStack(alignment: .top) {
-            Button {
-                withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.8)) {
-                    atHome = true
-                    atRestaurants = false
-                    atSaved = false
-                }
-            } label: {
-                VStack(spacing: 5) {
-                    Text("Home")
-                        .font(.custom("SF Compact Medium", size: 14)) // Change font
-                        .foregroundColor(atHome ? .black : .black.opacity(0.5))
-                        .padding(.horizontal, 5)
-
-                    if atHome {
-                        Rectangle()
-                            .frame(height: 4)
-                            .foregroundColor(.black)
-                            .matchedGeometryEffect(id: "Shape", in: animation)
-                    }
-                }
-                .fixedSize(horizontal: true, vertical: false)
-            }
+            homeTab
 
             Spacer()
 
-            Button {
-                withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.8)) {
-                    atHome = false
-                    atRestaurants = true
-                    atSaved = false
-                }
-            } label: {
-                VStack(spacing: 5) {
-                    Text("Restaurants")
-                        .font(.custom("SF Compact Medium", size: 14)) // Change font
-                        .foregroundColor(atRestaurants ? .black : .black.opacity(0.5))
-                        .padding(.horizontal, 5)
-
-                    if atRestaurants {
-                        Rectangle()
-                            .frame(height: 4)
-                            .foregroundColor(.black)
-                            .matchedGeometryEffect(id: "Shape", in: animation)
-                    }
-                }
-                .fixedSize(horizontal: true, vertical: false)
-            }
+            restaurantsTab
 
             Spacer()
 
-            Button {
-                withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.8)) {
-                    atHome = false
-                    atRestaurants = false
-                    atSaved = true
-                }
-            } label: {
-                VStack(spacing: 5) {
-                    Text("Saved")
-                        .font(.custom("SF Compact Medium", size: 14)) // Change font
-                        .foregroundColor(atSaved ? .black : .black.opacity(0.5))
-                        .padding(.horizontal, 5)
-
-                    if atSaved {
-                        Rectangle()
-                            .frame(height: 4)
-                            .foregroundColor(.black)
-                            .matchedGeometryEffect(id: "Shape", in: animation)
-                    }
-                }
-                .fixedSize(horizontal: true, vertical: false)
-            }
+            savedTab
         }
         .padding(.horizontal, 50)
     }
-}
 
-struct CustomSegmentedPickerView_Previews: PreviewProvider {
-    static var previews: some View {
-        CustomSegmentedPicker()
+    // MARK: - Extracted Views
+
+    private var homeTab: some View {
+        Button {
+            setCurrentTabTo(.home)
+        } label: {
+            VStack(spacing: segmentedPadding) {
+                Text(Strings.Tab.home)
+                    .compactMedium14()
+                    .foregroundColor(atHome ? .black : .black.opacity(0.5))
+                    .padding(.horizontal, segmentedPadding)
+
+                if atHome { animateSegmentedBar }
+            }
+            .fixedSize(horizontal: true, vertical: false)
+        }
+    }
+
+    private var restaurantsTab: some View {
+        Button {
+            setCurrentTabTo(.restaurant)
+        } label: {
+            VStack(spacing: segmentedPadding) {
+                Text(Strings.Tab.restaurants)
+                    .compactMedium14()
+                    .foregroundColor(atRestaurants ? .black : .black.opacity(0.5))
+                    .padding(.horizontal, segmentedPadding)
+
+                if atRestaurants { animateSegmentedBar }
+            }
+            .fixedSize(horizontal: true, vertical: false)
+        }
+    }
+
+    private var savedTab: some View {
+        Button {
+            setCurrentTabTo(.saved)
+        } label: {
+            VStack(spacing: segmentedPadding) {
+                Text(Strings.Tab.saved)
+                    .compactMedium14()
+                    .foregroundColor(atSaved ? .black : .black.opacity(0.5))
+                    .padding(.horizontal, segmentedPadding)
+
+                if atSaved { animateSegmentedBar }
+            }
+            .fixedSize(horizontal: true, vertical: false)
+        }
+    }
+
+    // MARK: - Component
+
+    private var animateSegmentedBar: some View {
+        Rectangle()
+            .segmentedPickerBarStyle()
+            .matchedGeometryEffect(id: Strings.Animation.segmentedPicker, in: animation)
+    }
+
+    // MARK: - Method:
+
+    func setCurrentTabTo(_ button: Tab) {
+        withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.8)) {
+            switch button {
+            case .home:
+                atHome = true
+                atRestaurants = false
+                atSaved = false
+
+            case .restaurant:
+                atHome = false
+                atRestaurants = true
+                atSaved = false
+
+            case .saved:
+                atHome = false
+                atRestaurants = false
+                atSaved = true
+            }
+        }
     }
 }

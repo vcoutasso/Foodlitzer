@@ -6,7 +6,7 @@ struct HeaderComponent: View {
             Button {
                 // Destination Here
             } label: {
-                Image(systemName: "magnifyingglass")
+                Image(systemName: Strings.Symbols.search)
                     .font(.title3) // TODO: Change size
                     .foregroundColor(.black)
                     .padding()
@@ -22,17 +22,11 @@ struct HeaderComponent: View {
             Button {
                 // Destination Here
             } label: {
-                Image(systemName: "gear")
+                Image(systemName: Strings.Symbols.settings)
                     .font(.title3) // TODO: Change size
                     .foregroundColor(.black)
                     .padding()
             }
         }
-    }
-}
-
-struct HeaderComponentView_Previews: PreviewProvider {
-    static var previews: some View {
-        HeaderComponent()
     }
 }
