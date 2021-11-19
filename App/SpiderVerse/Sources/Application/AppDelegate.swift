@@ -10,7 +10,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         guard let path = Bundle.main.path(forResource: Strings.GooglePlaces.infoFilename,
                                           ofType: Strings.GooglePlaces.infoFileExtension),
             let plistContent = NSDictionary(contentsOfFile: path),
-            let placesAPIKey = plistContent[Strings.GooglePlaces.apiKey] as? String else { return false }
+            let placesAPIKey = plistContent[Strings.GooglePlaces.apiKey] as? String
+        else {
+            fatalError("Could not find Google Places API Key")
+            return false
+        }
 
         GMSPlacesClient.provideAPIKey(placesAPIKey)
 
