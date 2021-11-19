@@ -14,6 +14,7 @@ struct Application: App {
                 } else {
                     let viewModel = SignInViewModel(authenticationService: authenticationService)
                     SignInView(viewModel: viewModel)
+                    // PlacesListView(viewModel: PlacesListViewModelFactory.make())
                 }
             }
         }

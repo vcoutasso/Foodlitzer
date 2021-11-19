@@ -1,39 +1,46 @@
 import Foundation
 
 protocol NearbyPlacesServiceProtocol {
-    func getNearbyPlaces(latitude: String, longitude: String) async -> [GooglePlace]
+    func fetchNearbyPlaces(latitude: String, longitude: String) async -> [GooglePlaceDTO]
 }
 
-final class NearbyPlacesService: GetRequestService<RequestResponse<GooglePlace>>, NearbyPlacesServiceProtocol {
+// TODO: Composition over inheritance
+final class NearbyPlacesService: GetRequestService<RequestResponse<GooglePlaceDTO>>, NearbyPlacesServiceProtocol {
     // MARK: - Properties
 
-    static let placesURL: String = #"https://maps.googleapis.com/maps/api/place/nearbysearch/json?"#
+    static let placesLink: String = #"https://maps.googleapis.com/maps/api/place/nearbysearch/json?"#
 
     var apiKey: String!
 
     // MARK: - Constants
 
-    private let nearbyRadius: Int = 5000
-    private let placeType: String = "restaurant"
+    private let nearbyRadius: Int
+    private let placeType: String
 
     // MARK: - Object lifecycle
 
-    convenience init() {
-        self.init(from: NearbyPlacesService.placesURL, with: JSONDecoder())!
+    convenience init(for type: String = "restaurant",
+                     within radius: Int = 5000,
+                     with decoder: JSONDecoding = JSONDecoder()) {
+        self.init(from: NearbyPlacesService.placesLink, for: type, within: radius, with: decoder)!
         retrieveAPIKey()
     }
 
-    private override init(from baseURL: URL, with decoder: JSONDecoding) {
+    private init(from baseURL: URL, for type: String, within radius: Int, with decoder: JSONDecoding) {
+        self.placeType = type
+        self.nearbyRadius = radius
         super.init(from: baseURL, with: decoder)
     }
 
-    private override init?(from link: String, with decoder: JSONDecoding) {
+    private init?(from link: String, for type: String, within radius: Int, with decoder: JSONDecoding) {
+        self.placeType = type
+        self.nearbyRadius = radius
         super.init(from: link, with: decoder)
     }
 
     // MARK: - Public methods
 
-    func getNearbyPlaces(latitude: String, longitude: String) async -> [GooglePlace] {
+    func fetchNearbyPlaces(latitude: String, longitude: String) async -> [GooglePlaceDTO] {
         addQueryItem(name: "location", value: "\(latitude),\(longitude)")
         addQueryItem(name: "radius", value: String(nearbyRadius))
         addQueryItem(name: "type", value: placeType)
