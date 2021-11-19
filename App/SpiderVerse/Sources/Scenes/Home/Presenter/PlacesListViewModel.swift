@@ -1,57 +1,48 @@
-import MapKit
+import Foundation
 
 final class PlacesListViewModel: ObservableObject {
-    // MARK: Published properties
-
-    @Published var places: [GooglePlace] = []
-
     // MARK: - Private properties
 
-    private var locationManager: CLLocationManager
-    private var nearbyPlacesService: NearbyPlacesServiceProtocol
+    private var userLocationUseCase: UserLocationUseCaseProtocol
+    private var nearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol
 
     // MARK: Object lifecycle
 
-    init(nearbyPlacesService: NearbyPlacesServiceProtocol) {
-        self.locationManager = CLLocationManager()
-        self.nearbyPlacesService = nearbyPlacesService
+    init(userLocationUseCase: UserLocationUseCaseProtocol,
+         nearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol) {
+        self.userLocationUseCase = userLocationUseCase
+        self.nearbyRestaurantsUseCase = nearbyRestaurantsUseCase
     }
 
-    func handleButtonTapped() {
-        if let coordinate = locationManager.location?.coordinate {
-            Task(priority: .medium) { [weak self] in
-                self?.places = await nearbyPlacesService.getNearbyPlaces(latitude: "\(coordinate.latitude.description)",
-                                                                         longitude: "\(coordinate.longitude.description)")
+    // MARK: - View events
+
+    func handleOnAppear() {
+        userLocationUseCase.setup()
+    }
+
+    func handleButtonTapped(completion: @escaping ([PlacesListView.Model]) -> Void) {
+        if let (latitude, longitude) = userLocationUseCase.execute() {
+            let latitudeDescription = latitude.description
+            let longitudeDescription = longitude.description
+
+            Task(priority: .medium) {
+                let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitudeDescription,
+                                                                         longitude: longitudeDescription)
+                completion(restaurants.map { .init(name: $0.name, address: $0.address) })
             }
-        }
-    }
-
-    func checkIfLocationServicesAreEnabled() {
-        if CLLocationManager.locationServicesEnabled() {
-            checkLocationAuthorizationStatus()
-        } else {
-            debugPrint("Location services disabled")
-        }
-    }
-
-    private func checkLocationAuthorizationStatus() {
-        switch locationManager.authorizationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted:
-            debugPrint("Location authorization status restricted")
-        case .denied:
-            debugPrint("Location authorization status denied")
-        case .authorizedAlways, .authorizedWhenInUse:
-            locationManager.startUpdatingLocation()
-        @unknown default:
-            break
         }
     }
 }
 
 enum PlacesListViewModelFactory {
     static func make() -> PlacesListViewModel {
-        PlacesListViewModel(nearbyPlacesService: NearbyPlacesService())
+        let remoteService = NearbyPlacesService()
+        let invalidTypes = ["lodging"]
+        let repository = NearbyRestaurantRepository(remoteService: remoteService, invalidTypes: invalidTypes)
+        let userLocationUseCase = UserLocationUseCase()
+        let nearbyRestaurantsUseCase = FetchNearbyRestaurantsUseCase(repository: repository)
+
+        return PlacesListViewModel(userLocationUseCase: userLocationUseCase,
+                                   nearbyRestaurantsUseCase: nearbyRestaurantsUseCase)
     }
 }

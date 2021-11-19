@@ -1,4 +1,4 @@
-struct GooglePlace: Decodable {
+struct GooglePlaceDTO: Decodable {
     let placeID: String?
     let name: String?
     let rating: Float?
