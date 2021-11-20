@@ -8,6 +8,8 @@ struct Application: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
+                TopHomeView()
+
                 if authenticationService.isUserSignedIn {
                     let viewModel = ProfileViewModel(authenticationService: authenticationService)
                     ProfileView(viewModel: viewModel)

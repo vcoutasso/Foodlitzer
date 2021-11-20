@@ -2,6 +2,28 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Lora-Bold.ttf</string>
+		<string>Lora-BoldItalic.ttf</string>
+		<string>Lora-Italic.ttf</string>
+		<string>Lora-Medium.ttf</string>
+		<string>Lora-MediumItalic.ttf</string>
+		<string>Lora-Regular.ttf</string>
+		<string>Lora-SemiBold.ttf</string>
+		<string>Lora-SemiBoldItalic.ttf</string>
+		<string>SF-Compact-Text-Bold.otf</string>
+		<string>SF-Compact-Text-BoldItalic.otf</string>
+		<string>SF-Compact-Text-LightItalic.otf</string>
+		<string>SF-Compact-Text-Medium.otf</string>
+		<string>SF-Compact-Text-MediumItalic.otf</string>
+		<string>SF-Compact-Text-RegularItalic.otf</string>
+		<string>SF-Compact-Text-SemiboldItalic.otf</string>
+		<string>SF-Compact-Text-Semibold.otf</string>
+		<string>SF-Compact-Text-Ultralight.otf</string>
+		<string>SF-Compact-Text-Light.otf</string>
+		<string>SF-Compact-Text-Regular.otf</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -49,17 +71,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Lora-Bold.ttf</string>
-		<string>Lora-BoldItalic.ttf</string>
-		<string>Lora-Italic.ttf</string>
-		<string>Lora-Medium.ttf</string>
-		<string>Lora-MediumItalic.ttf</string>
-		<string>Lora-Regular.ttf</string>
-		<string>Lora-SemiBold.ttf</string>
-		<string>Lora-SemiBoldItalic.ttf</string>
 	</array>
 </dict>
 </plist>
