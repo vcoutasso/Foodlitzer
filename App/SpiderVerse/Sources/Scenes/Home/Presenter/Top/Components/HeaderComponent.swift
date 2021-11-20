@@ -15,7 +15,7 @@ struct HeaderComponent: View {
             Spacer()
 
             Text("foodlitzer")
-                .font(Font.custom("Lora", size: 17)) // TODO: Font here
+                .font(.lora(.regular, size: 17))
 
             Spacer()
 

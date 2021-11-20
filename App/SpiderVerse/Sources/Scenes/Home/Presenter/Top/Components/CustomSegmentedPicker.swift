@@ -40,7 +40,7 @@ struct CustomSegmentedPicker: View {
         } label: {
             VStack(spacing: segmentedPadding) {
                 Text(Strings.Tab.home)
-                    .compactMedium14()
+                    .font(.compact(atHome ? .regular : .light, size: 14))
                     .foregroundColor(atHome ? .black : .black.opacity(0.5))
                     .padding(.horizontal, segmentedPadding)
 
@@ -56,7 +56,7 @@ struct CustomSegmentedPicker: View {
         } label: {
             VStack(spacing: segmentedPadding) {
                 Text(Strings.Tab.restaurants)
-                    .compactMedium14()
+                    .font(.compact(atRestaurants ? .regular : .light, size: 14))
                     .foregroundColor(atRestaurants ? .black : .black.opacity(0.5))
                     .padding(.horizontal, segmentedPadding)
 
@@ -72,7 +72,7 @@ struct CustomSegmentedPicker: View {
         } label: {
             VStack(spacing: segmentedPadding) {
                 Text(Strings.Tab.saved)
-                    .compactMedium14()
+                    .font(.compact(atSaved ? .regular : .light, size: 14))
                     .foregroundColor(atSaved ? .black : .black.opacity(0.5))
                     .padding(.horizontal, segmentedPadding)
 

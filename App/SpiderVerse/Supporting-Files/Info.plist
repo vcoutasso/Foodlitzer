@@ -12,6 +12,17 @@
 		<string>Lora-Regular.ttf</string>
 		<string>Lora-SemiBold.ttf</string>
 		<string>Lora-SemiBoldItalic.ttf</string>
+		<string>SF-Compact-Text-Bold.otf</string>
+		<string>SF-Compact-Text-BoldItalic.otf</string>
+		<string>SF-Compact-Text-LightItalic.otf</string>
+		<string>SF-Compact-Text-Medium.otf</string>
+		<string>SF-Compact-Text-MediumItalic.otf</string>
+		<string>SF-Compact-Text-RegularItalic.otf</string>
+		<string>SF-Compact-Text-SemiboldItalic.otf</string>
+		<string>SF-Compact-Text-Semibold.otf</string>
+		<string>SF-Compact-Text-Ultralight.otf</string>
+		<string>SF-Compact-Text-Light.otf</string>
+		<string>SF-Compact-Text-Regular.otf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

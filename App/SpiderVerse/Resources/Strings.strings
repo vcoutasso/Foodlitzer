@@ -13,4 +13,29 @@
 
 "animation.segmentedPicker" = "Shape";
 
-"app.name" = "foodlitzer"
+"app.name" = "foodlitzer";
+
+"font.compactRegular" = "SFCompactText-Regular";
+"font.compactItalic" = "SFCompactText-Italic";
+"font.compactUltralight" = "SFCompactText-Ultralight";
+"font.compactLight" = "SFCompactText-Light";
+"font.compactLightItalic" = "SFCompactText-LightItalic";
+"font.compactMedium" = "SFCompactText-Medium";
+"font.compactMediumItalic" = "SFCompactText-MediumItalic";
+"font.compactSemibold" = "SFCompactText-Semibold";
+"font.compactSemiboldItalic" = "SFCompactText-SemiboldItalic";
+"font.compactBold" = "SFCompactText-Bold";
+"font.compactBoldItalic" = "SFCompactText-BoldItalic";
+
+"font.loraRegular" = "Lora-Regular";
+"font.loraItalic" = "Lora-Italic";
+"font.loraMedium" = "Lora-Medium";
+"font.loraMediumItalic" = "Lora-MediumItalic";
+"font.loraSemiBold" = "Lora-SemiBold";
+"font.loraSemiboldItalic" = "Lora-SemiBoldItalic";
+"font.loraBold" = "Lora-Bold";
+"font.loraBoldItalic" = "Lora-BoldItalic";
+
+
+
+
