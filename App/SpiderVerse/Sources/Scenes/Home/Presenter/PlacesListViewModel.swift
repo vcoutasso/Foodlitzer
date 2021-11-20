@@ -1,114 +1,48 @@
-import Combine
-import GooglePlaces
-import MapKit
+import Foundation
 
-struct Place: Identifiable {
-    var name: String
-    var address: String
-    var image: UIImage
-    var attributions: NSAttributedString
-    var id: String
+final class PlacesListViewModel: ObservableObject {
+    // MARK: - Private properties
+
+    private var userLocationUseCase: UserLocationUseCaseProtocol
+    private var nearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol
+
+    // MARK: Object lifecycle
+
+    init(userLocationUseCase: UserLocationUseCaseProtocol,
+         nearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol) {
+        self.userLocationUseCase = userLocationUseCase
+        self.nearbyRestaurantsUseCase = nearbyRestaurantsUseCase
+    }
+
+    // MARK: - View events
+
+    func handleOnAppear() {
+        userLocationUseCase.setup()
+    }
+
+    func handleButtonTapped(completion: @escaping ([PlacesListView.Model]) -> Void) {
+        if let (latitude, longitude) = userLocationUseCase.execute() {
+            let latitudeDescription = latitude.description
+            let longitudeDescription = longitude.description
+
+            Task(priority: .medium) {
+                let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitudeDescription,
+                                                                         longitude: longitudeDescription)
+                completion(restaurants.map { .init(name: $0.name, address: $0.address) })
+            }
+        }
+    }
 }
 
-class PlacesListViewModel: ObservableObject {
-    @Published var places: [Place] = []
+enum PlacesListViewModelFactory {
+    static func make() -> PlacesListViewModel {
+        let remoteService = NearbyPlacesService()
+        let invalidTypes = ["lodging"]
+        let repository = NearbyRestaurantRepository(remoteService: remoteService, invalidTypes: invalidTypes)
+        let userLocationUseCase = UserLocationUseCase()
+        let nearbyRestaurantsUseCase = FetchNearbyRestaurantsUseCase(repository: repository)
 
-    private var placesClient: GMSPlacesClient!
-    private var locationManager: CLLocationManager?
-
-    init() {
-        self.placesClient = GMSPlacesClient.shared()
-    }
-
-    func handleButtonTap() {
-        let placeFields: GMSPlaceField = [.name, .formattedAddress, .placeID]
-
-        placesClient
-            .findPlaceLikelihoodsFromCurrentLocation(withPlaceFields: placeFields) { [weak self] placeLikelihoodList, error in
-                guard let strongSelf = self else { return }
-
-                if let error = error {
-                    print("Current place error: \(error.localizedDescription)")
-                    return
-                }
-
-                defer {
-                    strongSelf.objectWillChange.send()
-                }
-
-                if let placeLikelihoodList = placeLikelihoodList {
-                    for likelihood in placeLikelihoodList {
-                        let place = likelihood.place
-                        let placeID = place.placeID ?? "Lugar"
-
-                        let fields = GMSPlaceField(rawValue: UInt(GMSPlaceField.photos.rawValue))
-
-                        strongSelf.placesClient?.fetchPlace(fromPlaceID: placeID,
-                                                            placeFields: fields,
-                                                            sessionToken: nil) { [placeID] place, error in
-                            strongSelf.fetchPlaceCallback(placeID: placeID, place: place, error: error)
-                        }
-                    }
-                }
-            }
-    }
-
-    private func fetchPlaceCallback(placeID: String, place: GMSPlace?, error: Error?) {
-        if let error = error {
-            print("An error occurred: \(error.localizedDescription)")
-            return
-        }
-
-        if let place = place,
-           let photoMetadata: GMSPlacePhotoMetadata = place.photos?[0] {
-            // Get the metadata for the first photo in the place photo metadata list.
-
-            // Call loadPlacePhoto to display the bitmap and attribution.
-            if let client = placesClient {
-                client.loadPlacePhoto(photoMetadata) { photo, error -> Void in
-                    if let error = error {
-                        // TODO: Handle the error.
-                        print("Error loading photo metadata: \(error.localizedDescription)")
-                        return
-                    } else {
-                        // Display the first image and its attributions.
-                        let myPlace = Place(name: place.name ?? "",
-                                            address: place.formattedAddress ?? "",
-                                            image: photo ?? UIImage(),
-                                            attributions: photoMetadata.attributions ??
-                                                NSAttributedString(),
-                                            id: placeID)
-                        self.places.append(myPlace)
-                    }
-                }
-            }
-        }
-    }
-
-    func checkIfLocationServicesIsEnabled() {
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager = CLLocationManager()
-            checkLocationAuthorization()
-        } else {
-            print("alert")
-        }
-    }
-
-    private func checkLocationAuthorization() {
-        guard let locationManager = locationManager else {
-            return
-        }
-        switch locationManager.authorizationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted:
-            print("alert")
-        case .denied:
-            print("alert")
-        case .authorizedAlways, .authorizedWhenInUse:
-            break
-        @unknown default:
-            break
-        }
+        return PlacesListViewModel(userLocationUseCase: userLocationUseCase,
+                                   nearbyRestaurantsUseCase: nearbyRestaurantsUseCase)
     }
 }

@@ -4,6 +4,7 @@ protocol ValidateEmailUseCaseProtocol {
     func execute(using email: String) -> Bool
 }
 
+@available(*, deprecated, message: "Validate with Firebase instead")
 final class ValidateEmailUseCase: ValidateEmailUseCaseProtocol & RegExValidationProtocol {
     // MARK: - Private attributes
 

@@ -74,11 +74,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
 #if DEBUG
     struct RegisterView_Previews: PreviewProvider {
         static var previews: some View {
-            let emailValidator = ValidateEmailUseCase()
-            let passwordValidator = ValidatePasswordUseCase()
-            RegisterView(viewModel: RegisterViewModel(emailValidationService: emailValidator,
-                                                      passwordValidationService: passwordValidator,
-                                                      authenticationService: AuthenticationService()))
+            RegisterView(viewModel: RegisterViewModelFactory.make())
         }
     }
 #endif

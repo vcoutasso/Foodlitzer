@@ -4,6 +4,7 @@ protocol ValidatePasswordUseCaseProtocol {
     func execute(using password: String) -> Bool
 }
 
+@available(*, deprecated, message: "Validate with Firebase instead")
 final class ValidatePasswordUseCase: ValidatePasswordUseCaseProtocol & RegExValidationProtocol {
     // MARK: - Private attributes
 
