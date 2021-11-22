@@ -7,6 +7,8 @@ struct GooglePlaceDTO: Decodable {
     let address: String?
     let priceLevel: Int?
 
+    // MARK: - Inner types
+
     enum CodingKeys: String, CodingKey {
         case placeID = "place_id"
         case totalRatings = "user_ratings_total"

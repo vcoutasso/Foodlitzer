@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 final class PlacesListViewModel: ObservableObject {
     // MARK: - Private properties
@@ -25,10 +26,13 @@ final class PlacesListViewModel: ObservableObject {
             let latitudeDescription = latitude.description
             let longitudeDescription = longitude.description
 
-            Task(priority: .medium) {
+            Task {
                 let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitudeDescription,
                                                                          longitude: longitudeDescription)
-                completion(restaurants.map { .init(name: $0.name, address: $0.address) })
+                completion(restaurants.map { .init(id: $0.id,
+                                                   name: $0.name,
+                                                   address: $0.address,
+                                                   images: $0.images.map { Image(uiImage: $0) }) })
             }
         }
     }
@@ -36,9 +40,12 @@ final class PlacesListViewModel: ObservableObject {
 
 enum PlacesListViewModelFactory {
     static func make() -> PlacesListViewModel {
+        let photosService = PlacePhotosService()
         let remoteService = NearbyPlacesService()
         let invalidTypes = ["lodging"]
-        let repository = NearbyRestaurantRepository(remoteService: remoteService, invalidTypes: invalidTypes)
+        let repository = NearbyRestaurantRepository(photosService: photosService,
+                                                    remoteService: remoteService,
+                                                    invalidTypes: invalidTypes)
         let userLocationUseCase = UserLocationUseCase()
         let nearbyRestaurantsUseCase = FetchNearbyRestaurantsUseCase(repository: repository)
 

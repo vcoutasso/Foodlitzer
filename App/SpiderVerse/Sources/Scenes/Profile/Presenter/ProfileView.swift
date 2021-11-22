@@ -15,7 +15,6 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
                 .padding()
 
             Button {
-                // TODO: This should take the user back to the login screen
                 viewModel.signOut()
             } label: {
                 Text("Logout")

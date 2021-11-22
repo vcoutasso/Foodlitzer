@@ -85,15 +85,18 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         isEmailValid && isPasswordValid && passwordsMatch
     }
 
-    // TODO: Improve validation handling
     private func createAccount() {
-        authenticationService.createAccount(withEmail: emailText, password: passwordText) { [weak self] result in
+        authenticationService.createAccount(with: nameText,
+                                            email: emailText,
+                                            password: passwordText) { [weak self] result in
             switch result {
-            case .success:
-                self?.setUserDisplayName()
+            case let .success(user):
+                debugPrint("User logged in with name: '\(user!.name))' and email: '\(user!.email)'")
             case let .failure(error):
                 self?.updateFailureFlags(for: error)
             }
+
+            self?.objectWillChange.send()
         }
     }
 
@@ -117,16 +120,6 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         }
 
         objectWillChange.send()
-    }
-
-    private func setUserDisplayName() {
-        authenticationService.updateDisplayName(with: nameText) { [weak self] error in
-            if error == nil {
-                // TODO: Go to home
-            } else {
-                self?.invalidAttempt = true
-            }
-        }
     }
 }
 

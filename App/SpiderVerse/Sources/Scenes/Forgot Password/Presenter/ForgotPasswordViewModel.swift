@@ -20,7 +20,6 @@ final class ForgotPasswordViewModel: ForgotPasswordViewModelProtocol {
         self.authenticationService = authenticationService
     }
 
-    // TODO: Properly test this functionality
     func sendPasswordReset() {
         authenticationService.resetPassword()
     }

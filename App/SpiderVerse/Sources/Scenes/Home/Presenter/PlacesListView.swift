@@ -19,10 +19,9 @@ struct PlacesListView: View {
                 ForEach(restaurants) { place in
                     Text(place.name)
                     Text(place.address)
-                    // Image(uiImage: place.image)
-                    //    .resizable()
-                    //    .frame(width: 120, height: 120, alignment: .center)
-                    // Text(place.attributions.string)
+                    place.images[0]
+                        .resizable()
+                        .frame(width: 120, height: 120, alignment: .center)
                 }
 
             }.onAppear {
@@ -34,9 +33,10 @@ struct PlacesListView: View {
     // MARK: - Inner types
 
     struct Model: Identifiable {
-        let id = UUID()
+        let id: String
         let name: String
         let address: String
+        let images: [Image]
     }
 }
 

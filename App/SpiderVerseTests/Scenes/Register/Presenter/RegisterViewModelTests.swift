@@ -18,11 +18,10 @@ final class RegisterViewModelTests: XCTestCase {
                     password: String,
                     completion: @escaping (AuthenticationResult) -> Void) {}
 
-        func createAccount(withEmail email: String,
+        func createAccount(with name: String,
+                           email: String,
                            password: String,
                            completion: @escaping (AuthenticationResult) -> Void) {}
-
-        func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {}
 
         func signOut() {}
 
