@@ -6,6 +6,7 @@
 "symbols.settings" = "gear";
 "symbols.edit" = "pencil";
 "symbols.search" = "magnifyingglass";
+"symbols.xmark" = "xmark";
 
 "tab.home" = "Home";
 "tab.restaurants" = "Restaurants";

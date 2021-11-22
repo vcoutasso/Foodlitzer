@@ -1,67 +1,70 @@
 import SwiftUI
 
 struct SearchBar: View {
+    // MARK: - Binding Atributes
+
     @Binding var query: String
     @Binding var showCancelButton: Bool
 
+    // MARK: - View
+
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Buscar Competição", text: $query, onEditingChanged: { _ in
-                    withAnimation {
-                        self.showCancelButton = true
-                    }
-                })
-                .keyboardType(.default)
-                .padding(.leading, 40)
-                .padding(.trailing, 35)
-                .font(.system(size: 14, weight: .regular, design: .default))
-                .frame(height: 35)
-                .background(Color.white)
-                .border(Color.black, width: 0.3)
-                .overlay(HStack {
-                    Image(systemName: "magnifyingglass")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                        .padding(10)
+        HStack {
+            searchField
 
-                    if showCancelButton {
-                        Button(action: {
-                            self.query = ""
+            if showCancelButton { cancelButton }
+        }
+        .navigationBarHidden(showCancelButton)
+    }
 
-                        }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 14, weight: .regular, design: .default))
-                                .foregroundColor(.black).opacity(query == "" ? 0 : 1)
-                                .padding(.trailing, 8)
-                                .transition(.move(edge: .trailing))
-                        }
-                    }
-                })
-                .animation(.default, value: query)
+    // MARK: - Extracted Views
 
-                if showCancelButton {
-                    Button("Cancelar") {
-                        withAnimation {
-                            hideKeyboard()
-                            self.query = ""
-                            self.showCancelButton = false
-                        }
-                    }
-                    .font(.system(size: 11, weight: .medium, design: .default))
-                    .foregroundColor(Color.black)
-                    .transition(.move(edge: .trailing))
-                    .animation(.default, value: query)
-                    .padding(.horizontal, 10)
+    private var searchField: some View {
+        TextField(Localizable.Search.Placeholder.text, text: $query, onEditingChanged: { _ in
+            withAnimation { self.showCancelButton = true }
+        })
+        .keyboardType(.default)
+        .padding(.leading, 40)
+        .padding(.trailing, 35)
+        .font(.compact(.light, size: 14))
+        .frame(height: 35)
+        .customStroke()
+        .overlay(clearFieldButton)
+        .animation(.default, value: query)
+    }
+
+    private var clearFieldButton: some View {
+        HStack {
+            Image(systemName: Strings.Symbols.search)
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                .padding(10)
+
+            if showCancelButton {
+                Button(action: {
+                    self.query = ""
+
+                }) {
+                    Image(systemName: Strings.Symbols.xmark)
+                        .font(.system(size: 14, weight: .regular, design: .default))
+                        .foregroundColor(.black).opacity(query.isEmpty ? 0 : 1)
+                        .padding(.trailing, 8)
                 }
             }
-            .navigationBarHidden(showCancelButton)
         }
-        .padding()
     }
-}
 
-struct SearchBar_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchBar(query: .constant(""), showCancelButton: .constant(false))
+    private var cancelButton: some View {
+        Button("Cancelar") { // TODO: Quando pressionado volta para a tela anterior, dissmiss da view de search.
+            withAnimation {
+                hideKeyboard() // TODO: Quando scrollar, dar dissmiss no keyboard
+                self.query = ""
+                self.showCancelButton = false
+            }
+        }
+        .font(.system(size: 11, weight: .medium, design: .default))
+        .foregroundColor(Color.black)
+        .transition(.move(edge: .trailing))
+        .animation(.default, value: query)
+        .padding(.horizontal, 20)
     }
 }

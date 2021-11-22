@@ -8,8 +8,20 @@ struct SegmentedPickerBar: ViewModifier {
     }
 }
 
+struct CustomStroke: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .background(Color.white)
+            .border(Color.black, width: 0.3)
+    }
+}
+
 extension View {
     func segmentedPickerBarStyle() -> some View {
         modifier(SegmentedPickerBar())
+    }
+
+    func customStroke() -> some View {
+        modifier(CustomStroke())
     }
 }

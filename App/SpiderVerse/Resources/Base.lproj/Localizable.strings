@@ -18,3 +18,5 @@
 "register.email.placeholder" = "E-mail";
 "register.password.placeholder" = "Password";
 "register.confirmPassword.placeholder" = "Confirm password";
+
+"search.placeholder.text" = "Find a restaurant";
