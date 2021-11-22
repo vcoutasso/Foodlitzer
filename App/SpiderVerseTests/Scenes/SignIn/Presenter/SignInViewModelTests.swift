@@ -22,13 +22,8 @@ final class SignInViewModelTests: XCTestCase {
         }
 
         // swiftlint:disable all
-        func createAccount(withEmail email: String,
-                           password: String,
+        func createAccount(with name: String, email: String, password: String,
                            completion: @escaping (AuthenticationResult) -> Void) {
-            fatalError("Not implemented")
-        }
-
-        func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
             fatalError("Not implemented")
         }
 
