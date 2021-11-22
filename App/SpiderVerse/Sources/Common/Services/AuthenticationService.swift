@@ -14,7 +14,6 @@ enum AuthenticationError: Error {
     case unknown
 }
 
-// TODO: Review if both currentUser and appUser are necessary (or even a good idea)
 final class AuthenticationService: AuthenticationServiceProtocol, ObservableObject {
     // MARK: - Singleton
 
@@ -36,6 +35,7 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
 
     private lazy var backendUpdateCallback: (AppUser?) -> Void = { [weak self] user in
         self?.appUser = user
+        self?.objectWillChange.send()
     }
 
     // MARK: - Object lifecycle
@@ -50,19 +50,25 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
         backendService.signIn(withEmail: email, password: password, completion: completion)
     }
 
-    func createAccount(withEmail email: String,
+    func createAccount(with name: String,
+                       email: String,
                        password: String,
                        completion: @escaping (AuthenticationResult) -> Void) {
-        backendService.createAccount(withEmail: email, password: password, completion: completion)
+        backendService.createAccount(with: name, email: email, password: password) { [weak self] result in
+            if case let .success(user) = result {
+                self?.updateCurrentUser(with: user)
+            }
+
+            completion(result)
+        }
     }
 
-    func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
-        backendService.updateDisplayName(with: name, completion: completion)
+    private func updateCurrentUser(with user: AppUser?) {
+        appUser = user
     }
 
     func signOut() {
         backendService.signOut()
-        objectWillChange.send()
     }
 
     func resetPassword() {

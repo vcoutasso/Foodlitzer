@@ -13,7 +13,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             let placesAPIKey = plistContent[Strings.GooglePlaces.apiKey] as? String
         else {
             fatalError("Could not find Google Places API Key")
-            return false
         }
 
         GMSPlacesClient.provideAPIKey(placesAPIKey)

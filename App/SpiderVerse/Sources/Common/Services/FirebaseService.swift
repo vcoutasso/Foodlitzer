@@ -6,10 +6,6 @@ final class FirebaseService: BackendServiceProtocol {
     private var authStateListener: AuthStateDidChangeListenerHandle?
     private lazy var defaultAuth = Auth.auth()
 
-    // MARK: - Properties
-
-    private(set) var currentUser: User?
-
     // MARK: - Object lifecycle
 
     init(stateChangeCallback: @escaping (AppUser?) -> Void) {
@@ -44,35 +40,41 @@ final class FirebaseService: BackendServiceProtocol {
         }
     }
 
-    func createAccount(withEmail email: String,
+    func createAccount(with name: String,
+                       email: String,
                        password: String,
                        completion: @escaping (AuthenticationResult) -> Void) {
         defaultAuth.createUser(withEmail: email, password: password) { [weak self] authResult, error in
-            guard let self = self else { return }
-
-            var result: AuthenticationResult = .failure(.unknown)
+            guard let self = self else {
+                completion(.failure(.unknown))
+                return
+            }
 
             if let authResult = authResult {
-                result = .success(self.appUser(from: authResult.user))
+                self.updateDisplayName(with: name) { error in
+                    if error == nil {
+                        completion(.success(self.appUser(from: authResult.user)))
+                    } else {
+                        completion(.failure(.unknown))
+                    }
+                }
             } else if let error = (error as NSError?) {
                 debugPrint("Error trying to create account: \(error.localizedDescription)")
 
                 switch AuthErrorCode(rawValue: error.code) {
                 case .invalidEmail:
-                    result = .failure(.invalidEmail)
+                    completion(.failure(.invalidEmail))
                 case .weakPassword:
-                    result = .failure(.invalidPassword)
+                    completion(.failure(.invalidPassword))
                 default:
-                    result = .failure(.unknown)
+                    completion(.failure(.unknown))
                 }
             }
-
-            completion(result)
         }
     }
 
-    func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
-        if let currentUser = currentUser {
+    private func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
+        if let currentUser = defaultAuth.currentUser {
             let changeRequest = currentUser.createProfileChangeRequest()
             changeRequest.displayName = name
             changeRequest.commitChanges { error in
@@ -80,7 +82,13 @@ final class FirebaseService: BackendServiceProtocol {
                     debugPrint("Error trying to update display name: \(nsError.localizedDescription)")
                 }
 
-                completion(error)
+                currentUser.reload { reloadError in
+                    if reloadError != nil {
+                        debugPrint("Error trying to updated cached user data")
+                    }
+
+                    completion(error)
+                }
             }
         }
     }
@@ -93,9 +101,8 @@ final class FirebaseService: BackendServiceProtocol {
         }
     }
 
-    // TODO: Handle completion
     func resetPassword() {
-        if let email = currentUser?.email {
+        if let email = defaultAuth.currentUser?.email {
             defaultAuth.sendPasswordReset(withEmail: email) { error in
                 if let nsError = (error as NSError?) {
                     debugPrint("Error trying to reset password: \(nsError.localizedDescription)")
@@ -116,15 +123,13 @@ final class FirebaseService: BackendServiceProtocol {
         authStateListener = defaultAuth.addStateDidChangeListener { [weak self] _, user in
             guard let self = self else { return }
 
-            self.currentUser = user
             callback(self.appUser(from: user))
         }
     }
 
-    // FIXME: Empty strings should probably not be allowed
     private func appUser(from user: User?) -> AppUser? {
         guard let user = user else { return nil }
 
-        return AppUser(id: user.uid, name: user.displayName ?? "", email: user.email ?? "")
+        return AppUser(id: user.uid, name: user.displayName ?? "N/A", email: user.email ?? "N/A")
     }
 }
