@@ -39,33 +39,6 @@ final class SignInViewModelTests: XCTestCase {
 
     // MARK: - Unit tests
 
-    func testIsButtonDisabledShouldBeTrueWhenEmailIsEmpty() {
-        // Given
-        sut.password = "password"
-        sut.email = ""
-
-        // When / Then
-        XCTAssert(sut.isButtonDisabled)
-    }
-
-    func testIsButtonDisabledShouldBeTrueWhenPasswordIsEmpty() {
-        // Given
-        sut.password = ""
-        sut.email = "email"
-
-        // When / Then
-        XCTAssert(sut.isButtonDisabled)
-    }
-
-    func testIsButtonDisabledShouldBeFalseWhenFieldsAreNotEmpty() {
-        // Given
-        sut.password = "password"
-        sut.email = "email"
-
-        // When / Then
-        XCTAssertFalse(sut.isButtonDisabled)
-    }
-
     func testHandleSignInButtonTappedShouldCallServiceSignIn() {
         // Given
         let expectedResult = true
@@ -100,45 +73,4 @@ final class SignInViewModelTests: XCTestCase {
         // Then
         XCTAssertEqual(sut.shouldPresentResetPasswordView, expectedResult)
     }
-
-    /*
-     func testUpdateSignedInStatusShouldPromptOnFailure() {
-         // Given
-         let isAuthenticatedStub = false
-         authenticationServiceSpy.isUserSignedIn = isAuthenticatedStub
-         let expectedResult = true
-
-         // When
-         sut.updateSignedInStatus()
-
-         // Then
-         XCTAssertEqual(sut.shouldPromptInvalidCredentials, expectedResult)
-     }
-
-     func testUpdateSignedInStatusShouldNotPromptOnSuccess() {
-         // Given
-         let isAuthenticatedStub = true
-         backendServiceSpy.isAuthenticated = isAuthenticatedStub
-         let expectedResult = false
-
-         // When
-         sut.updateSignedInStatus()
-
-         // Then
-         XCTAssertEqual(sut.shouldPromptInvalidCredentials, expectedResult)
-     }
-
-     func testUpdateSignedInStatusShouldPresentProfileOnSuccess() {
-         // Given
-         let isAuthenticatedStub = true
-         backendServiceSpy.isAuthenticated = isAuthenticatedStub
-         let expectedResult = true
-
-         // When
-         sut.updateSignedInStatus()
-
-         // Then
-         XCTAssertEqual(sut.shouldPresentProfileView, expectedResult)
-     }
-     */
 }

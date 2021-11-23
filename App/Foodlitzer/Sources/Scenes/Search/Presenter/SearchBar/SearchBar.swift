@@ -40,10 +40,9 @@ struct SearchBar: View {
                 .padding(10)
 
             if showCancelButton {
-                Button(action: {
+                Button {
                     self.query = ""
-
-                }) {
+                } label: {
                     Image(systemName: Strings.Symbols.xmark)
                         .font(.system(size: 14, weight: .regular, design: .default))
                         .foregroundColor(.black).opacity(query.isEmpty ? 0 : 1)
