@@ -1,13 +1,6 @@
-//
-//  Spider_VerseTests.swift
-//  Spider-VerseTests
-//
-//  Created by Vinícius Couto on 11/11/21.
-//
-
 import XCTest
 
-class SpiderVerseTests: XCTestCase {
+class FoodlitzerTests: XCTestCase {
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }

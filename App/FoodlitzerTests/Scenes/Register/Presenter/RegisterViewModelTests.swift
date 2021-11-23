@@ -1,4 +1,4 @@
-@testable import SpiderVerse
+@testable import Foodlitzer
 import XCTest
 
 final class RegisterViewModelTests: XCTestCase {
