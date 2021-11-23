@@ -1,10 +1,3 @@
-//
-//  RecorderSound.swift
-//  SpiderVerse
-//
-//  Created by Bruna Naomi Yamanaka Silva on 22/11/21.
-//
-
 import AVFoundation
 import Foundation
 

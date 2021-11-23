@@ -1,10 +1,3 @@
-//
-//  OpenSignInView.swift
-//  SpiderVerse
-//
-//  Created by Alessandra Souza da Silva on 22/11/21.
-//
-
 import SwiftUI
 
 struct OpenSignInView<Destination: View>: View {

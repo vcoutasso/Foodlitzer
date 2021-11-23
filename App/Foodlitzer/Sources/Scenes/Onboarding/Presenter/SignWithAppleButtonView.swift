@@ -1,10 +1,3 @@
-//
-//  SignWithAppleButtonView.swift
-//  SpiderVerse
-//
-//  Created by Alessandra Souza da Silva on 19/11/21.
-//
-
 import SwiftUI
 
 struct SignWithAppleButtonView: View {

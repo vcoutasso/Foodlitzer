@@ -1,10 +1,3 @@
-//
-//  LogoOnboardingView.swift
-//  SpiderVerse
-//
-//  Created by Alessandra Souza da Silva on 18/11/21.
-//
-
 import SwiftUI
 
 struct LogoOnboardingView: View {

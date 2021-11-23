@@ -1,12 +1,6 @@
-//
-//  HalfSheet.swift
-//  SpiderVerse
-//
-//  Created by Alessandra Souza da Silva on 22/11/21.
-//
-
 import SwiftUI
-// TODO: erro no dismiss da sheet
+
+// TODO: Maybe a where clause makes more sense?
 extension View {
     func halfSheet<SheetView: View>(showSheet: Binding<Bool>,
                                     @ViewBuilder sheetView: @escaping () -> SheetView) -> some View {
@@ -16,6 +10,7 @@ extension View {
     }
 }
 
+// TODO: erro no dismiss da sheet
 struct HalfSheet<SheetView: View>: UIViewControllerRepresentable {
     var sheetView: SheetView
     @Binding var showSheet: Bool
