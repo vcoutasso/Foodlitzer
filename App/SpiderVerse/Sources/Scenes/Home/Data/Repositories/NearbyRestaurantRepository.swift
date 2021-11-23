@@ -31,14 +31,16 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
         var restaurants = parsePlaces(placesDTO)
 
         for index in restaurants.indices {
-            restaurants[index].images = await withCheckedContinuation { continuation in
-                photosService.fetchPlaceImages(for: restaurants[index].id) { images in
-                    continuation.resume(returning: images)
+            restaurants[index].imagesData = await withCheckedContinuation { continuation in
+                guard let id = restaurants[index].id else { return }
+
+                photosService.fetchPlaceImages(for: id) { images in
+                    continuation.resume(returning: images.compactMap { $0.pngData() })
                 }
             }
         }
 
-        return restaurants.filter { !$0.images.isEmpty }
+        return restaurants.filter { !$0.imagesData.isEmpty }
     }
 
     // MARK: - Helper methods
@@ -54,7 +56,7 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
                   isValid(types: types) else { return nil }
 
             return Restaurant(id: id, name: name, rating: rating, totalRatings: totalRatings, address: address,
-                              images: [])
+                              imagesData: [])
         }
     }
 

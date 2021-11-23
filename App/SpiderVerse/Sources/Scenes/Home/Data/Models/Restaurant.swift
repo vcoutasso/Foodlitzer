@@ -1,10 +1,11 @@
+import FirebaseFirestoreSwift
 import UIKit
 
-struct Restaurant {
-    let id: String
+struct Restaurant: Codable {
+    @DocumentID var id: String?
     let name: String
     let rating: Float
     let totalRatings: Int
     let address: String
-    var images: [UIImage]
+    var imagesData: [Data]
 }

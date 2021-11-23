@@ -3,10 +3,11 @@ use_frameworks!
 inhibit_all_warnings!
 
 target 'SpiderVerse' do
+  pod 'FirebaseFirestoreSwift'
+  pod 'Firebase/Firestore'
   pod 'Firebase/Analytics'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
-  pod 'Firebase/Database'
 
   pod 'GooglePlaces'
 

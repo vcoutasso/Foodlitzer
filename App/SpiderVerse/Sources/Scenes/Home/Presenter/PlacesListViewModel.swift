@@ -29,10 +29,10 @@ final class PlacesListViewModel: ObservableObject {
             Task {
                 let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitudeDescription,
                                                                          longitude: longitudeDescription)
-                completion(restaurants.map { .init(id: $0.id,
+                completion(restaurants.map { .init(id: $0.id!,
                                                    name: $0.name,
                                                    address: $0.address,
-                                                   images: $0.images.map { Image(uiImage: $0) }) })
+                                                   images: $0.imagesData.compactMap { $0.asImage() }) })
             }
         }
     }
