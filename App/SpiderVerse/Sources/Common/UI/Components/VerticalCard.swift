@@ -10,8 +10,7 @@ struct VerticalCard: View {
                 Image(image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .saturation(0)
-                    .contrast(1.2)
+                    .imageFilter()
                     .frame(width: 140, height: 170)
                     .border(Color.black, width: 0.3)
                     .clipped()
@@ -24,7 +23,7 @@ struct VerticalCard: View {
             }
 
             Text(restaurantName.uppercased())
-                .font(.system(size: 12, weight: .regular, design: .default))
+                .font(.compact(.regular, size: 12))
                 .padding(10)
                 .multilineTextAlignment(.center)
                 .frame(height: 80)

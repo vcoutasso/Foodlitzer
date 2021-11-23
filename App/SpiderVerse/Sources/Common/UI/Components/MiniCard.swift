@@ -12,20 +12,19 @@ struct MiniCard: View {
             Image(image)
                 .resizable()
                 .scaledToFill()
-                .saturation(0)
-                .contrast(1.2)
+                .imageFilter()
                 .frame(height: 135)
                 .clipped()
                 .border(Color.black, width: 0.3)
 
             Text(restaurantName.uppercased())
-                .font(.system(size: 12, weight: .regular, design: .default))
+                .font(.compact(.regular, size: 12))
                 .padding(10)
                 .frame(height: 50)
 
             HStack(alignment: .center, spacing: 2) {
                 ForEach(0..<maxRate) { num in
-                    Image(systemName: num < restaurantRate ? "star.fill" : "star")
+                    Image(systemName: num < restaurantRate ? Strings.Symbols.starFill : Strings.Symbols.star)
                         .font(.system(size: 9, weight: .regular, design: .default))
                 }
 

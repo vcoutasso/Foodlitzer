@@ -14,8 +14,7 @@ struct MainCard: View {
             ZStack {
                 Image(image)
                     .resizable()
-                    .saturation(0)
-                    .contrast(1.2)
+                    .imageFilter()
                     .scaledToFill()
                     .frame(height: 120)
                     .clipped()
@@ -35,7 +34,7 @@ struct MainCard: View {
 
             HStack {
                 Text(restaurantName.uppercased())
-                    .font(.system(size: 12, weight: .regular, design: .default))
+                    .font(.compact(.regular, size: 12))
                     .padding(10)
                     .frame(height: 50)
 
@@ -44,29 +43,29 @@ struct MainCard: View {
             .border(Color.black, width: 0.3)
 
             HStack(spacing: 0) {
-                Image(systemName: "location")
+                Image(systemName: Strings.Symbols.address)
                     .padding(.leading, 10)
                     .font(.system(size: 12, weight: .light, design: .default))
                 Text(address)
-                    .font(.system(size: 11, weight: .light, design: .default))
+                    .font(.compact(.light, size: 11))
                     .padding(5)
             }
 
             HStack(spacing: 0) {
-                Image(systemName: "dollarsign.circle")
+                Image(systemName: Strings.Symbols.price)
                     .padding(.leading, 10)
                     .padding(.trailing, 5)
                     .font(.system(size: 12, weight: .light, design: .default))
 
                 ForEach(0..<price) { _ in
                     Text("$")
-                        .font(.system(size: 11, weight: .light, design: .default))
+                        .font(.compact(.light, size: 11))
                 }
 
                 Spacer()
 
                 ForEach(0..<maxRate) { num in
-                    Image(systemName: num < restaurantRate ? "star.fill" : "star")
+                    Image(systemName: num < restaurantRate ? Strings.Symbols.starFill : Strings.Symbols.star)
                         .font(.system(size: 9, weight: .regular, design: .default))
                         .padding(1)
                 }

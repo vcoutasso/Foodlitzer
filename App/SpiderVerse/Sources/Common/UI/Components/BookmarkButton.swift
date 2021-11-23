@@ -3,9 +3,10 @@ import SwiftUI
 struct BookmarkButton: View {
     var body: some View {
         Button {
-            // Save action here
+            // TODO: Save action here, need to change bookmark to fill
+
         } label: {
-            Image(systemName: "bookmark")
+            Image(systemName: Strings.Symbols.notSaved)
                 .font(.system(size: 18, weight: .regular, design: .default))
                 .foregroundColor(.white)
                 .padding(7)

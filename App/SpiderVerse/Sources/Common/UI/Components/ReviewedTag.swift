@@ -3,8 +3,8 @@ import SwiftUI
 struct ReviewedTag: View {
     var body: some View {
         HStack {
-            Image(systemName: "newspaper")
-            Text("Reviewed")
+            Image(systemName: Strings.Symbols.reviewed)
+            Text(Localizable.Tag.Reviewed.text)
         }
         .foregroundColor(.white)
         .padding(5)
