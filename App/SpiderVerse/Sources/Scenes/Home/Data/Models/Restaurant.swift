@@ -7,5 +7,6 @@ struct Restaurant: Codable {
     let rating: Float
     let totalRatings: Int
     let address: String
+    let priceLevel: Int
     var imagesData: [Data]
 }

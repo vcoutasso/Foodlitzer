@@ -38,7 +38,8 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
                 guard let id = restaurants[index].id else { return }
 
                 photosService.fetchPlaceImages(for: id) { images in
-                    continuation.resume(returning: images.compactMap { $0.jpegData(compressionQuality: 0.20) })
+                    let compressedImages = images.prefix(5).compactMap { $0.jpegData(compressionQuality: 0.20) }
+                    continuation.resume(returning: compressedImages)
                 }
             }
         }
@@ -65,10 +66,16 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
                   let rating = dto.rating,
                   let totalRatings = dto.totalRatings,
                   let address = dto.address,
+                  let priceLevel = dto.priceLevel,
                   let types = dto.types,
                   isValid(types: types) else { return nil }
 
-            return Restaurant(id: id, name: name, rating: rating, totalRatings: totalRatings, address: address,
+            return Restaurant(id: id,
+                              name: name,
+                              rating: rating,
+                              totalRatings: totalRatings,
+                              address: address,
+                              priceLevel: priceLevel,
                               imagesData: [])
         }
     }
