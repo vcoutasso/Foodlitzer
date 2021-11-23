@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+// TODO: erro no dismiss da sheet
 extension View {
     func halfSheet<SheetView: View>(showSheet: Binding<Bool>,
                                     @ViewBuilder sheetView: @escaping () -> SheetView) -> some View {
