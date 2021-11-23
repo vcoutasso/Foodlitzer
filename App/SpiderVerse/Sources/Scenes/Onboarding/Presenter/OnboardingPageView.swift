@@ -20,9 +20,7 @@ struct OnboardingPageView: View {
                 .frame(width: 64, height: 2)
                 .background(Color.black)
             ButtonsOnboadingView(text: "Create new account") {
-                RegisterView(viewModel: RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
-                                                          passwordValidationService: ValidatePasswordUseCase(),
-                                                          authenticationService: authenticationService))
+                RegisterView(viewModel: RegisterViewModelFactory.make())
             }
 
         }.ignoresSafeArea()

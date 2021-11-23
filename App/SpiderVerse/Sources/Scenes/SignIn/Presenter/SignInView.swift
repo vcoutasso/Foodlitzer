@@ -34,7 +34,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             registerButton
 
             NavigationLink(isActive: $viewModel.didSignIn,
-                           destination: { PlacesListView(viewModel: PlacesListViewModel()) },
+                           destination: { PlacesListView(viewModel: PlacesListViewModelFactory.make()) },
                            label: { EmptyView() })
         }.halfSheet(showSheet: $viewModel.shouldPresentResetPasswordView) {
             ForgotPasswordView(viewModel: ForgotPasswordViewModel(authenticationService: authenticationService))
@@ -110,9 +110,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             Text("DON'T HAVE AN ACCOUNT YET?")
                 .font(.system(size: 12, weight: .light))
             OpenRegisterView {
-                RegisterView(viewModel: RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
-                                                          passwordValidationService: ValidatePasswordUseCase(),
-                                                          authenticationService: AuthenticationService()))
+                RegisterView(viewModel: RegisterViewModelFactory.make())
                     .onAppear {
                         viewModel.handleRegisterButtonTapped()
                     }.navigationBarHidden(true)
@@ -136,7 +134,7 @@ extension View {
 #if DEBUG
     struct SignInView_Previews: PreviewProvider {
         static var previews: some View {
-            SignInView(viewModel: SignInViewModel(authenticationService: AuthenticationService()))
+            SignInView(viewModel: SignInViewModel(authenticationService: AuthenticationService.shared))
         }
     }
 #endif

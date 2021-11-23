@@ -15,7 +15,6 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
                 .padding()
 
             Button {
-                // TODO: This should take the user back to the login screen
                 viewModel.signOut()
             } label: {
                 Text("Logout")
@@ -31,7 +30,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
 #if DEBUG
     struct ProfileView_Previews: PreviewProvider {
         static var previews: some View {
-            ProfileView(viewModel: ProfileViewModel(authenticationService: AuthenticationService()))
+            ProfileView(viewModel: ProfileViewModel(authenticationService: AuthenticationService.shared))
         }
     }
 #endif

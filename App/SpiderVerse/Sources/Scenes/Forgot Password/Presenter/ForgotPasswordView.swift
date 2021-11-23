@@ -34,6 +34,6 @@ struct ForgotPasswordView<ViewModelType>: View where ViewModelType: ForgotPasswo
 
 struct ForgotPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        ForgotPasswordView(viewModel: ForgotPasswordViewModel(authenticationService: AuthenticationService()))
+        ForgotPasswordView(viewModel: ForgotPasswordViewModel(authenticationService: AuthenticationService.shared))
     }
 }

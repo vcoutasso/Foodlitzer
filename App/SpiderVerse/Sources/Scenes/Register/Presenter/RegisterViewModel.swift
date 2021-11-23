@@ -50,13 +50,9 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         passwordText == confirmPasswordText
     }
 
-    private var isEmailValid: Bool {
-        isValid(email: emailText)
-    }
+    private var isEmailValid: Bool
 
-    private var isPasswordValid: Bool {
-        isValid(password: passwordText)
-    }
+    private var isPasswordValid: Bool
 
     // MARK: - Computed Variables
 
@@ -69,41 +65,27 @@ final class RegisterViewModel: RegisterViewModelProtocol {
 
     // MARK: - Dependencies
 
-    private let emailValidationService: ValidateEmailUseCaseProtocol
-    private let passwordValidationService: ValidatePasswordUseCaseProtocol
     private let authenticationService: AuthenticationServiceProtocol
 
     // MARK: - Object lifecycle
 
-    init(emailValidationService: ValidateEmailUseCaseProtocol,
-         passwordValidationService: ValidatePasswordUseCaseProtocol,
-         authenticationService: AuthenticationServiceProtocol) {
+    init(authenticationService: AuthenticationServiceProtocol) {
         self.nameText = ""
         self.emailText = ""
         self.passwordText = ""
         self.confirmPasswordText = ""
         self.invalidAttempt = false
+        self.isEmailValid = false
+        self.isPasswordValid = false
         self.authenticationService = authenticationService
-        self.emailValidationService = emailValidationService
-        self.passwordValidationService = passwordValidationService
-    }
-
-    // MARK: - Validation methods
-
-    func isValid(email: String) -> Bool {
-        emailValidationService.execute(using: email)
-    }
-
-    func isValid(password: String) -> Bool {
-        passwordValidationService.execute(using: password)
     }
 
     // MARK: - Account creation
 
     func handleRegisterButtonTapped() {
-        if isAttemptValid() {
-            invalidAttempt = false
+        resetFlags()
 
+        if isAttemptValid() {
             createAccount()
         } else {
             invalidAttempt = true
@@ -118,27 +100,41 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         isEmailValid && isPasswordValid && passwordsMatch
     }
 
-    // TODO: Improve validation handling
     private func createAccount() {
-        authenticationService.createAccount(withEmail: emailText, password: passwordText) { [weak self] result in
+        authenticationService.createAccount(with: nameText,
+                                            email: emailText,
+                                            password: passwordText) { [weak self] result in
             switch result {
-            case .success:
-                self?.setUserDisplayName()
-                print("success")
-            case .failure:
-                self?.invalidAttempt = true
+            case let .success(user):
+                debugPrint("User logged in with name: '\(user!.name))' and email: '\(user!.email)'")
+                self?.didRegister = true
+            case let .failure(error):
+                self?.updateFailureFlags(for: error)
             }
+            self?.objectWillChange.send()
         }
     }
 
-    private func setUserDisplayName() {
-        authenticationService.updateDisplayName(with: nameText) { [weak self] error in
-            if error == nil {
-                self?.didRegister = true
-            } else {
-                self?.invalidAttempt = true
-            }
+    private func resetFlags() {
+        invalidAttempt = false
+        isEmailValid = true
+        isPasswordValid = true
+    }
+
+    private func updateFailureFlags(for error: AuthenticationError) {
+        invalidAttempt = true
+
+        // TODO: Review if name can be flagged invalid as well
+        switch error {
+        case .invalidPassword:
+            isPasswordValid = false
+        case .invalidEmail:
+            isEmailValid = false
+        default:
+            break
         }
+
+        objectWillChange.send()
     }
 }
 
@@ -146,8 +142,6 @@ final class RegisterViewModel: RegisterViewModelProtocol {
 
 enum RegisterViewModelFactory {
     static func make() -> RegisterViewModel {
-        RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
-                          passwordValidationService: ValidatePasswordUseCase(),
-                          authenticationService: AuthenticationService())
+        RegisterViewModel(authenticationService: AuthenticationService.shared)
     }
 }

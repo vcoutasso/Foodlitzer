@@ -1,10 +1,3 @@
-//
-//  OnboardingView.swift
-//  SpiderVerse
-//
-//  Created by Vinícius Couto on 16/11/21.
-//
-
 import SwiftUI
 
 struct OnboardingView<ViewModelType>: View where ViewModelType: OnboardingViewModelProtocol {

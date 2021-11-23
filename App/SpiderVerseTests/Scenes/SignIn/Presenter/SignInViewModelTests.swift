@@ -21,13 +21,9 @@ final class SignInViewModelTests: XCTestCase {
             signInCalled = true
         }
 
-        func createAccount(withEmail email: String,
-                           password: String,
+        // swiftlint:disable all
+        func createAccount(with name: String, email: String, password: String,
                            completion: @escaping (AuthenticationResult) -> Void) {
-            fatalError("Not implemented")
-        }
-
-        func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
             fatalError("Not implemented")
         }
 
@@ -38,6 +34,7 @@ final class SignInViewModelTests: XCTestCase {
         func resetPassword() {
             fatalError("Not implemented")
         }
+        // swiftlint:enable all
     }
 
     // MARK: - Unit tests
@@ -103,6 +100,7 @@ final class SignInViewModelTests: XCTestCase {
         // Then
         XCTAssertEqual(sut.shouldPresentResetPasswordView, expectedResult)
     }
+
     /*
      func testUpdateSignedInStatusShouldPromptOnFailure() {
          // Given

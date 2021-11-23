@@ -20,7 +20,6 @@ final class ForgotPasswordViewModel: ForgotPasswordViewModelProtocol {
         self.authenticationService = authenticationService
     }
 
-    // TODO: Properly test this functionality
     func sendPasswordReset() {
         authenticationService.resetPassword()
     }
@@ -30,6 +29,6 @@ final class ForgotPasswordViewModel: ForgotPasswordViewModelProtocol {
 
 enum ForgotPasswordViewModelFactory {
     static func make() -> ForgotPasswordViewModel {
-        ForgotPasswordViewModel(authenticationService: AuthenticationService())
+        ForgotPasswordViewModel(authenticationService: AuthenticationService.shared)
     }
 }
