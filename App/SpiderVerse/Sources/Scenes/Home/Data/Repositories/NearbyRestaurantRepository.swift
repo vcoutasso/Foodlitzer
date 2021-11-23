@@ -7,6 +7,7 @@ protocol NearbyRestaurantRepositoryProtocol {
 final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
     // MARK: - Dependencies
 
+    private let databaseService: RemoteDatabaseServiceProtocol
     private let photosService: PlacePhotosServiceProtocol
     private let placesService: NearbyPlacesServiceProtocol
 
@@ -16,9 +17,11 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
 
     // MARK: - Object lifecycle
 
-    init(photosService: PlacePhotosServiceProtocol,
+    init(databaseService: RemoteDatabaseServiceProtocol,
+         photosService: PlacePhotosServiceProtocol,
          remoteService: NearbyPlacesServiceProtocol,
          invalidTypes: [String]) {
+        self.databaseService = databaseService
         self.photosService = photosService
         self.placesService = remoteService
         self.invalidTypes = invalidTypes
@@ -35,12 +38,22 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
                 guard let id = restaurants[index].id else { return }
 
                 photosService.fetchPlaceImages(for: id) { images in
-                    continuation.resume(returning: images.compactMap { $0.pngData() })
+                    continuation.resume(returning: images.compactMap { $0.jpegData(compressionQuality: 0.20) })
                 }
             }
         }
 
-        return restaurants.filter { !$0.imagesData.isEmpty }
+        let restaurantsWithImages = restaurants.filter { !$0.imagesData.isEmpty }
+
+        DispatchQueue.main.async { [weak self] in
+            self?.uploadToDatabase(restaurants: restaurantsWithImages)
+        }
+
+        return restaurantsWithImages
+    }
+
+    private func uploadToDatabase(restaurants: [Restaurant]) {
+        restaurants.forEach { databaseService.saveRestaurant($0) }
     }
 
     // MARK: - Helper methods

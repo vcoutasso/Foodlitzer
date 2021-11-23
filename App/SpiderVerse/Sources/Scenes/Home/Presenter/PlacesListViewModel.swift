@@ -40,11 +40,13 @@ final class PlacesListViewModel: ObservableObject {
 
 enum PlacesListViewModelFactory {
     static func make() -> PlacesListViewModel {
+        let databaseService = FirebaseDatabaseService()
         let photosService = PlacePhotosService()
-        let remoteService = NearbyPlacesService()
+        let placesService = NearbyPlacesService()
         let invalidTypes = ["lodging"]
-        let repository = NearbyRestaurantRepository(photosService: photosService,
-                                                    remoteService: remoteService,
+        let repository = NearbyRestaurantRepository(databaseService: databaseService,
+                                                    photosService: photosService,
+                                                    remoteService: placesService,
                                                     invalidTypes: invalidTypes)
         let userLocationUseCase = UserLocationUseCase()
         let nearbyRestaurantsUseCase = FetchNearbyRestaurantsUseCase(repository: repository)

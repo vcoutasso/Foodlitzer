@@ -1,4 +1,5 @@
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 final class FirebaseDatabaseService: RemoteDatabaseServiceProtocol {
     // MARK: - Properties
@@ -7,15 +8,17 @@ final class FirebaseDatabaseService: RemoteDatabaseServiceProtocol {
 
     // MARK: - Save data
 
-    func save(restaurant: Restaurant) {
-        guard let id = restaurant.id else { return }
-
+    func saveRestaurant(_ restaurant: Restaurant) {
         do {
-            try database.collection("restaurants")
-                .document(id)
-                .setData(from: restaurant)
+            _ = try database.collection("restaurants").addDocument(from: restaurant)
         } catch {
             debugPrint("Error saving restaurant data to firestore: \(error.localizedDescription)")
         }
+    }
+
+    // MARK: - Fetch data
+
+    func fetchRestaurant(for id: String) {
+        fatalError("Not implemented")
     }
 }
