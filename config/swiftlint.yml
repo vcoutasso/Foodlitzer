@@ -1,5 +1,5 @@
 excluded:
-    - ../App/SpiderVerse/Resources/
+    - ../App/Foodlitzer/Resources/
     - ../App/Pods
 disabled_rules:
     - trailing_comma

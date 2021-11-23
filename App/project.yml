@@ -1,4 +1,4 @@
-name: SpiderVerse
+name: Foodlitzer
 
 configs:
   Debug: debug
@@ -12,14 +12,14 @@ options:
   bundleIdPrefix: com.vcoutasso
 
 targets:
-  SpiderVerse:
+  Foodlitzer:
     type: application
     platform: iOS
     deploymentTarget: 15.0
     settings:
       TARGETED_DEVICE_FAMILY: 1
-      INFOPLIST_FILE: SpiderVerse/Supporting-Files/Info.plist
-    sources: SpiderVerse
+      INFOPLIST_FILE: Foodlitzer/Supporting-Files/Info.plist
+    sources: Foodlitzer
     preBuildScripts:
       - name: SwiftLint
         script: |
@@ -28,24 +28,24 @@ targets:
         script: |
           "${PODS_ROOT}/SwiftGen/bin/swiftgen" config run --config ../config/swiftgen.yml
 
-  SpiderVerseTests:
+  FoodlitzerTests:
     type: bundle.unit-test
     platform: iOS
     settings:
       FRAMEWORK_SEARCH_PATHS: "$(inherited)"
       HEADER_SEARCH_PATHS: "${SRCROOT}/Pods/Firebase/CoreOnly/Sources"
-    sources: SpiderVerseTests
+    sources: FoodlitzerTests
     dependencies:
-      - target: SpiderVerse
+      - target: Foodlitzer
 
 schemes:
-  SpiderVerse:
+  Foodlitzer:
     build:
       targets:
-        SpiderVerse: all
+        Foodlitzer: all
     test:
       config: Debug
       gatherCoverageData: true
       targets:
-        - name: SpiderVerseTests
+        - name: FoodlitzerTests
           randomExecutionOrder: true

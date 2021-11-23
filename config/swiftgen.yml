@@ -1,5 +1,5 @@
-input_dir: ../App/SpiderVerse/Resources/
-output_dir: ../App/SpiderVerse/Resources/Generated/
+input_dir: ../App/Foodlitzer/Resources/
+output_dir: ../App/Foodlitzer/Resources/Generated/
 strings:
   - inputs: Strings.strings
     outputs:

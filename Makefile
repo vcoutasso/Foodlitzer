@@ -12,7 +12,7 @@ generate:
 	@ (cd App; xcodegen -c && pod install --deployment)
 
 open:
-	@ open App/SpiderVerse.xcworkspace
+	@ open App/Foodlitzer.xcworkspace
 
 dependencies:
 	@ rm App/Podfile.lock 2> /dev/null; cd App; pod install
@@ -20,7 +20,7 @@ dependencies:
 clean:
 	@ echo "\033[1;37mCleaning up project files\033[0m"
 	@ rm -rf App/*.xc* App/Pods App/vendor .bundle
-	@ find App/SpiderVerse/Resources/Generated ! -name '.gitkeep' -type f -exec rm -f {} +
+	@ find App/Foodlitzer/Resources/Generated ! -name '.gitkeep' -type f -exec rm -f {} +
 
 PRE_COMMIT=.git/hooks/pre-commit
 hooks:
