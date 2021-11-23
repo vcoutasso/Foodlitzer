@@ -32,7 +32,10 @@ class GetRequestService<T>: GetRequestServiceProtocol where T: Decodable {
     }
 
     init?(from link: String, with decoder: JSONDecoding) {
-        guard let url = URL(string: link) else { return nil }
+        guard let url = URL(string: link) else {
+            debugPrint("Failed to create service: \(link) is not a valid URL!")
+            return nil
+        }
 
         self.baseURL = url
         self.decoder = decoder
