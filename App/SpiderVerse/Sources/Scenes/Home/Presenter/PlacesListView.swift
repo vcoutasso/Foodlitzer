@@ -9,6 +9,7 @@ struct PlacesListView: View {
     var body: some View {
         ScrollView {
             VStack {
+                TopHomeView()
                 Button {
                     viewModel.handleButtonTapped { restaurants in
                         self.restaurants = restaurants

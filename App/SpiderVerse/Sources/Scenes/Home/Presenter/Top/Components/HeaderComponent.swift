@@ -1,15 +1,11 @@
 import SwiftUI
 
 struct HeaderComponent: View {
+    @EnvironmentObject private var authenticationService: AuthenticationService
     var body: some View {
         HStack {
-            Button {
-                // Destination Here
-            } label: {
-                Image(systemName: Strings.Symbols.search)
-                    .font(.title3) // TODO: Change size
-                    .foregroundColor(.black)
-                    .padding()
+            HeaderButtonView(text: "magnifyingglass") {
+                EmptyView()
             }
 
             Spacer()
@@ -19,13 +15,8 @@ struct HeaderComponent: View {
 
             Spacer()
 
-            Button {
-                // Destination Here
-            } label: {
-                Image(systemName: Strings.Symbols.settings)
-                    .font(.title3) // TODO: Change size
-                    .foregroundColor(.black)
-                    .padding()
+            HeaderButtonView(text: "gear") {
+                ProfileView(viewModel: ProfileViewModelFactory.make(authenticationService: authenticationService))
             }
         }
     }
