@@ -2,11 +2,13 @@ import SwiftUI
 
 struct PlacesListView: View {
     @ObservedObject var viewModel: PlacesListViewModel
+    @EnvironmentObject private var authenticationService: AuthenticationService
     var body: some View {
         ScrollView {
             VStack {
                 Button {
                     viewModel.handleButtonTap()
+                    authenticationService.signOut()
                 } label: {
                     Text("hello")
                 }

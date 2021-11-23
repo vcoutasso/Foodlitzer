@@ -19,13 +19,18 @@ struct OnboardingView<ViewModelType>: View where ViewModelType: OnboardingViewMo
     var body: some View {
         VStack {
             TabView(selection: $viewModel.currentPage) {
-                ForEach(onboardingPages, id: \.self) {
-                    OnboardingPageView(pageNumber: $0)
+                ForEach(onboardingPages, id: \.self) { index in
+                    LogoOnboardingView(currentPage: index)
+                        .clipped()
+                        .ignoresSafeArea()
+                        .tag(index)
                 }
-            }
-            .tabViewStyle(PageTabViewStyle())
-            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-        }
+            }.edgesIgnoringSafeArea(.top)
+                .tabViewStyle(PageTabViewStyle())
+                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+            OnboardingPageView(pageNumber: viewModel.currentPage)
+
+        }.background(Color.white)
     }
 }
 

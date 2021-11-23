@@ -2,20 +2,23 @@ import SwiftUI
 
 // TODO: Extract this into specialized views (custom modifiers maybe?)
 private enum LayoutMetrics {
-    static let buttonWidth: CGFloat = 200
-    static let buttonHeight: CGFloat = 50
+    static let buttonWidth: CGFloat = 310
+    static let buttonHeight: CGFloat = 40
     static let buttonPadding: CGFloat = 16
 }
 
 struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
     // MARK: - Attributes
 
+    @EnvironmentObject private var authenticationService: AuthenticationService
     @ObservedObject private(set) var viewModel: ViewModelType
 
     // MARK: - Views
 
     var body: some View {
         VStack {
+            signInText
+
             emailField
 
             passwordField
@@ -29,31 +32,46 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             signInButton
 
             registerButton
+
+            NavigationLink(isActive: $viewModel.didSignIn,
+                           destination: { PlacesListView(viewModel: PlacesListViewModel()) },
+                           label: { EmptyView() })
+        }.halfSheet(showSheet: $viewModel.shouldPresentResetPasswordView) {
+            ForgotPasswordView(viewModel: ForgotPasswordViewModel(authenticationService: authenticationService))
         }
-        .padding()
-        .sheet(isPresented: $viewModel.shouldPresentRegistrationView) {
-            RegisterView(viewModel: RegisterViewModelFactory.make())
-        }
-        .sheet(isPresented: $viewModel.shouldPresentResetPasswordView) {
-            ForgotPasswordView(viewModel: ForgotPasswordViewModelFactory.make())
-        }
-        .sheet(isPresented: $viewModel.shouldPresentProfileView) {
-            ProfileView(viewModel: ProfileViewModelFactory.make())
+    }
+
+    private var signInText: some View {
+        VStack {
+            Text("Sign In")
+                .font(.custom("Lora-Regular", size: 36))
+            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis tortor facilisis.")
+                .multilineTextAlignment(.center)
+                .font(.system(size: 14, weight: .light))
+                .frame(width: 300, height: 83, alignment: .center)
+                .padding(.bottom, 20)
         }
     }
 
     private var emailField: some View {
-        TextField(Localizable.SignIn.Email.placeholder, text: $viewModel.email)
-            .padding()
-            .background(Color(.secondarySystemBackground))
-            .autocapitalization(.none)
-            .keyboardType(.emailAddress)
+        HStack {
+            Image(systemName: "envelope")
+                .foregroundColor(Color("iconsGray"))
+            TextField(Localizable.SignIn.Email.placeholder, text: $viewModel.email)
+                .frame(width: 309)
+                .font(.system(size: 18, weight: .regular))
+                .autocapitalization(.none)
+                .keyboardType(.emailAddress)
+        }.underlineTextField()
     }
 
     private var passwordField: some View {
-        SecureField(Localizable.SignIn.Password.placeholder, text: $viewModel.password)
-            .padding()
-            .background(Color(.secondarySystemBackground))
+        HStack {
+            Image(systemName: "lock")
+                .foregroundColor(Color("iconsGray"))
+            SecureField(Localizable.SignIn.Password.placeholder, text: $viewModel.password)
+                .frame(width: 309)
+        }.underlineTextField()
     }
 
     private var invalidCredentials: some View {
@@ -63,9 +81,15 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
     }
 
     private var forgotPasswordButton: some View {
-        Button(Localizable.SignIn.ForgotPassword.placeholder) {
-            viewModel.handleForgotPasswordButtonTapped()
-        }
+        HStack {
+            Spacer()
+            Button(Localizable.SignIn.ForgotPassword.placeholder) {
+                viewModel.handleForgotPasswordButtonTapped()
+            }
+            .font(.system(size: 14, weight: .light))
+            .foregroundColor(.black)
+
+        }.padding(20)
     }
 
     private var signInButton: some View {
@@ -82,14 +106,30 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
     }
 
     private var registerButton: some View {
-        Button {
-            viewModel.handleRegisterButtonTapped()
-        } label: {
-            Text(Localizable.SignIn.RegisterButton.text)
-                .frame(width: LayoutMetrics.buttonWidth, height: LayoutMetrics.buttonHeight)
-                .foregroundColor(.white)
-                .background(Color.black)
-        }
+        HStack {
+            Text("DON'T HAVE AN ACCOUNT YET?")
+                .font(.system(size: 12, weight: .light))
+            OpenRegisterView {
+                RegisterView(viewModel: RegisterViewModel(emailValidationService: ValidateEmailUseCase(),
+                                                          passwordValidationService: ValidatePasswordUseCase(),
+                                                          authenticationService: AuthenticationService()))
+                    .onAppear {
+                        viewModel.handleRegisterButtonTapped()
+                    }.navigationBarHidden(true)
+            }
+
+        }.padding(.top, 15)
+    }
+}
+
+extension View {
+    func underlineTextField() -> some View {
+        padding(.vertical, 20)
+            .overlay(Rectangle()
+                .strokeBorder(lineWidth: 0.2)
+                .frame(height: 1)
+                .padding(.top, 35))
+            .foregroundColor(.black)
     }
 }
 

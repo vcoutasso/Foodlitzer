@@ -1,4 +1,6 @@
 import Combine
+import Foundation
+import SwiftUI
 
 protocol RegisterViewModelProtocol: ObservableObject {
     // User input
@@ -6,10 +8,13 @@ protocol RegisterViewModelProtocol: ObservableObject {
     var emailText: String { get set }
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
+
     // Presentation logic
+    var didRegister: Bool { get set }
     var shouldPromptInvalidEmail: Bool { get }
     var shouldPromptInvalidPassword: Bool { get }
     var shouldPromptPasswordMismatch: Bool { get }
+    var isButtonDisabled: Bool { get }
     // View model methods
     func handleRegisterButtonTapped()
 }
@@ -21,6 +26,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     @Published var emailText: String
     @Published var passwordText: String
     @Published var confirmPasswordText: String
+    @Published var didRegister: Bool = false
 
     // MARK: - Private Atributes
 
@@ -50,6 +56,15 @@ final class RegisterViewModel: RegisterViewModelProtocol {
 
     private var isPasswordValid: Bool {
         isValid(password: passwordText)
+    }
+
+    // MARK: - Computed Variables
+
+    var isButtonDisabled: Bool {
+        nameText.isEmpty ||
+            emailText.isEmpty ||
+            passwordText.isEmpty ||
+            confirmPasswordText.isEmpty
     }
 
     // MARK: - Dependencies
@@ -109,6 +124,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
             switch result {
             case .success:
                 self?.setUserDisplayName()
+                print("success")
             case .failure:
                 self?.invalidAttempt = true
             }
@@ -118,7 +134,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     private func setUserDisplayName() {
         authenticationService.updateDisplayName(with: nameText) { [weak self] error in
             if error == nil {
-                // TODO: Go to home
+                self?.didRegister = true
             } else {
                 self?.invalidAttempt = true
             }

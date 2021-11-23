@@ -5,24 +5,29 @@ struct ForgotPasswordView<ViewModelType>: View where ViewModelType: ForgotPasswo
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        VStack {
+        VStack(spacing: 30) {
             Text("Forgot Password")
-                .font(.title)
+                .font(.custom("Lora-Regular", size: 24))
 
-            TextField("E-mail Adress", text: $viewModel.email)
-                .keyboardType(.emailAddress)
-                .padding()
-                .background(Color(.secondarySystemBackground))
+            HStack {
+                Image(systemName: "lock")
+                    .foregroundColor(Color("iconsGray"))
+                TextField("E-mail Adress", text: $viewModel.email)
+                    .frame(width: 286)
+                    .keyboardType(.emailAddress)
+                    .padding()
+
+            }.underlineTextField()
 
             Button {
                 viewModel.sendPasswordReset()
                 presentationMode.wrappedValue.dismiss()
             } label: {
-                Text("Send Password Reset")
-                    .frame(width: 200, height: 50)
+                Text("Send e-mail")
+                    .frame(width: 302, height: 40)
                     .foregroundColor(.white)
                     .background(Color.black)
-            }
+            }.padding(.top, 30)
         }
     }
 }
