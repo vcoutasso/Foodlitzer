@@ -7,6 +7,14 @@
 "symbols.edit" = "pencil";
 "symbols.search" = "magnifyingglass";
 "symbols.xmark" = "xmark";
+"symbols.notSaved" = "bookmark";
+"symbols.saved" = "bookmark.fill";
+"symbols.reviewed" = "newspaper";
+"symbols.starFill" = "star.fill";
+"symbols.star" = "star";
+"symbols.price" = "dollarsign.circle";
+"symbols.address" = "location";
+"symbols.navigation" = "chevron.right";
 
 "tab.home" = "Home";
 "tab.restaurants" = "Restaurants";
