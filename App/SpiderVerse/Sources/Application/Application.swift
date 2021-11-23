@@ -9,14 +9,11 @@ struct Application: App {
         WindowGroup {
             NavigationView {
                 if authenticationService.isUserSignedIn {
-                    let viewModel = ProfileViewModel(authenticationService: authenticationService)
-                    ProfileView(viewModel: viewModel)
+                    PlacesListView(viewModel: PlacesListViewModelFactory.make())
                 } else {
-                    let viewModel = SignInViewModel(authenticationService: authenticationService)
-                    SignInView(viewModel: viewModel)
-                    // PlacesListView(viewModel: PlacesListViewModelFactory.make())
+                    OnboardingView(viewModel: OnboardingViewModel())
                 }
-            }
+            }.environmentObject(authenticationService)
         }
     }
 }
