@@ -14,3 +14,9 @@ final class OnboardingViewModel: OnboardingViewModelProtocol {
         self.currentPage = 0
     }
 }
+
+enum OnboardingViewModelFactory {
+    static func make() -> OnboardingViewModel {
+        .init()
+    }
+}

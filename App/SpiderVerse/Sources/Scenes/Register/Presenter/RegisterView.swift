@@ -9,7 +9,6 @@ private enum LayoutMetrics {
 struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelProtocol {
     // MARK: - Attributes
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
     @ObservedObject private(set) var viewModel: ViewModelType
 
     // MARK: - Views
@@ -111,7 +110,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
                 .font(.system(size: 12, weight: .light))
 
             OpenSignInView {
-                SignInView(viewModel: SignInViewModel(authenticationService: authenticationService))
+                SignInView(viewModel: SignInViewModelFactory.make())
                     .onAppear {
                         viewModel.handleRegisterButtonTapped()
                     }.navigationBarHidden(true)

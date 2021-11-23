@@ -9,12 +9,12 @@ import SwiftUI
 
 struct OnboardingPageView: View {
     let pageNumber: Int
-    @EnvironmentObject private var authenticationService: AuthenticationService
+
     var body: some View {
         VStack {
             SignWithAppleButtonView()
             ButtonsOnboadingView(text: "Continue with phone number") {
-                SignInView(viewModel: SignInViewModel(authenticationService: authenticationService))
+                SignInView(viewModel: SignInViewModelFactory.make())
             }
             Rectangle()
                 .frame(width: 64, height: 2)

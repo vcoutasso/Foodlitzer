@@ -13,7 +13,7 @@ struct Application: App {
                 } else {
                     OnboardingView(viewModel: OnboardingViewModel())
                 }
-            }.environmentObject(authenticationService)
+            }
         }
     }
 }

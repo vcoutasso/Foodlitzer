@@ -1,6 +1,6 @@
 import Foundation
 
-protocol BackendServiceProtocol {
+protocol RemoteAuthenticationServiceProtocol {
     func signIn(withEmail email: String,
                 password: String,
                 completion: @escaping (AuthenticationResult) -> Void)

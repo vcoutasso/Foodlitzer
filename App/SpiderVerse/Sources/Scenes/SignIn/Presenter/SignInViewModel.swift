@@ -86,3 +86,9 @@ final class SignInViewModel: SignInViewModelProtocol {
         }
     }
 }
+
+enum SignInViewModelFactory {
+    static func make() -> SignInViewModel {
+        .init(authenticationService: AuthenticationService.shared)
+    }
+}

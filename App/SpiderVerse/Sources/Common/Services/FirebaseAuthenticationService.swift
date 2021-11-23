@@ -1,6 +1,6 @@
 import FirebaseAuth
 
-final class FirebaseService: BackendServiceProtocol {
+final class FirebaseAuthenticationService: RemoteAuthenticationServiceProtocol {
     // MARK: - Private properties
 
     private var authStateListener: AuthStateDidChangeListenerHandle?

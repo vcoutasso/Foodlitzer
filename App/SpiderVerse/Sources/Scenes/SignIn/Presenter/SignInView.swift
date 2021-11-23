@@ -10,7 +10,6 @@ private enum LayoutMetrics {
 struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
     // MARK: - Attributes
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
     @ObservedObject private(set) var viewModel: ViewModelType
 
     // MARK: - Views
@@ -36,8 +35,9 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             NavigationLink(isActive: $viewModel.didSignIn,
                            destination: { PlacesListView(viewModel: PlacesListViewModelFactory.make()) },
                            label: { EmptyView() })
-        }.halfSheet(showSheet: $viewModel.shouldPresentResetPasswordView) {
-            ForgotPasswordView(viewModel: ForgotPasswordViewModel(authenticationService: authenticationService))
+        }
+        .halfSheet(showSheet: $viewModel.shouldPresentResetPasswordView) {
+            ForgotPasswordView(viewModel: ForgotPasswordViewModelFactory.make())
         }
     }
 
@@ -134,7 +134,7 @@ extension View {
 #if DEBUG
     struct SignInView_Previews: PreviewProvider {
         static var previews: some View {
-            SignInView(viewModel: SignInViewModel(authenticationService: AuthenticationService.shared))
+            SignInView(viewModel: SignInViewModelFactory.make())
         }
     }
 #endif

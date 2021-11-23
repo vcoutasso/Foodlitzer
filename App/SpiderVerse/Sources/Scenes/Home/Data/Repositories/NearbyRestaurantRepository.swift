@@ -7,6 +7,7 @@ protocol NearbyRestaurantRepositoryProtocol {
 final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
     // MARK: - Dependencies
 
+    private let databaseService: RemoteDatabaseServiceProtocol
     private let photosService: PlacePhotosServiceProtocol
     private let placesService: NearbyPlacesServiceProtocol
 
@@ -16,9 +17,11 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
 
     // MARK: - Object lifecycle
 
-    init(photosService: PlacePhotosServiceProtocol,
+    init(databaseService: RemoteDatabaseServiceProtocol,
+         photosService: PlacePhotosServiceProtocol,
          remoteService: NearbyPlacesServiceProtocol,
          invalidTypes: [String]) {
+        self.databaseService = databaseService
         self.photosService = photosService
         self.placesService = remoteService
         self.invalidTypes = invalidTypes
@@ -31,14 +34,27 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
         var restaurants = parsePlaces(placesDTO)
 
         for index in restaurants.indices {
-            restaurants[index].images = await withCheckedContinuation { continuation in
-                photosService.fetchPlaceImages(for: restaurants[index].id) { images in
-                    continuation.resume(returning: images)
+            restaurants[index].imagesData = await withCheckedContinuation { continuation in
+                guard let id = restaurants[index].id else { return }
+
+                photosService.fetchPlaceImages(for: id) { images in
+                    let compressedImages = images.prefix(5).compactMap { $0.jpegData(compressionQuality: 0.20) }
+                    continuation.resume(returning: compressedImages)
                 }
             }
         }
 
-        return restaurants.filter { !$0.images.isEmpty }
+        let restaurantsWithImages = restaurants.filter { !$0.imagesData.isEmpty }
+
+        DispatchQueue.main.async { [weak self] in
+            self?.uploadToDatabase(restaurants: restaurantsWithImages)
+        }
+
+        return restaurantsWithImages
+    }
+
+    private func uploadToDatabase(restaurants: [Restaurant]) {
+        restaurants.forEach { databaseService.saveRestaurant($0) }
     }
 
     // MARK: - Helper methods
@@ -50,11 +66,17 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
                   let rating = dto.rating,
                   let totalRatings = dto.totalRatings,
                   let address = dto.address,
+                  let priceLevel = dto.priceLevel,
                   let types = dto.types,
                   isValid(types: types) else { return nil }
 
-            return Restaurant(id: id, name: name, rating: rating, totalRatings: totalRatings, address: address,
-                              images: [])
+            return Restaurant(id: id,
+                              name: name,
+                              rating: rating,
+                              totalRatings: totalRatings,
+                              address: address,
+                              priceLevel: priceLevel,
+                              imagesData: [])
         }
     }
 

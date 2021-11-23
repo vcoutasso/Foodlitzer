@@ -2,7 +2,7 @@ import FirebaseAuth
 
 typealias AuthenticationResult = Result<AppUser?, AuthenticationError>
 
-protocol AuthenticationServiceProtocol: BackendServiceProtocol {
+protocol AuthenticationServiceProtocol: RemoteAuthenticationServiceProtocol {
     var appUser: AppUser? { get }
     var isUserSignedIn: Bool { get }
 }
@@ -21,8 +21,8 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
 
     // MARK: - Dependencies
 
-    private lazy var backendService: BackendServiceProtocol = {
-        FirebaseService(stateChangeCallback: backendUpdateCallback)
+    private lazy var backendService: RemoteAuthenticationServiceProtocol = {
+        FirebaseAuthenticationService(stateChangeCallback: backendUpdateCallback)
     }()
 
     // MARK: - Properties

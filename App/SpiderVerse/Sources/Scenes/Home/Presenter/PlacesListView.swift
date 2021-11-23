@@ -10,8 +10,10 @@ struct PlacesListView: View {
         ScrollView {
             VStack {
                 Button {
-                    viewModel.handleButtonTapped { restaurants in
-                        self.restaurants = restaurants
+                    DispatchQueue.main.async {
+                        viewModel.handleButtonTapped { restaurants in
+                            self.restaurants = restaurants
+                        }
                     }
                 } label: {
                     Text("hello")
