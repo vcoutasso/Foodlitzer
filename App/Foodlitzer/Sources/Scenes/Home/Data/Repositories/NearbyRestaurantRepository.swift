@@ -7,7 +7,7 @@ protocol NearbyRestaurantRepositoryProtocol {
 final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
     // MARK: - Dependencies
 
-    private let databaseService: RemoteDatabaseServiceProtocol
+    private let databaseService: FirebaseDatabaseService<Restaurant>
     private let photosService: PlacePhotosServiceProtocol
     private let placesService: NearbyPlacesServiceProtocol
 
@@ -17,7 +17,7 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
 
     // MARK: - Object lifecycle
 
-    init(databaseService: RemoteDatabaseServiceProtocol,
+    init(databaseService: FirebaseDatabaseService<Restaurant>,
          photosService: PlacePhotosServiceProtocol,
          remoteService: NearbyPlacesServiceProtocol,
          invalidTypes: [String]) {
@@ -54,7 +54,7 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
     }
 
     private func uploadToDatabase(restaurants: [Restaurant]) {
-        restaurants.forEach { databaseService.saveRestaurant($0) }
+        restaurants.forEach { databaseService.saveData($0) }
     }
 
     // MARK: - Helper methods

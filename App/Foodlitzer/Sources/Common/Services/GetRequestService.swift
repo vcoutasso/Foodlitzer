@@ -44,9 +44,9 @@ class GetRequestService<T>: GetRequestServiceProtocol where T: Decodable {
     // MARK: - Request methods
 
     func addQueryItem(name: String, value: String) {
-        createURLComponents()
-
         let queryItem = URLQueryItem(name: name, value: value)
+
+        createURLComponents()
 
         urlComponents!.queryItems?.append(queryItem)
     }

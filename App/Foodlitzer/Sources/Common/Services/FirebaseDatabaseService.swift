@@ -1,17 +1,23 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-final class FirebaseDatabaseService: RemoteDatabaseServiceProtocol {
+final class FirebaseDatabaseService<DataType>: RemoteDatabaseServiceProtocol where DataType: Codable {
     // MARK: - Properties
 
     private let database = Firestore.firestore()
-    private lazy var restaurantCollection = database.collection("restaurants")
+    private let collection: CollectionReference
+
+    // MARK: - Object lifecycle
+
+    init(collectionPath: String) {
+        self.collection = database.collection(collectionPath)
+    }
 
     // MARK: - Save data
 
-    func saveRestaurant(_ restaurant: Restaurant) {
+    func saveData(_ data: DataType) {
         do {
-            _ = try restaurantCollection.addDocument(from: restaurant)
+            _ = try collection.addDocument(from: data)
         } catch {
             debugPrint("Error saving data to firestore: \(error.localizedDescription)")
         }
@@ -19,18 +25,18 @@ final class FirebaseDatabaseService: RemoteDatabaseServiceProtocol {
 
     // MARK: - Fetch data
 
-    func fetchRestaurants() async -> [Restaurant] {
+    func fetchData() async -> [DataType] {
         return await withCheckedContinuation { continuation in
-            restaurantCollection.addSnapshotListener { querySnapshot, error in
+            collection.addSnapshotListener { querySnapshot, error in
                 guard let documents = querySnapshot?.documents else { return }
 
                 if let error = error {
                     debugPrint("Error fetching data from firestore: \(error.localizedDescription)")
                 }
 
-                let restaurants = documents.compactMap { try? $0.data(as: Restaurant.self) }
+                let result = documents.compactMap { try? $0.data(as: DataType.self) }
 
-                continuation.resume(returning: restaurants)
+                continuation.resume(returning: result)
             }
         }
     }

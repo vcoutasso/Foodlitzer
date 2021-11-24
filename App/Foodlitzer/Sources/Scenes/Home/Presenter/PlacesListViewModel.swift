@@ -40,7 +40,7 @@ final class PlacesListViewModel: ObservableObject {
 
 enum PlacesListViewModelFactory {
     static func make() -> PlacesListViewModel {
-        let databaseService = FirebaseDatabaseService()
+        let databaseService = FirebaseDatabaseService<Restaurant>(collectionPath: "restaurants")
         let photosService = PlacePhotosService()
         let placesService = NearbyPlacesService()
         let invalidTypes = ["lodging"]

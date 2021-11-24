@@ -1,4 +1,6 @@
 protocol RemoteDatabaseServiceProtocol {
-    func saveRestaurant(_ restaurant: Restaurant)
-    func fetchRestaurants() async -> [Restaurant]
+    associatedtype DataType: Codable
+
+    func saveData(_ data: DataType)
+    func fetchData() async -> [DataType]
 }
