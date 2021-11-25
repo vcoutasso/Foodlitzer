@@ -1,5 +1,4 @@
-import Foundation
-import SwiftUI
+import Combine
 
 final class PlacesListViewModel: ObservableObject {
     // MARK: - Private properties
@@ -44,8 +43,8 @@ enum PlacesListViewModelFactory {
         let restaurantInfoService = FirebaseDatabaseService<RestaurantInfoDTO>()
         let restaurantImageService = FirebaseDatabaseService<RestaurantImageDTO>()
         let restaurantVideoService = FirebaseDatabaseService<RestaurantVideoDTO>()
-        let mediaService = PlaceMediaService(databaseImageService: restaurantImageService,
-                                             databaseVideoService: restaurantVideoService)
+        let mediaService = RestaurantMediaService(databaseImageService: restaurantImageService,
+                                                  databaseVideoService: restaurantVideoService)
         let placesService = NearbyPlacesService()
         let invalidTypes = ["lodging"]
         let repository = NearbyRestaurantRepository(databaseService: restaurantInfoService,

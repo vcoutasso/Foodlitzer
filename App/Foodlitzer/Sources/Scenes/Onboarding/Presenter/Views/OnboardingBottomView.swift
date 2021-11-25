@@ -1,12 +1,12 @@
 import SwiftUI
 
-struct OnboardingPageView: View {
+struct OnboardingBottomView: View {
     let pageNumber: Int
 
     var body: some View {
         VStack {
             SignWithAppleButtonView()
-            ButtonsOnboadingView(text: "Continue with phone number") {
+            ButtonsOnboadingView(text: "Continue with email") {
                 SignInView(viewModel: SignInViewModelFactory.make())
             }
             Rectangle()
@@ -22,9 +22,9 @@ struct OnboardingPageView: View {
 }
 
 #if DEBUG
-    struct OnboardingPageView_Previews: PreviewProvider {
+    struct OnboardingBottomView_Previews: PreviewProvider {
         static var previews: some View {
-            OnboardingPageView(pageNumber: 0)
+            OnboardingBottomView(pageNumber: 0)
         }
     }
 #endif

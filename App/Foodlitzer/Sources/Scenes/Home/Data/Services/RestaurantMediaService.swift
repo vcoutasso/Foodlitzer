@@ -1,12 +1,12 @@
 import GooglePlaces
 import UIKit
 
-protocol PlaceMediaServiceProtocol {
+protocol RestaurantMediaServiceProtocol {
     func fetchImages(for id: String) async -> [RestaurantImageDTO]
     func fetchVideos(for id: String) async -> [RestaurantVideoDTO]
 }
 
-final class PlaceMediaService: PlaceMediaServiceProtocol {
+final class RestaurantMediaService: RestaurantMediaServiceProtocol {
     // MARK: - Properties
 
     private let placesClient = GMSPlacesClient.shared()
@@ -48,7 +48,7 @@ final class PlaceMediaService: PlaceMediaServiceProtocol {
 
                     let dtos = compressedData.map { RestaurantImageDTO(imageData: $0) }
 
-                    self.uploadToDatabase(imagesData: dtos, for: id)
+                    self.uploadToDatabase(imageDTOs: dtos, for: id)
 
                     continuation.resume(returning: dtos)
                 }
@@ -78,12 +78,12 @@ final class PlaceMediaService: PlaceMediaServiceProtocol {
         }
     }
 
-    private func uploadToDatabase(imagesData: [RestaurantImageDTO], for id: String) {
+    private func uploadToDatabase(imageDTOs: [RestaurantImageDTO], for id: String) {
         let path = "restaurants/\(id)/images"
 
         let group = DispatchGroup()
 
-        imagesData.forEach {
+        imageDTOs.forEach {
             group.enter()
             self.databaseImageService.addDocument($0, to: path)
             group.leave()

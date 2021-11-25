@@ -1,7 +1,7 @@
 import Foundation
 
 protocol NearbyRestaurantRepositoryProtocol {
-    typealias RestaurantTupleDTO = ([RestaurantInfoDTO], [[RestaurantImageDTO]], [[RestaurantVideoDTO]])
+    typealias RestaurantTupleDTO = ([RestaurantInfoDTO], [[RestaurantImageDTO]])
 
     func fetchRestaurants(latitude: String, longitude: String) async -> RestaurantTupleDTO
 }
@@ -10,7 +10,7 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
     // MARK: - Dependencies
 
     private let databaseService: FirebaseDatabaseService<RestaurantInfoDTO>
-    private let mediaService: PlaceMediaServiceProtocol
+    private let mediaService: RestaurantMediaServiceProtocol
     private let placesService: NearbyPlacesServiceProtocol
 
     // MARK: - Properties
@@ -20,7 +20,7 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
     // MARK: - Object lifecycle
 
     init(databaseService: FirebaseDatabaseService<RestaurantInfoDTO>,
-         mediaService: PlaceMediaServiceProtocol,
+         mediaService: RestaurantMediaServiceProtocol,
          placesService: NearbyPlacesServiceProtocol,
          invalidTypes: [String]) {
         self.databaseService = databaseService
@@ -35,8 +35,6 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
         let googlePlacesDTO = await placesService.fetchNearbyPlaces(latitude: latitude, longitude: longitude)
         let restaurantsDTO = parsePlaces(googlePlacesDTO)
         var imagesDTO = [[RestaurantImageDTO]](repeating: [], count: restaurantsDTO.count)
-        // FIXME: Fetch video data
-        var videosDTO = [[RestaurantVideoDTO]](repeating: [], count: restaurantsDTO.count)
 
         DispatchQueue.main.async { [weak self, restaurantsDTO] in
             self?.uploadToDatabase(restaurants: restaurantsDTO)
@@ -48,7 +46,7 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
             imagesDTO[idx] = await mediaService.fetchImages(for: id)
         }
 
-        return (restaurantsDTO, imagesDTO, videosDTO)
+        return (restaurantsDTO, imagesDTO)
     }
 
     private func uploadToDatabase(restaurants: [RestaurantInfoDTO]) {

@@ -18,11 +18,10 @@ final class FetchNearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol
     // MARK: - Protocol methods
 
     func execute(latitude: String, longitude: String) async -> [Restaurant] {
-        let (infosDTO, imagesDTO, _) = await repository.fetchRestaurants(latitude: latitude,
-                                                                         longitude: longitude)
+        let (infosDTO, imagesDTO) = await repository.fetchRestaurants(latitude: latitude,
+                                                                      longitude: longitude)
 
         let restaurantImages = imagesDTO.map { $0.compactMap { UIImage(data: $0.imageData) } }
-        // let restaurantVideos = []
 
         var restaurants = [Restaurant]()
 
