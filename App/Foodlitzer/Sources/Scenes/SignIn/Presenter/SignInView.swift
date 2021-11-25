@@ -31,10 +31,6 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             signInButton
 
             registerButton
-
-            NavigationLink(isActive: $viewModel.didSignIn,
-                           destination: { PlacesListView(viewModel: PlacesListViewModelFactory.make()) },
-                           label: { EmptyView() })
         }
         .halfSheet(showSheet: $viewModel.shouldPresentResetPasswordView) {
             ForgotPasswordView(viewModel: ForgotPasswordViewModelFactory.make())

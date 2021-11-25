@@ -1,37 +1,84 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-final class FirebaseDatabaseService: RemoteDatabaseServiceProtocol {
+final class FirebaseDatabaseService<DataType>: RemoteDatabaseServiceProtocol where DataType: Codable {
     // MARK: - Properties
 
     private let database = Firestore.firestore()
-    private lazy var restaurantCollection = database.collection("restaurants")
 
     // MARK: - Save data
 
-    func saveRestaurant(_ restaurant: Restaurant) {
+    func setDocument(_ data: DataType, with id: String, to path: String) {
+        let document = database.collection(path).document(id)
+
         do {
-            _ = try restaurantCollection.addDocument(from: restaurant)
+            _ = try document.setData(from: data)
         } catch {
             debugPrint("Error saving data to firestore: \(error.localizedDescription)")
         }
     }
 
+    func setBatch(_ data: [DataType], with id: String, to path: String) {
+        let batch = database.batch()
+        let document = database.collection(path).document(id)
+
+        do {
+            try batch.setData(from: data, forDocument: document)
+            batch.commit()
+        } catch {
+            debugPrint("Error saving batch data: \(error.localizedDescription)")
+        }
+    }
+
+    func addDocument(_ data: DataType, to path: String) {
+        let collection = database.collection(path)
+
+        do {
+            _ = try collection.addDocument(from: data)
+        } catch {
+            debugPrint("Error saving data to firestore: \(error.localizedDescription)")
+        }
+    }
+
+    func addBatch(_ data: [DataType], to path: String) {
+        let batch = database.batch()
+        let document = database.collection(path).document()
+
+        do {
+            try batch.setData(from: data, forDocument: document)
+            batch.commit()
+        } catch {
+            debugPrint("Error saving batch data: \(error.localizedDescription)")
+        }
+    }
+
     // MARK: - Fetch data
 
-    func fetchRestaurants() async -> [Restaurant] {
-        return await withCheckedContinuation { continuation in
-            restaurantCollection.addSnapshotListener { querySnapshot, error in
-                guard let documents = querySnapshot?.documents else { return }
+    func fetchCollection(from path: String) async -> [DataType] {
+        var result = [DataType]()
+        let collection = database.collection(path)
 
-                if let error = error {
-                    debugPrint("Error fetching data from firestore: \(error.localizedDescription)")
-                }
-
-                let restaurants = documents.compactMap { try? $0.data(as: Restaurant.self) }
-
-                continuation.resume(returning: restaurants)
-            }
+        do {
+            let querySnapshot = try await collection.getDocuments()
+            result = querySnapshot.documents.compactMap { try? $0.data(as: DataType.self) }
+        } catch {
+            debugPrint("Error fetching data from firestore: \(error.localizedDescription)")
         }
+
+        return result
+    }
+
+    func fetchDocument(from path: String) async -> DataType? {
+        var result: DataType?
+        let document = database.document(path)
+
+        do {
+            let querySnapshot = try await document.getDocument()
+            result = try? querySnapshot.data(as: DataType.self)
+        } catch {
+            debugPrint("Error fetching data from firestore: \(error.localizedDescription)")
+        }
+
+        return result
     }
 }

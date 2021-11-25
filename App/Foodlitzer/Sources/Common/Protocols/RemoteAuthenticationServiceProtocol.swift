@@ -1,6 +1,8 @@
 import Foundation
 
 protocol RemoteAuthenticationServiceProtocol {
+    var isUserSignedIn: Bool { get }
+
     func signIn(withEmail email: String,
                 password: String,
                 completion: @escaping (AuthenticationResult) -> Void)

@@ -1,12 +1,10 @@
 import Combine
-import Foundation
 
 protocol SignInViewModelProtocol: ObservableObject {
     // User input
     var email: String { get set }
     var password: String { get set }
     // Presentation logic
-    var didSignIn: Bool { get set }
     var shouldPromptInvalidCredentials: Bool { get }
     var shouldPresentProfileView: Bool { get set }
     var shouldPresentRegistrationView: Bool { get set }
@@ -28,7 +26,6 @@ final class SignInViewModel: SignInViewModelProtocol {
     @Published var shouldPresentProfileView: Bool
     @Published var shouldPresentRegistrationView: Bool
     @Published var shouldPresentResetPasswordView: Bool
-    @Published var didSignIn: Bool = false
 
     // MARK: - Computed Variables
 

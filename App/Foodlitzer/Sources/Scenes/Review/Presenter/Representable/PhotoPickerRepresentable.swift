@@ -4,11 +4,13 @@ import UIKit
 
 protocol MultiplePhotoPicker {
     var selectedImages: [UIImage] { get }
+    var selectedVideos: [URL] { get }
     var isPresented: Bool { get }
 
     func clearSelection()
     func handle(error: Error?)
     func selectPhoto(_ image: UIImage)
+    func selectVideo(_ url: URL)
     func dismiss()
 }
 
@@ -20,6 +22,7 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
     // MARK: - Attributes
 
     @Binding var selectedImages: [UIImage]
+    @Binding var selectedVideos: [URL]
     @Binding var isPresented: Bool
 
     // MARK: - Representable methods
@@ -43,6 +46,7 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
 
     func clearSelection() {
         selectedImages.removeAll()
+        selectedVideos.removeAll()
     }
 
     func handle(error: Error?) {
@@ -51,6 +55,10 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
 
     func selectPhoto(_ image: UIImage) {
         selectedImages.append(image)
+    }
+
+    func selectVideo(_ url: URL) {
+        selectedVideos.append(url)
     }
 
     func dismiss() {
@@ -63,6 +71,10 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
         // MARK: - Attributes
 
         private let photoPicker: MultiplePhotoPicker
+
+        // MARK: - Identifiers
+
+        private let movieIdentifier = UTType.movie.identifier
 
         // MARK: - Object lifecycle
 
@@ -77,7 +89,7 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
 extension PhotoPickerRepresentable.Coordinator {
     // MARK: - Type aliases
 
-    private typealias ResultType = UIImage
+    private typealias ImageType = UIImage
 }
 
 // MARK: - Delegate methods
@@ -92,20 +104,37 @@ extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
     // MARK: - Helper methods
 
     private func parseAndUpdatePickingResults(_ results: [PHPickerResult]) {
-        let loader: (PHPickerResult) -> Void = { [loadImageCompletionHandler] in
-            $0.itemProvider.loadObject(ofClass: ResultType.self, completionHandler: loadImageCompletionHandler)
+        let imageLoader: (PHPickerResult) -> Void = { [loadImageCompletionHandler] in
+            $0.itemProvider.loadObject(ofClass: ImageType.self, completionHandler: loadImageCompletionHandler)
         }
 
-        results.filter { $0.itemProvider.canLoadObject(ofClass: ResultType.self) }
-            .forEach(loader)
+        let videoLoader: (PHPickerResult) -> Void = { [loadVideoCompletionHandler, movieIdentifier] in
+            $0.itemProvider.loadFileRepresentation(forTypeIdentifier: movieIdentifier,
+                                                   completionHandler: loadVideoCompletionHandler)
+        }
+
+        results.filter { $0.itemProvider.canLoadObject(ofClass: ImageType.self) }
+            .forEach(imageLoader)
+
+        results.filter { $0.itemProvider.hasItemConformingToTypeIdentifier(movieIdentifier) }
+            .forEach(videoLoader)
     }
 
-    private func loadImageCompletionHandler(image: NSItemProviderReading?, error: Error?) {
-        guard let image = image as? UIImage else {
+    private func loadImageCompletionHandler(reading: NSItemProviderReading?, error: Error?) {
+        guard let image = reading as? ImageType else {
             photoPicker.handle(error: error)
             return
         }
 
         photoPicker.selectPhoto(image)
+    }
+
+    private func loadVideoCompletionHandler(url: URL?, error: Error?) {
+        guard let url = url else {
+            photoPicker.handle(error: error)
+            return
+        }
+
+        photoPicker.selectVideo(url)
     }
 }
