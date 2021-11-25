@@ -27,7 +27,7 @@ final class RestaurantMediaService: RestaurantMediaServiceProtocol {
     // MARK: - Fetch images
 
     func fetchImages(for id: String) async -> [RestaurantImageDTO] {
-        var imageDTOs = await fetchFromDatabase(for: id)
+        var imageDTOs = await fetchImagesFromDatabase(for: id)
 
         if imageDTOs.isEmpty {
             imageDTOs = await withCheckedContinuation { continuation in
@@ -58,7 +58,7 @@ final class RestaurantMediaService: RestaurantMediaServiceProtocol {
         return imageDTOs
     }
 
-    private func fetchFromDatabase(for id: String) async -> [RestaurantImageDTO] {
+    private func fetchImagesFromDatabase(for id: String) async -> [RestaurantImageDTO] {
         let data = await databaseImageService.fetchCollection(from: "restaurants/\(id)/images")
 
         return data
@@ -93,6 +93,14 @@ final class RestaurantMediaService: RestaurantMediaServiceProtocol {
     // MARK: - Fetch videos
 
     func fetchVideos(for id: String) async -> [RestaurantVideoDTO] {
-        []
+        let videoDTOs = await fetchVideosFromDatabase(for: id)
+
+        return videoDTOs
+    }
+
+    private func fetchVideosFromDatabase(for id: String) async -> [RestaurantVideoDTO] {
+        let data = await databaseVideoService.fetchCollection(from: "restaurants/\(id)/videos")
+
+        return data
     }
 }
