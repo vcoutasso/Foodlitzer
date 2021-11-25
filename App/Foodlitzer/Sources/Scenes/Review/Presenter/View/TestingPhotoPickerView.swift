@@ -33,13 +33,4 @@ struct TestingPhotoPickerView: View {
     }
 }
 
-extension TestingPhotoPickerView {
-    enum PickerConfigurationFactory {
-        static func make() -> PHPickerConfiguration {
-            var configuration = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
-            configuration.filter = .any(of: [.images, .videos])
-            configuration.selectionLimit = 0
-            return configuration
-        }
-    }
-}
+extension TestingPhotoPickerView {}

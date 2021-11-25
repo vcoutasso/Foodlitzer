@@ -67,7 +67,6 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
 
                     UserReviewGalleryInputBlock(content: $viewModel.userPhotos)
 
-                    // TODO: implementar photopicker
                     // TODO: verificar como passa os dados
 
                     UserTagsInputBlock(currentTag: $viewModel.currentTag, tags: $viewModel.userTags,
@@ -86,7 +85,7 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
                         .padding(.horizontal, 40)
 
                     Button {
-                        // action here
+                        viewModel.sendReview()
                     } label: {
                         Text("Próximo")
                             .font(.system(size: 14, weight: .regular, design: .serif))
@@ -106,3 +105,19 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
         return String(format: "%.2f", percent)
     }
 }
+
+// TODO: Clean this up
+
+struct FeatureDefinition {
+    var question: String
+    var symbol: String
+    var rate: [String]
+}
+
+let lightEvatuation = FeatureDefinition(question: "How do you rate the lighting in the place?", symbol: "lightbulb",
+                                        rate: ["Pouco iluminado", "Muito iluminado"])
+
+let waitEvaluation = FeatureDefinition(question: "Como você avalia o tempo de esperar pela comida?", symbol: "clock",
+                                       rate: ["Muito rápido", "Muito demorado"])
+
+// let soundEvaluation: FeatureDefinition = FeatureDefinition(question: "Avaliação sonora:", symbol: "waveform")

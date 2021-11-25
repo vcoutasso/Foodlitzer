@@ -1,13 +1,20 @@
 import SwiftUI
 
 struct UserReviewGalleryInputBlock: View {
-    @Binding var content: [Data] // TODO: Definir tipo
+    // MARK: - Attributes
+
+    private static let imagePlaceholder = UIImage(systemName: "photo")!
+
+    @State private var isShowingPhotoPicker = false
+    @State private var images = [imagePlaceholder]
+    @State private var videos = [URL]()
+    @Binding var content: [UIImage]
 
     var body: some View {
         VStack {
             if content.isEmpty {
                 HStack {
-                    Image(systemName: "photo")
+                    Image(uiImage: images.first ?? UserReviewGalleryInputBlock.imagePlaceholder)
                         .font(.system(size: 42, weight: .light, design: .default))
                         .foregroundColor(Color.black.opacity(0.3))
                         .frame(width: UIScreen.main.bounds.width - 80, height: 150, alignment: .center)
@@ -34,7 +41,7 @@ struct UserReviewGalleryInputBlock: View {
                                 }
                             } label: {
                                 ZStack {
-                                    Image(uiImage: UIImage(data: media)!)
+                                    Image(uiImage: media)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 100, height: 135)
@@ -60,8 +67,14 @@ struct UserReviewGalleryInputBlock: View {
             }
 
             DefaultButton(label: "Selecionar de vídeos e imagens") {
-                // action here
+                isShowingPhotoPicker.toggle()
             }
+        }
+        .sheet(isPresented: $isShowingPhotoPicker) {
+            PhotoPickerRepresentable(pickerConfiguration: PickerConfigurationFactory.make(),
+                                     selectedImages: $images,
+                                     selectedVideos: $videos,
+                                     isPresented: $isShowingPhotoPicker)
         }
     }
 }

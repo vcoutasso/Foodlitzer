@@ -138,3 +138,12 @@ extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
         photoPicker.selectVideo(url)
     }
 }
+
+enum PickerConfigurationFactory {
+    static func make() -> PHPickerConfiguration {
+        var configuration = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
+        configuration.filter = .any(of: [.images, .videos])
+        configuration.selectionLimit = 0
+        return configuration
+    }
+}
