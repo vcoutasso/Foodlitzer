@@ -4,18 +4,21 @@ protocol NearbyPlacesServiceProtocol {
     func fetchNearbyPlaces(latitude: String, longitude: String) async -> [GooglePlaceDTO]
 }
 
-// TODO: Composition over inheritance
-final class NearbyPlacesService: GetRequestService<RequestResponse<GooglePlaceDTO>>, NearbyPlacesServiceProtocol {
-    // MARK: - Properties
+final class NearbyPlacesService: NearbyPlacesServiceProtocol {
+    // MARK: - Class Properties
 
     static let placesLink: String = #"https://maps.googleapis.com/maps/api/place/nearbysearch/json?"#
 
-    var apiKey: String!
+    // MARK: - Instance Properties
 
-    // MARK: - Constants
+    private var apiKey: String!
 
     private let nearbyRadius: Int
     private let placeType: String
+
+    // MARK: - Dependencies
+
+    private let getRequestService: GetRequestService<RequestResponse<GooglePlaceDTO>>
 
     // MARK: - Object lifecycle
 
@@ -26,38 +29,33 @@ final class NearbyPlacesService: GetRequestService<RequestResponse<GooglePlaceDT
         retrieveAPIKey()
     }
 
-    private init(from baseURL: URL, for type: String, within radius: Int, with decoder: JSONDecoding) {
-        self.placeType = type
-        self.nearbyRadius = radius
-        super.init(from: baseURL, with: decoder)
-    }
-
     private init?(from link: String, for type: String, within radius: Int, with decoder: JSONDecoding) {
         self.placeType = type
         self.nearbyRadius = radius
-        super.init(from: link, with: decoder)
+        self.getRequestService = .init(from: link, with: decoder)!
     }
 
     // MARK: - Public methods
 
     func fetchNearbyPlaces(latitude: String, longitude: String) async -> [GooglePlaceDTO] {
-        addQueryItem(name: "location", value: "\(latitude),\(longitude)")
-        addQueryItem(name: "radius", value: String(nearbyRadius))
-        addQueryItem(name: "type", value: placeType)
-        addQueryItem(name: "key", value: apiKey)
+        getRequestService.addQueryItem(name: "location", value: "\(latitude),\(longitude)")
+        getRequestService.addQueryItem(name: "radius", value: String(nearbyRadius))
+        getRequestService.addQueryItem(name: "type", value: placeType)
+        getRequestService.addQueryItem(name: "key", value: apiKey)
 
-        let result = await makeRequest()
+        let result = await getRequestService.makeRequest()
 
         switch result {
         case let .success(response):
             return response.results
         case let .failure(error):
-            debugPrint("Get nearby places error: \(error.localizedDescription)")
+            debugPrint("Fetch nearby places error: \(error.localizedDescription)")
             return []
         }
     }
 
-    func retrieveAPIKey() {
+    // TODO: Storing secrets in plist files is not safe, find a better alternative
+    private func retrieveAPIKey() {
         guard let path = Bundle.main.path(forResource: Strings.GooglePlaces.infoFilename,
                                           ofType: Strings.GooglePlaces.infoFileExtension),
             let plistContent = NSDictionary(contentsOfFile: path),

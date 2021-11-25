@@ -27,15 +27,15 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
 
     // MARK: - Properties
 
+    private lazy var backendUpdateCallback: (AppUser?) -> Void = { [weak self] user in
+        self?.appUser = user
+        self?.objectWillChange.send()
+    }
+
     var appUser: AppUser?
 
     var isUserSignedIn: Bool {
         appUser != nil
-    }
-
-    private lazy var backendUpdateCallback: (AppUser?) -> Void = { [weak self] user in
-        self?.appUser = user
-        self?.objectWillChange.send()
     }
 
     // MARK: - Object lifecycle
