@@ -10,7 +10,6 @@ protocol RegisterViewModelProtocol: ObservableObject {
     var confirmPasswordText: String { get set }
 
     // Presentation logic
-    var didRegister: Bool { get set }
     var shouldPromptInvalidEmail: Bool { get }
     var shouldPromptInvalidPassword: Bool { get }
     var shouldPromptPasswordMismatch: Bool { get }
@@ -26,7 +25,6 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     @Published var emailText: String
     @Published var passwordText: String
     @Published var confirmPasswordText: String
-    @Published var didRegister: Bool = false
 
     // MARK: - Private Atributes
 
@@ -107,7 +105,6 @@ final class RegisterViewModel: RegisterViewModelProtocol {
             switch result {
             case let .success(user):
                 debugPrint("User logged in with name: '\(user!.name))' and email: '\(user!.email)'")
-                self?.didRegister = true
             case let .failure(error):
                 self?.updateFailureFlags(for: error)
             }

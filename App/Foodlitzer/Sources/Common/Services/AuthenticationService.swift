@@ -27,15 +27,15 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
 
     // MARK: - Properties
 
-    var appUser: AppUser?
-
-    var isUserSignedIn: Bool {
-        appUser != nil
-    }
-
     private lazy var backendUpdateCallback: (AppUser?) -> Void = { [weak self] user in
         self?.appUser = user
         self?.objectWillChange.send()
+    }
+
+    var appUser: AppUser?
+
+    var isUserSignedIn: Bool {
+        backendService.isUserSignedIn
     }
 
     // MARK: - Object lifecycle
@@ -74,4 +74,8 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
     func resetPassword() {
         backendService.resetPassword()
     }
+
+    func editAccount(with name: String,
+                     email: String,
+                     completion: @escaping (AuthenticationResult) -> Void) {}
 }

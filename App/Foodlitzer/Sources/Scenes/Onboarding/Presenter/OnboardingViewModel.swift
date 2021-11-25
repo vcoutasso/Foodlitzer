@@ -1,4 +1,5 @@
 import Combine
+
 protocol OnboardingViewModelProtocol: ObservableObject {
     var currentPage: Int { get set }
 }

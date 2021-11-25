@@ -6,6 +6,7 @@ struct TestingPhotoPickerView: View {
 
     @State private var isShowingPhotoPicker = false
     @State private var images = [imagePlaceholder]
+    @State private var videos = [URL]()
 
     private static let imagePlaceholder = UIImage(systemName: "person.fill")!
 
@@ -26,6 +27,7 @@ struct TestingPhotoPickerView: View {
         .sheet(isPresented: $isShowingPhotoPicker) {
             PhotoPickerRepresentable(pickerConfiguration: PickerConfigurationFactory.make(),
                                      selectedImages: $images,
+                                     selectedVideos: $videos,
                                      isPresented: $isShowingPhotoPicker)
         }
     }
@@ -35,7 +37,7 @@ extension TestingPhotoPickerView {
     enum PickerConfigurationFactory {
         static func make() -> PHPickerConfiguration {
             var configuration = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
-            configuration.filter = .images
+            configuration.filter = .any(of: [.images, .videos])
             configuration.selectionLimit = 0
             return configuration
         }

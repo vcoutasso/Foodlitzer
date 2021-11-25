@@ -20,8 +20,8 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
             deleteButton
             signOutButton
         }.navigationBarTitleDisplayMode(.inline)
-            .toolbar { // <2>
-                ToolbarItem(placement: .principal) { // <3>
+            .toolbar {
+                ToolbarItem(placement: .principal) {
                     VStack {
                         Text("Settings")
                             .font(.custom("Lora-Regular", size: 20))
@@ -37,15 +37,18 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
                 .foregroundColor(Color.black)
                 .background(Rectangle()
                     .strokeBorder(Color.black, lineWidth: 0.5)
-                    .background(Rectangle().foregroundColor(Color.white))
-                    .frame(width: 195, height: 31)).offset(x: 0, y: 5)
+                    .frame(width: 195, height: 31)
+                    .background(Color.white))
+                .zIndex(10)
+
             VStack {
                 HStack {
                     Text("Name: \(viewModel.userName ?? "N/A")")
                         .font(.compact(.regular, size: 24))
-                    // EditProfileButtonView(destination: EditProfileView(userName: $viewModel.userName, userEmail: $viewModel.userEmail)
+                    EditProfileButtonView(destination: { EditProfileView(userName: $viewModel.editingName,
+                                                                         userEmail: $viewModel.editingEmail)
+                    })
                 }
-                .padding()
                 Text("Email: \(viewModel.userEmail ?? "N/A")")
                     .padding()
             }.background(Rectangle()
@@ -56,7 +59,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
 
     private var permissions: some View {
         VStack {
-            permissionTitle
+            permissionTitle.zIndex(10)
             VStack {
                 permissionsLocation
                 Rectangle()
@@ -79,8 +82,8 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
             .foregroundColor(Color.black)
             .background(Rectangle()
                 .strokeBorder(Color.black, lineWidth: 0.5)
-                .background(Rectangle().foregroundColor(Color.white))
-                .frame(width: 195, height: 31))
+                .frame(width: 195, height: 31)
+                .background(Color.white))
     }
 
     private var permissionsLocation: some View {

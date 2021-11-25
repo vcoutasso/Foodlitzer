@@ -4,7 +4,7 @@ struct OnboardingView<ViewModelType>: View where ViewModelType: OnboardingViewMo
     // MARK: - Attributes
 
     @ObservedObject private(set) var viewModel: ViewModelType
-    // TODO: Show actual page content
+
     private let onboardingPages = Array(1...3)
 
     // MARK: - View body
@@ -18,12 +18,14 @@ struct OnboardingView<ViewModelType>: View where ViewModelType: OnboardingViewMo
                         .ignoresSafeArea()
                         .tag(index)
                 }
-            }.edgesIgnoringSafeArea(.top)
-                .tabViewStyle(PageTabViewStyle())
-                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-            OnboardingPageView(pageNumber: viewModel.currentPage)
+            }
+            .edgesIgnoringSafeArea(.top)
+            .tabViewStyle(PageTabViewStyle())
+            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
 
-        }.background(Color.white)
+            OnboardingBottomView(pageNumber: viewModel.currentPage)
+        }
+        .background(Color.white)
     }
 }
 

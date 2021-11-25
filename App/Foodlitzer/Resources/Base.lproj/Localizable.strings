@@ -20,3 +20,5 @@
 "register.confirmPassword.placeholder" = "Confirm password";
 
 "search.placeholder.text" = "Find a restaurant";
+
+"tag.reviewed.text" = "Reviewed";

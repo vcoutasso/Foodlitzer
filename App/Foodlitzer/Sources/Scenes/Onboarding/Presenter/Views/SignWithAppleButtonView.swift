@@ -3,9 +3,7 @@ import SwiftUI
 struct SignWithAppleButtonView: View {
     var body: some View {
         VStack {
-            Button(action: {
-                print("Tapped")
-            }, label: {
+            Button(action: {}, label: {
                 HStack {
                     Image(systemName: "applelogo")
                     Text("Sign in with Apple")

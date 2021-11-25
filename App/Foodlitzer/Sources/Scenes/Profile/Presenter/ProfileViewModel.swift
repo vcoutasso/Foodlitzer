@@ -1,6 +1,8 @@
 import Foundation
 
 protocol ProfileViewModelProtocol: ObservableObject {
+    var editingName: String { get set }
+    var editingEmail: String { get set }
     var userName: String? { get }
     var userEmail: String? { get }
     func signOut()
@@ -9,6 +11,9 @@ protocol ProfileViewModelProtocol: ObservableObject {
 
 final class ProfileViewModel: ProfileViewModelProtocol {
     // MARK: - Published Atributes
+
+    @Published var editingName: String
+    @Published var editingEmail: String
 
     var userName: String? {
         authenticationService.appUser?.name
@@ -26,6 +31,8 @@ final class ProfileViewModel: ProfileViewModelProtocol {
 
     init(authenticationService: AuthenticationServiceProtocol) {
         self.authenticationService = authenticationService
+        self.editingName = authenticationService.appUser?.name ?? ""
+        self.editingEmail = authenticationService.appUser?.email ?? ""
     }
 
     // MARK: - Public Method
@@ -37,6 +44,11 @@ final class ProfileViewModel: ProfileViewModelProtocol {
 
     func delete() {
         // TODO: - Delete Method
+    }
+
+    func editAccount() {
+        authenticationService.editAccount(with: editingName, email: editingEmail) { _ in
+        }
     }
 }
 

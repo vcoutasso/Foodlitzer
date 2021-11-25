@@ -1,6 +1,8 @@
 import Foundation
 
 protocol RemoteAuthenticationServiceProtocol {
+    var isUserSignedIn: Bool { get }
+
     func signIn(withEmail email: String,
                 password: String,
                 completion: @escaping (AuthenticationResult) -> Void)
@@ -10,4 +12,7 @@ protocol RemoteAuthenticationServiceProtocol {
                        completion: @escaping (AuthenticationResult) -> Void)
     func signOut()
     func resetPassword()
+    func editAccount(with name: String,
+                     email: String,
+                     completion: @escaping (AuthenticationResult) -> Void)
 }

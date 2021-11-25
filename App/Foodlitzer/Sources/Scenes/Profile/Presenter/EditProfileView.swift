@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct EditProfileView: View {
-    @State var userName: String
-    @State var userEmail: String
+    @Binding var userName: String
+    @Binding var userEmail: String
     var body: some View {
         editText
         nameField

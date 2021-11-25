@@ -6,6 +6,12 @@ final class FirebaseAuthenticationService: RemoteAuthenticationServiceProtocol {
     private var authStateListener: AuthStateDidChangeListenerHandle?
     private lazy var defaultAuth = Auth.auth()
 
+    // MARK: - Computed variables
+
+    var isUserSignedIn: Bool {
+        defaultAuth.currentUser != nil
+    }
+
     // MARK: - Object lifecycle
 
     init(stateChangeCallback: @escaping (AppUser?) -> Void) {
@@ -71,6 +77,10 @@ final class FirebaseAuthenticationService: RemoteAuthenticationServiceProtocol {
                 }
             }
         }
+    }
+
+    func editAccount(with name: String, email: String, completion: @escaping (AuthenticationResult) -> Void) {
+        // TODO: - Create method
     }
 
     private func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {

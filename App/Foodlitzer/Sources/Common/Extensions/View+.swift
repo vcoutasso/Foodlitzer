@@ -13,4 +13,8 @@ extension View {
     func customStroke() -> some View {
         modifier(CustomStroke())
     }
+
+    func imageFilter() -> some View {
+        modifier(ImageFilter())
+    }
 }
