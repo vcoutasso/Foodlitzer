@@ -11,8 +11,7 @@ struct Application: App {
                 if authenticationService.isUserSignedIn {
                     LandigPageView()
                 } else {
-                    LandigPageView()
-                    // OnboardingView(viewModel: OnboardingViewModel())
+                    OnboardingView(viewModel: OnboardingViewModel())
                 }
             }
         }
