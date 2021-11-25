@@ -12,4 +12,7 @@ protocol RemoteAuthenticationServiceProtocol {
                        completion: @escaping (AuthenticationResult) -> Void)
     func signOut()
     func resetPassword()
+    func editAccount(with name: String,
+                     email: String,
+                     completion: @escaping (AuthenticationResult) -> Void)
 }

@@ -1,6 +1,6 @@
 import Combine
 
-final class PlacesListViewModel: ObservableObject {
+final class TabHomeViewModel: ObservableObject {
     // MARK: - Private properties
 
     private var userLocationUseCase: UserLocationUseCaseProtocol
@@ -20,7 +20,7 @@ final class PlacesListViewModel: ObservableObject {
         userLocationUseCase.setup()
     }
 
-    func handleButtonTapped(completion: @escaping ([PlacesListView.Model]) -> Void) {
+    func handleButtonTapped(completion: @escaping ([TabHomeView.Model]) -> Void) {
         if let (latitude, longitude) = userLocationUseCase.execute() {
             let latitudeDescription = latitude.description
             let longitudeDescription = longitude.description
@@ -38,8 +38,8 @@ final class PlacesListViewModel: ObservableObject {
     }
 }
 
-enum PlacesListViewModelFactory {
-    static func make() -> PlacesListViewModel {
+enum TabHomeViewModelFactory {
+    static func make() -> TabHomeViewModel {
         let restaurantInfoService = FirebaseDatabaseService<RestaurantInfoDTO>()
         let restaurantImageService = FirebaseDatabaseService<RestaurantImageDTO>()
         let restaurantVideoService = FirebaseDatabaseService<RestaurantVideoDTO>()
@@ -54,7 +54,7 @@ enum PlacesListViewModelFactory {
         let userLocationUseCase = UserLocationUseCase()
         let nearbyRestaurantsUseCase = FetchNearbyRestaurantsUseCase(repository: repository)
 
-        return PlacesListViewModel(userLocationUseCase: userLocationUseCase,
-                                   nearbyRestaurantsUseCase: nearbyRestaurantsUseCase)
+        return TabHomeViewModel(userLocationUseCase: userLocationUseCase,
+                                nearbyRestaurantsUseCase: nearbyRestaurantsUseCase)
     }
 }

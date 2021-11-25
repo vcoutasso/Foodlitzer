@@ -9,7 +9,7 @@ struct Application: App {
         WindowGroup {
             NavigationView {
                 if authenticationService.isUserSignedIn {
-                    PlacesListView(viewModel: PlacesListViewModelFactory.make())
+                    LandigPageView()
                 } else {
                     OnboardingView(viewModel: OnboardingViewModel())
                 }
