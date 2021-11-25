@@ -11,8 +11,7 @@ struct Application: App {
                 if authenticationService.isUserSignedIn {
                     PlacesListView(viewModel: PlacesListViewModelFactory.make())
                 } else {
-                    // OnboardingView(viewModel: OnboardingViewModel())
-                    TestingPhotoPickerView()
+                    OnboardingView(viewModel: OnboardingViewModel())
                 }
             }
         }
