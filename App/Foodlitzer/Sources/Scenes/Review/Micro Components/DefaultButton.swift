@@ -7,7 +7,7 @@ struct DefaultButton: View {
     var body: some View {
         Button(action: action) {
             Text(label)
-                .font(.system(size: 14, weight: .regular, design: .serif))
+                .font(.compact(.regular, size: 14))
                 .foregroundColor(.white)
                 .frame(width: UIScreen.main.bounds.width - 80, height: 40)
                 .background(Color.black)

@@ -8,11 +8,7 @@ struct Application: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                if authenticationService.isUserSignedIn {
-                    PlacesListView(viewModel: PlacesListViewModelFactory.make())
-                } else {
-                    OnboardingView(viewModel: OnboardingViewModel())
-                }
+                SoundBars()
             }
         }
     }

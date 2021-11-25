@@ -17,7 +17,7 @@ struct ItemEvaluation: View {
                     .foregroundColor(.black)
 
                 Text(restaurantFeatures.question)
-                    .font(.system(size: 14, weight: .regular, design: .default))
+                    .font(.compact(.regular, size: 14))
             }
             .padding(.bottom, 10)
 
@@ -30,7 +30,7 @@ struct ItemEvaluation: View {
                     Spacer()
                     Text(restaurantFeatures.rate[1])
                 }
-                .font(.system(size: 12, weight: .light, design: .serif))
+                .font(.compact(.light, size: 12))
                 .padding(.bottom, 35)
             }
             .padding(.horizontal, 30) // 50

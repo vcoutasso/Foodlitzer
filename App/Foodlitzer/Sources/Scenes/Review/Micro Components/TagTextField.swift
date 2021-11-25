@@ -11,7 +11,7 @@ struct TagTextField: View {
                 isKeyboadShowing = isEditing
             })
             .frame(width: 309)
-            .font(.system(size: 18, weight: .regular))
+            .font(.compact(.regular, size: 18))
             .keyboardType(.default)
             .autocapitalization(.none)
             .onSubmit {

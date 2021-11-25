@@ -20,7 +20,7 @@ struct UserTagsInputBlock: View {
                 } label: {
                     HStack {
                         Text(tag)
-                            .font(.system(size: 12, weight: .light, design: .default))
+                            .font(.compact(.light, size: 12))
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 12, weight: .regular, design: .default))
                     }

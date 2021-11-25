@@ -67,6 +67,7 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
 
                     UserReviewGalleryInputBlock(content: $viewModel.userPhotos)
 
+                    // TODO: implementar photopicker
                     // TODO: verificar como passa os dados
 
                     UserTagsInputBlock(currentTag: $viewModel.currentTag, tags: $viewModel.userTags,

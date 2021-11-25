@@ -6,7 +6,7 @@ struct UserRatingBlock: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Dê sua nota para o restaurante:")
-                .font(.system(size: 14, weight: .light, design: .serif))
+                .font(.compact(.regular, size: 14))
                 .padding(.bottom, 10)
 
             UserRate(rating: $userRate)
