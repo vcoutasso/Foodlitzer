@@ -27,4 +27,4 @@ jobs:
         run: make generate
 
       - name: Build project
-        run : xcodebuild build -workspace App/SpiderVerse.xcworkspace -scheme SpiderVerse -destination platform\=iOS\ Simulator,OS\=15.0,name\=iPhone\ 13
+        run : xcodebuild build -workspace App/Foodlitzer.xcworkspace -scheme Foodlitzer -destination platform\=iOS\ Simulator,OS\=15.0,name\=iPhone\ 13

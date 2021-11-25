@@ -2,11 +2,12 @@ platform :ios, '15.0'
 use_frameworks!
 inhibit_all_warnings!
 
-target 'SpiderVerse' do
+target 'Foodlitzer' do
+  pod 'FirebaseFirestoreSwift'
+  pod 'Firebase/Firestore'
   pod 'Firebase/Analytics'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
-  pod 'Firebase/Database'
 
   pod 'GooglePlaces'
 

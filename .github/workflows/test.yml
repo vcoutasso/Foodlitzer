@@ -27,7 +27,7 @@ jobs:
         run: make generate
 
       - name: Build project
-        run : xcodebuild test -workspace App/SpiderVerse.xcworkspace -scheme SpiderVerse -destination platform\=iOS\ Simulator,OS\=15.0,name\=iPhone\ 13 CODE_SIGNING_ALLOWED=NO
+        run : xcodebuild test -workspace App/Foodlitzer.xcworkspace -scheme Foodlitzer -destination platform\=iOS\ Simulator,OS\=15.0,name\=iPhone\ 13 CODE_SIGNING_ALLOWED=NO
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.2.1
