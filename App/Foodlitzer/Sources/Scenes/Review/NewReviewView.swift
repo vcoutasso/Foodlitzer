@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct NewReview<ViewModelType>: View where ViewModelType: NewReviewViewModelProtocol {
+struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewModelProtocol {
     @ObservedObject private(set) var viewModel: ViewModelType
     @Namespace var tagPosition
     @State var isTyping: Bool = false
@@ -15,7 +15,7 @@ struct NewReview<ViewModelType>: View where ViewModelType: NewReviewViewModelPro
                         Spacer()
 
                         Text("New Review")
-                            .font(.system(size: 36, weight: .regular, design: .serif))
+                            .font(.lora(.regular, size: 36))
 
                         Spacer()
                     }
@@ -44,13 +44,13 @@ struct NewReview<ViewModelType>: View where ViewModelType: NewReviewViewModelPro
                                 .foregroundColor(.black)
 
                             Text("Avaliação sonora:")
-                                .font(.system(size: 14, weight: .regular, design: .default))
+                                .font(.compact(.regular, size: 14))
                         }
                         .padding(.horizontal, 40)
                         .padding(.bottom, 10)
 
                         DefaultButton(label: "Avaliar Agora") {
-                            // Sound wave action here
+                            SoundBars()
                         }
                         .padding(.horizontal, 40)
                     }
