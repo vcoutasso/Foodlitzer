@@ -35,7 +35,7 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
     var appUser: AppUser?
 
     var isUserSignedIn: Bool {
-        appUser != nil
+        backendService.isUserSignedIn
     }
 
     // MARK: - Object lifecycle

@@ -6,6 +6,12 @@ final class FirebaseAuthenticationService: RemoteAuthenticationServiceProtocol {
     private var authStateListener: AuthStateDidChangeListenerHandle?
     private lazy var defaultAuth = Auth.auth()
 
+    // MARK: - Computed variables
+
+    var isUserSignedIn: Bool {
+        defaultAuth.currentUser != nil
+    }
+
     // MARK: - Object lifecycle
 
     init(stateChangeCallback: @escaping (AppUser?) -> Void) {
