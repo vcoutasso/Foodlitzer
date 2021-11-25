@@ -29,10 +29,11 @@ final class PlacesListViewModel: ObservableObject {
             Task {
                 let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitudeDescription,
                                                                          longitude: longitudeDescription)
-                completion(restaurants.map { .init(id: $0.id!,
+                completion(restaurants.map { .init(id: $0.id,
                                                    name: $0.name,
                                                    address: $0.address,
-                                                   images: $0.imagesData.compactMap { $0.asImage() }) })
+                                                   images: $0.images.compactMap { $0.asImage() })
+                })
             }
         }
     }
@@ -40,13 +41,16 @@ final class PlacesListViewModel: ObservableObject {
 
 enum PlacesListViewModelFactory {
     static func make() -> PlacesListViewModel {
-        let databaseService = FirebaseDatabaseService<Restaurant>(collectionPath: "restaurants")
-        let photosService = PlacePhotosService()
+        let restaurantInfoService = FirebaseDatabaseService<RestaurantInfoDTO>()
+        let restaurantImageService = FirebaseDatabaseService<RestaurantImageDTO>()
+        let restaurantVideoService = FirebaseDatabaseService<RestaurantVideoDTO>()
+        let mediaService = PlaceMediaService(databaseImageService: restaurantImageService,
+                                             databaseVideoService: restaurantVideoService)
         let placesService = NearbyPlacesService()
         let invalidTypes = ["lodging"]
-        let repository = NearbyRestaurantRepository(databaseService: databaseService,
-                                                    photosService: photosService,
-                                                    remoteService: placesService,
+        let repository = NearbyRestaurantRepository(databaseService: restaurantInfoService,
+                                                    mediaService: mediaService,
+                                                    placesService: placesService,
                                                     invalidTypes: invalidTypes)
         let userLocationUseCase = UserLocationUseCase()
         let nearbyRestaurantsUseCase = FetchNearbyRestaurantsUseCase(repository: repository)

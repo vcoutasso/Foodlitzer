@@ -1,14 +1,16 @@
 import Foundation
 
 protocol NearbyRestaurantRepositoryProtocol {
-    func fetchRestaurants(latitude: String, longitude: String) async -> [Restaurant]
+    typealias RestaurantTupleDTO = ([RestaurantInfoDTO], [[RestaurantImageDTO]], [[RestaurantVideoDTO]])
+
+    func fetchRestaurants(latitude: String, longitude: String) async -> RestaurantTupleDTO
 }
 
 final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
     // MARK: - Dependencies
 
-    private let databaseService: FirebaseDatabaseService<Restaurant>
-    private let photosService: PlacePhotosServiceProtocol
+    private let databaseService: FirebaseDatabaseService<RestaurantInfoDTO>
+    private let mediaService: PlaceMediaServiceProtocol
     private let placesService: NearbyPlacesServiceProtocol
 
     // MARK: - Properties
@@ -17,49 +19,49 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
 
     // MARK: - Object lifecycle
 
-    init(databaseService: FirebaseDatabaseService<Restaurant>,
-         photosService: PlacePhotosServiceProtocol,
-         remoteService: NearbyPlacesServiceProtocol,
+    init(databaseService: FirebaseDatabaseService<RestaurantInfoDTO>,
+         mediaService: PlaceMediaServiceProtocol,
+         placesService: NearbyPlacesServiceProtocol,
          invalidTypes: [String]) {
         self.databaseService = databaseService
-        self.photosService = photosService
-        self.placesService = remoteService
+        self.mediaService = mediaService
+        self.placesService = placesService
         self.invalidTypes = invalidTypes
     }
 
     // MARK: - Fetch restaraunts
 
-    func fetchRestaurants(latitude: String, longitude: String) async -> [Restaurant] {
-        let placesDTO = await placesService.fetchNearbyPlaces(latitude: latitude, longitude: longitude)
-        var restaurants = parsePlaces(placesDTO)
+    func fetchRestaurants(latitude: String, longitude: String) async -> RestaurantTupleDTO {
+        let googlePlacesDTO = await placesService.fetchNearbyPlaces(latitude: latitude, longitude: longitude)
+        let restaurantsDTO = parsePlaces(googlePlacesDTO)
+        var imagesDTO = [[RestaurantImageDTO]](repeating: [], count: restaurantsDTO.count)
+        // FIXME: Fetch video data
+        var videosDTO = [[RestaurantVideoDTO]](repeating: [], count: restaurantsDTO.count)
 
-        for index in restaurants.indices {
-            restaurants[index].imagesData = await withCheckedContinuation { continuation in
-                guard let id = restaurants[index].id else { return }
-
-                photosService.fetchPlaceImages(for: id) { images in
-                    let compressedImages = images.prefix(5).compactMap { $0.jpegData(compressionQuality: 0.20) }
-                    continuation.resume(returning: compressedImages)
-                }
-            }
+        DispatchQueue.main.async { [weak self, restaurantsDTO] in
+            self?.uploadToDatabase(restaurants: restaurantsDTO)
         }
 
-        let restaurantsWithImages = restaurants.filter { !$0.imagesData.isEmpty }
+        for idx in restaurantsDTO.indices {
+            guard let id = restaurantsDTO[idx].id else { continue }
 
-        DispatchQueue.main.async { [weak self] in
-            self?.uploadToDatabase(restaurants: restaurantsWithImages)
+            imagesDTO[idx] = await mediaService.fetchImages(for: id)
         }
 
-        return restaurantsWithImages
+        return (restaurantsDTO, imagesDTO, videosDTO)
     }
 
-    private func uploadToDatabase(restaurants: [Restaurant]) {
-        restaurants.forEach { databaseService.saveData($0) }
+    private func uploadToDatabase(restaurants: [RestaurantInfoDTO]) {
+        restaurants.forEach {
+            guard let id = $0.id else { return }
+
+            databaseService.setDocument($0, with: id, to: "restaurants")
+        }
     }
 
     // MARK: - Helper methods
 
-    private func parsePlaces(_ places: [GooglePlaceDTO]) -> [Restaurant] {
+    private func parsePlaces(_ places: [GooglePlaceDTO]) -> [RestaurantInfoDTO] {
         places.compactMap { dto in
             guard let id = dto.placeID,
                   let name = dto.name,
@@ -70,13 +72,12 @@ final class NearbyRestaurantRepository: NearbyRestaurantRepositoryProtocol {
                   let types = dto.types,
                   isValid(types: types) else { return nil }
 
-            return Restaurant(id: id,
-                              name: name,
-                              rating: rating,
-                              totalRatings: totalRatings,
-                              address: address,
-                              priceLevel: priceLevel,
-                              imagesData: [])
+            return RestaurantInfoDTO(id: id,
+                                     name: name,
+                                     rating: rating,
+                                     totalRatings: totalRatings,
+                                     address: address,
+                                     priceLevel: priceLevel)
         }
     }
 

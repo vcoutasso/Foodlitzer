@@ -49,13 +49,13 @@ final class NearbyPlacesService: NearbyPlacesServiceProtocol {
         case let .success(response):
             return response.results
         case let .failure(error):
-            debugPrint("Get nearby places error: \(error.localizedDescription)")
+            debugPrint("Fetch nearby places error: \(error.localizedDescription)")
             return []
         }
     }
 
     // TODO: Storing secrets in plist files is not safe, find a better alternative
-    func retrieveAPIKey() {
+    private func retrieveAPIKey() {
         guard let path = Bundle.main.path(forResource: Strings.GooglePlaces.infoFilename,
                                           ofType: Strings.GooglePlaces.infoFileExtension),
             let plistContent = NSDictionary(contentsOfFile: path),
