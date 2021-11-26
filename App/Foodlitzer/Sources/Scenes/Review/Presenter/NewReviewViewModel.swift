@@ -71,7 +71,6 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
         let images = userPhotos.compactMap { RestaurantImageDTO(imageData: $0.compressedJPEG()!) }
         let videos = userVideos.map { RestaurantVideoDTO(url: $0, videoData: nil) }
 
-        // FIXME: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         saveReviewUseCase.execute(review: review, for: id)
         saveMediaUseCase.execute(images: images, videos: videos, for: id)
     }

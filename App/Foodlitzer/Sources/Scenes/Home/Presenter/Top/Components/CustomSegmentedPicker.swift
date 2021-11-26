@@ -12,7 +12,7 @@ struct CustomSegmentedPicker: View {
             GeometryReader { g in
 
                 HStack(spacing: 0) {
-                    TabHomeView(viewModel: TabHomeViewModelFactory.make())
+                    TabHomeView()
                         .frame(width: g.frame(in: .global).width)
 
                     TabRestaurantsView(viewModel: TabHomeViewModelFactory.make())
