@@ -5,7 +5,7 @@ struct OnboardingBottomView: View {
 
     var body: some View {
         VStack {
-            SignWithAppleButtonView()
+//            SignWithAppleButtonView()
             ButtonsOnboadingView(text: "Continue with email") {
                 SignInView(viewModel: SignInViewModelFactory.make())
             }
