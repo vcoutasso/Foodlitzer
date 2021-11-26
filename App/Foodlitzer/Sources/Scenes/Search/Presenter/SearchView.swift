@@ -5,15 +5,25 @@ struct SearchView<ViewModelProtocol>: View where ViewModelProtocol: SearchViewMo
     @State private var showCancelButton: Bool = false
 
     var body: some View {
-        ScrollView {
+        VStack(spacing: 0) {
             SearchBar(query: $viewModel.searchText, showCancelButton: $showCancelButton)
+                .padding(.bottom, 10)
 
-            // TODO: Botas os cards a partir do search
+            // TODO: progressView enquanto pesquisa
+            // TODO: dismiss swipe direita
 
-            Spacer()
+            Rectangle()
+                .foregroundColor(Color.black)
+                .frame(height: 0.4)
+            List {
+                ForEach(viewModel.cardModels) { model in
+                    ListCard(content: model)
+                        .listRowSeparator(.hidden)
+                }
+            }
+            .listStyle(.inset)
         }
         .onAppear { UIScrollView.appearance().keyboardDismissMode = .onDrag }
-        .background(Color("BackgroundColor"))
         .navigationBarHidden(true)
     }
 }

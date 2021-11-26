@@ -18,7 +18,6 @@ struct SearchBar: View {
     var body: some View {
         HStack {
             searchField
-                .background(Color("BackgroundColor"))
 
             if showCancelButton { cancelButton }
         }
