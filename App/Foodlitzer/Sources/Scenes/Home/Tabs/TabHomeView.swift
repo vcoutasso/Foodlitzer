@@ -12,9 +12,6 @@ import SwiftUI
 struct TabHomeView: View {
     // MARK: - Properties
 
-    @MainActor var viewModel: TabHomeViewModel
-    @State private(set) var restaurants: [Model] = []
-
     var body: some View {
         VStack {
             helloName
@@ -23,33 +20,7 @@ struct TabHomeView: View {
             Spacer()
             bestReviewed
             placesToDiscover
-            Button {
-                DispatchQueue.main.async {
-                    viewModel.handleButtonTapped { restaurants in
-                        self.restaurants = restaurants
-                    }
-                }
-            } label: {
-                Text("hello")
-            }
-            ForEach(restaurants) { place in
-                Text(place.name)
-                Text(place.address)
-                place.images[0]
-                    .resizable()
-                    .frame(width: 120, height: 120, alignment: .center)
-            }
-
-        }.onAppear {
-            viewModel.handleOnAppear()
         }
-    }
-
-    struct Model: Identifiable {
-        let id: String
-        let name: String
-        let address: String
-        let images: [Image]
     }
 
     private var helloName: some View {

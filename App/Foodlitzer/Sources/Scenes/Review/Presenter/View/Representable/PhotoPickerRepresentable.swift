@@ -50,15 +50,19 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
     }
 
     func handle(error: Error?) {
-        debugPrint("Could not load image. Got error: '\(String(describing: error?.localizedDescription))'")
+        debugPrint("Could not load data. Got error: '\(String(describing: error?.localizedDescription))'")
     }
 
     func selectPhoto(_ image: UIImage) {
-        selectedImages.append(image)
+        DispatchQueue.main.async {
+            selectedImages.append(image)
+        }
     }
 
-    func selectVideo(_ url: URL) {
-        selectedVideos.append(url)
+    func selectVideo(_ data: URL) {
+        DispatchQueue.main.async {
+            selectedVideos.append(data)
+        }
     }
 
     func dismiss() {
@@ -109,8 +113,8 @@ extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
         }
 
         let videoLoader: (PHPickerResult) -> Void = { [loadVideoCompletionHandler, movieIdentifier] in
-            $0.itemProvider.loadFileRepresentation(forTypeIdentifier: movieIdentifier,
-                                                   completionHandler: loadVideoCompletionHandler)
+            $0.itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: movieIdentifier,
+                                                          completionHandler: loadVideoCompletionHandler)
         }
 
         results.filter { $0.itemProvider.canLoadObject(ofClass: ImageType.self) }
@@ -129,12 +133,25 @@ extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
         photoPicker.selectPhoto(image)
     }
 
-    private func loadVideoCompletionHandler(url: URL?, error: Error?) {
-        guard let url = url else {
+    private func loadVideoCompletionHandler(url: URL?, isOriginal: Bool, error: Error?) {
+        guard isOriginal else {
+            debugPrint("Got temporary video file copy. File reference would be released, skipping file.")
+            return
+        }
+        guard let url = url, error == nil else {
             photoPicker.handle(error: error)
             return
         }
 
         photoPicker.selectVideo(url)
+    }
+}
+
+enum PickerConfigurationFactory {
+    static func make() -> PHPickerConfiguration {
+        var configuration = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
+        configuration.filter = .any(of: [.images, .videos])
+        configuration.selectionLimit = 0
+        return configuration
     }
 }

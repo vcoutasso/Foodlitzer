@@ -43,7 +43,7 @@ final class FetchNearbyRestaurantsUseCase: FetchNearbyRestaurantsUseCaseProtocol
     // MARK: - Helper methods
 
     // TODO: The filtering should probably be configurable through a dependency
-    private func topRated(restaurants: [Restaurant], count: Int = 5) -> [Restaurant] {
+    private func topRated(restaurants: [Restaurant], count: Int = 10) -> [Restaurant] {
         Array(restaurants.sorted(by: { $0.rating * Float($0.totalRatings) > $1.rating * Float($1.totalRatings) })
             .prefix(count))
     }
