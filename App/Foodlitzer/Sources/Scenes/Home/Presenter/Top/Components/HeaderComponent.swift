@@ -10,8 +10,7 @@ struct HeaderComponent: View {
 
             Spacer()
 
-            Text("foodlitzer")
-                .font(.lora(.regular, size: 17))
+            Image("miniLogo")
 
             Spacer()
 
