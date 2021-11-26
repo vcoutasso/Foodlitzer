@@ -18,7 +18,7 @@ struct SearchBar: View {
     var body: some View {
         HStack {
             searchField
-                .background(Color("BackgroundColor"))
+                .background(Color("BackgroundColor").edgesIgnoringSafeArea(.all))
 
             if showCancelButton { cancelButton }
         }

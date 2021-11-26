@@ -5,6 +5,7 @@ struct HeaderComponent: View {
         HStack {
             HeaderButtonView(text: "magnifyingglass") {
                 SearchView()
+                    .background(Color("BackgroundColor").edgesIgnoringSafeArea(.all))
 //                SearchBar(query: $query, showCancelButton: $showCancelButton)
             }
 

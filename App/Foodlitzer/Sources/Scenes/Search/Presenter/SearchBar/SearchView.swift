@@ -4,23 +4,38 @@ struct SearchView: View {
     @State var query: String = ""
     @State var showCancelButton: Bool = false
 
+    var color = "BackgroundColor"
+
     init() {
         UIScrollView.appearance().keyboardDismissMode = .onDrag
+        UITableView.appearance().backgroundColor = UIColor.clear
     }
 
     var body: some View {
-        ScrollView {
+        VStack(spacing: 0) {
             SearchBar(query: $query, showCancelButton: $showCancelButton)
+                .padding(.bottom, 10)
+                .background(Color(color).edgesIgnoringSafeArea(.all))
 
-            // TODO: Botas os cards a partir do search
+            Rectangle()
+                .foregroundColor(Color.black)
+                .frame(height: 0.4)
+            List {
+                ForEach(1..<5) { _ in
+                    ListCard(restaurantName: "daskldal", restaurantRate: 3, address: "dals;kdasl;", price: 4)
+                        .listRowSeparator(.hidden, edges: .bottom)
+                        .listRowBackground(Color(color))
+                }
+                .background(Color(color).edgesIgnoringSafeArea(.all))
 
-            ForEach {
-                ListCard(restaurantName: <#T##String#>, restaurantRate: <#T##Int#>, address: <#T##String#>,
-                         price: <#T##Int#>)
+                Spacer()
             }
+            .listStyle(.inset)
+            .background(Color(color).edgesIgnoringSafeArea(.all))
+
             Spacer()
         }
-        .background(Color("BackgroundColor"))
+        .background(Color(color).edgesIgnoringSafeArea(.all))
         .navigationBarHidden(true)
     }
 }
