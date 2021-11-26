@@ -1,11 +1,9 @@
 import SwiftUI
 
 struct TopHomeView: View {
-    @State var query: String = ""
-    @State var showCancelButton: Bool = false
     var body: some View {
         VStack(spacing: 0) {
-            HeaderComponent(query: $query, showCancelButton: $showCancelButton)
+            HeaderComponent()
                 .padding(.vertical) // set final padding
 
             CustomSegmentedPicker()

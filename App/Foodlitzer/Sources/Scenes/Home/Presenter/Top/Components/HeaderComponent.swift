@@ -1,12 +1,11 @@
 import SwiftUI
 
 struct HeaderComponent: View {
-    @Binding var query: String
-    @Binding var showCancelButton: Bool
     var body: some View {
         HStack {
             HeaderButtonView(text: "magnifyingglass") {
-                SearchBar(query: $query, showCancelButton: $showCancelButton)
+                SearchView()
+//                SearchBar(query: $query, showCancelButton: $showCancelButton)
             }
 
             Spacer()

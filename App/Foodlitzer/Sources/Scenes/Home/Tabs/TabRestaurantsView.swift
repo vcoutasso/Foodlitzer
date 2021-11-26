@@ -10,13 +10,13 @@ struct TabRestaurantsView: View {
                 ProgressView()
                     .padding(.top, 200)
                     .onAppear {
-                        DispatchQueue.main.async {
-                            viewModel.handleButtonTapped { restaurants in
-                                self.restaurants = restaurants
-                                print(restaurants)
-                            }
-                        }
-                        viewModel.handleOnAppear()
+//                        DispatchQueue.main.async {
+//                            viewModel.handleButtonTapped { restaurants in
+//                                self.restaurants = restaurants
+//                                print(restaurants)
+//                            }
+//                        }
+//                        viewModel.handleOnAppear()
                     }
             } else {
                 Text("Nearby Restaurants")
