@@ -7,4 +7,5 @@ protocol RemoteDatabaseServiceProtocol {
     func addBatch(_ data: [DataType], to path: String)
     func fetchCollection(from path: String) async -> [DataType]
     func fetchDocument(from path: String) async -> DataType?
+    func queryCollection(from path: String, where: String, matches: String) async -> [DataType]
 }
