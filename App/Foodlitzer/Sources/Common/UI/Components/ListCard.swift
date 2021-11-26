@@ -59,4 +59,14 @@ struct ListCard: View {
         .border(Color.black, width: 0.3)
         .padding()
     }
+
+    // MARK: Inner types
+
+    struct CardModel: Identifiable {
+        let id = UUID()
+        let name: String
+        let rating: Int
+        let address: String
+        let price: Int
+    }
 }

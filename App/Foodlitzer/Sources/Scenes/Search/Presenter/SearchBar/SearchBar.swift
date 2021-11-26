@@ -24,7 +24,7 @@ struct SearchBar: View {
         }
         .padding(.leading, 20)
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { /// Anything over 0.5 seems to work
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Anything over 0.5 seems to work
                 self.focusedField = .field
             }
         }
