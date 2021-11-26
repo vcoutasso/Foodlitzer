@@ -12,6 +12,7 @@ struct Application: App {
                     LandigPageView()
                 } else {
                     OnboardingView(viewModel: OnboardingViewModel())
+//                    LandigPageView()
                 }
             }
         }
