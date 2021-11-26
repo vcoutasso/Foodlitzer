@@ -81,4 +81,20 @@ final class FirebaseDatabaseService<DataType>: RemoteDatabaseServiceProtocol whe
 
         return result
     }
+
+    // MARK: - Query
+
+    func queryCollection(from path: String, where field: String, matches query: String) async -> [DataType] {
+        var result = [DataType]()
+        let collection = database.collection(path)
+
+        do {
+            let querySnapshot = try await collection.whereField(field, isEqualTo: query).getDocuments()
+            result = querySnapshot.documents.compactMap { try? $0.data(as: DataType.self) }
+        } catch {
+            debugPrint("Error querying data from firestore: \(error.localizedDescription)")
+        }
+
+        return result
+    }
 }

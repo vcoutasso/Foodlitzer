@@ -41,47 +41,48 @@ struct TabRestaurantsView: View {
                 // TODO: Abrir página do restaurante on tap
                 // TODO: Salvar restaurantes?
 
-                //                NavigationLink {
-                //                    // destination
-                //                } label: {
-                //                    Text("Show More")
-                //                        .font(.compact(.regular, size: 14))
-                //                        .foregroundColor(.white)
-                //                        .frame(width: UIScreen.main.bounds.width - 80, height: 40)
-                //                        .background(Color.black)
-                //                }
-                //                .padding(.bottom, 50)
-                //
-                //                Text("Experienced Restaurants")
-                //                    .font(.lora(.regular, size: 24))
-                //
-                //                Text("Here are the latest restaurants you've reviewed.")
-                //                    .font(.compact(.regular, size: 14))
-                //                    .padding(.bottom, 20)
-                //
-                //                ScrollView(.horizontal, showsIndicators: false) {
-                //                    HStack {
-                //                        Rectangle()
-                //                            .foregroundColor(.clear)
-                //                            .frame(width: 30, height: 30)
+                NavigationLink {
+                    // destination
+                } label: {
+                    Text("Show More")
+                        .font(.compact(.regular, size: 14))
+                        .foregroundColor(.white)
+                        .frame(width: UIScreen.main.bounds.width - 80, height: 40)
+                        .background(Color.black)
+                }
+                .padding(.bottom, 50)
 
-                //                    ForEach(restaurants) { restaurant in
-                //                        MiniCard(restaurantName: restaurant.name, restaurantRate: 5, isReviewed: true, image: "placeHolder")
-                //                            .padding(.trailing, 30)
-                //                    }
-                //                    } // TODO: Implementar histórico de visita do usuário
-                //                }
-                //                .padding(.bottom, 30)
+                Text("Experienced Restaurants")
+                    .font(.lora(.regular, size: 24))
 
-                //                NavigationLink {
-                //                    // destination
-                //                } label: {
-                //                    Text("Show More")
-                //                        .font(.compact(.light, size: 14))
-                //                        .foregroundColor(.white)
-                //                        .frame(width: UIScreen.main.bounds.width - 80, height: 40)
-                //                        .background(Color.black)
-                //                }
+                Text("Here are the latest restaurants you've reviewed.")
+                    .font(.compact(.regular, size: 14))
+                    .padding(.bottom, 20)
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        Rectangle()
+                            .foregroundColor(.clear)
+                            .frame(width: 30, height: 30)
+
+                        ForEach(restaurants) { restaurant in
+                            MiniCard(restaurantName: restaurant.name, restaurantRate: 5, isReviewed: true,
+                                     image: "placeHolder")
+                                .padding(.trailing, 30)
+                        }
+                    } // TODO: Implementar histórico de visita do usuário
+                }
+                .padding(.bottom, 30)
+
+                NavigationLink {
+                    // destination
+                } label: {
+                    Text("Show More")
+                        .font(.compact(.light, size: 14))
+                        .foregroundColor(.white)
+                        .frame(width: UIScreen.main.bounds.width - 80, height: 40)
+                        .background(Color.black)
+                }
             }
         }
     }

@@ -1,16 +1,14 @@
 import SwiftUI
 
 struct ListCard: View {
-    var restaurantName: String
-    var restaurantRate: Int
-    var address: String
-    var price: Int
-    @State private var maxRate = 5
+    let content: CardModel
+
+    private let maxRate = 5
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text(restaurantName.uppercased())
+                Text(content.name.uppercased())
                     .font(.compact(.regular, size: 12))
                     .padding(10)
                     .frame(height: 50)
@@ -28,7 +26,7 @@ struct ListCard: View {
                 Image(systemName: Strings.Symbols.address)
                     .padding(.leading, 10)
                     .font(.system(size: 12, weight: .light, design: .default))
-                Text(address)
+                Text(content.address)
                     .font(.compact(.light, size: 11))
                     .padding(5)
             }
@@ -39,7 +37,7 @@ struct ListCard: View {
                     .padding(.trailing, 5)
                     .font(.system(size: 12, weight: .light, design: .default))
 
-                ForEach(0..<price) { _ in
+                ForEach(0..<content.price) { _ in
                     Text("$")
                         .font(.compact(.light, size: 11))
                 }
@@ -47,7 +45,7 @@ struct ListCard: View {
                 Spacer()
 
                 ForEach(0..<maxRate) { num in
-                    Image(systemName: num < restaurantRate ? Strings.Symbols.starFill : Strings.Symbols.star)
+                    Image(systemName: num < content.rating ? Strings.Symbols.starFill : Strings.Symbols.star)
                         .font(.system(size: 9, weight: .regular, design: .default))
                         .padding(1)
                 }
@@ -56,7 +54,19 @@ struct ListCard: View {
             .padding(.vertical, 5)
             .padding(.trailing, 10)
         }
+        .background(Color.white)
         .border(Color.black, width: 0.3)
-        .padding()
+        .padding(.horizontal, 20)
+        .padding(.bottom, 20)
+    }
+
+    // MARK: Inner types
+
+    struct CardModel: Identifiable {
+        let id = UUID()
+        let name: String
+        let rating: Int
+        let address: String
+        let price: Int
     }
 }

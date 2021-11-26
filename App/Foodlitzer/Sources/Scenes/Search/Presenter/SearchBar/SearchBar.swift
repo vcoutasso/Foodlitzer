@@ -3,8 +3,15 @@ import SwiftUI
 struct SearchBar: View {
     // MARK: - Binding Atributes
 
+    enum FocusField: Hashable {
+        case field
+    }
+
     @Binding var query: String
     @Binding var showCancelButton: Bool
+
+    @Environment(\.presentationMode) var presentationMode
+    @FocusState private var focusedField: FocusField?
 
     // MARK: - View
 
@@ -14,7 +21,12 @@ struct SearchBar: View {
 
             if showCancelButton { cancelButton }
         }
-        .navigationBarHidden(showCancelButton)
+        .padding(.leading, 20)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Anything over 0.5 seems to work
+                self.focusedField = .field
+            }
+        }
     }
 
     // MARK: - Extracted Views
@@ -31,6 +43,7 @@ struct SearchBar: View {
         .customStroke()
         .overlay(clearFieldButton)
         .animation(.default, value: query)
+        .focused($focusedField, equals: .field)
     }
 
     private var clearFieldButton: some View {
@@ -58,6 +71,7 @@ struct SearchBar: View {
                 hideKeyboard() // TODO: Quando scrollar, dar dissmiss no keyboard
                 self.query = ""
                 self.showCancelButton = false
+                presentationMode.wrappedValue.dismiss()
             }
         }
         .font(.system(size: 11, weight: .medium, design: .default))
