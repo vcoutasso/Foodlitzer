@@ -24,8 +24,7 @@ struct OnboardingView<ViewModelType>: View where ViewModelType: OnboardingViewMo
             .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
 
             OnboardingBottomView(pageNumber: viewModel.currentPage)
-        }
-        .background(Color.white)
+        }.background(Color("background"))
     }
 }
 

@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct FontePadrao: ViewModifier{
-    
+struct FontePadrao: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.system(size: 14, weight: .light))
@@ -17,14 +16,15 @@ struct FontePadrao: ViewModifier{
     }
 }
 
-struct SimbolosPadrao: ViewModifier{
+struct SimbolosPadrao: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.system(size: 24, weight: .regular))
             .foregroundColor(.white)
     }
 }
-struct Indicadores: ViewModifier{
+
+struct Indicadores: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.system(size: 12, weight: .light))
@@ -32,7 +32,7 @@ struct Indicadores: ViewModifier{
     }
 }
 
-struct ButtonAction: ViewModifier{
+struct ButtonAction: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.system(size: 12, weight: .light))

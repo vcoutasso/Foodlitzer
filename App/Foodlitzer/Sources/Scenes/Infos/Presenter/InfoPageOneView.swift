@@ -10,9 +10,9 @@ import SwiftUI
 struct InfoPageOneView: View {
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 0){
+            VStack(spacing: 0) {
                 Spacer()
-                HStack{
+                HStack {
                     Image("locationicon")
                         .resizable()
                         .frame(width: 10, height: 15)
@@ -20,9 +20,9 @@ struct InfoPageOneView: View {
                 }
                 .modifier(FontePadrao())
                 .frame(width: 350, height: 30)
-                
+
                 HStack(spacing: 0) {
-                    HStack(spacing: 0){
+                    HStack(spacing: 0) {
                         Image("GoogleIcon")
                             .padding(.horizontal, 7)
                         Image(systemName: "star")
@@ -33,16 +33,15 @@ struct InfoPageOneView: View {
                     }
                     .modifier(FontePadrao())
                     .frame(width: 175, height: 30)
-                    
-                    HStack{
+
+                    HStack {
                         Image(systemName: "dollarsign.circle")
                         Text("$$$$")
                     }
                     .modifier(FontePadrao())
                     .frame(width: 175, height: 30)
-                
                 }
-                HStack{
+                HStack {
                     Image("FoodlitzerIcon")
                         .frame(width: 10, height: 15)
                         .padding(.horizontal, 7)
@@ -61,9 +60,9 @@ struct InfoPageOneView: View {
 }
 
 #if DEBUG
-struct InfoPageOneView_Previews: PreviewProvider {
-    static var previews: some View {
-        InfoPageOneView()
+    struct InfoPageOneView_Previews: PreviewProvider {
+        static var previews: some View {
+            InfoPageOneView()
+        }
     }
-}
 #endif

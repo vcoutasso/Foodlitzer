@@ -9,10 +9,10 @@ import SwiftUI
 
 struct TopInfoView: View {
     @State private var showAlert = false
-    
+
     var body: some View {
-        VStack(spacing: 0){
-            HStack() {
+        VStack(spacing: 0) {
+            HStack {
                 Button {
                     showAlert = true
                 } label: {
@@ -34,23 +34,24 @@ struct TopInfoView: View {
             }
             .padding(.horizontal, 30)
             .padding(.vertical, 10)
-            
-            HStack() {
+
+            HStack {
                 Image(systemName: "speaker.wave.3")
                     .modifier(SimbolosPadrao())
                 Spacer()
             }
             .padding(.horizontal, 30)
             .padding(.vertical, 10)
-            .alert(isPresented: $showAlert){
-                Alert(title: Text("Info"), message: Text("As informações básicas sobre este restaurante são fornecidas pelo Google."), dismissButton: .default(Text("OK")))
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Info"),
+                      message: Text("As informações básicas sobre este restaurante são fornecidas pelo Google."),
+                      dismissButton: .default(Text("OK")))
             }
             Spacer()
         }
         .padding(.top, 10)
     }
 }
-
 
 struct TopInfoView_Previews: PreviewProvider {
     static var previews: some View {

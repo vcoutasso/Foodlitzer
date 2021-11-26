@@ -8,27 +8,26 @@
 import SwiftUI
 
 struct InfoPageTwoView: View {
-    
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading) {
             Spacer()
             Text("Iluminação")
                 .modifier(Indicadores())
                 .padding(4)
                 .background(Color.black)
-            HStack(){
+            HStack {
                 Image(systemName: "lightbulb")
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(.white)
-                VStack(spacing: 0){
-                    ZStack(alignment: .leading){
+                VStack(spacing: 0) {
+                    ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 12)
                             .frame(width: 278, height: 10, alignment: .leading)
                         RoundedRectangle(cornerRadius: 12)
                             .frame(width: 100, height: 10, alignment: .leading)
                             .foregroundColor(.white)
                     }
-                    HStack(spacing: 0){
+                    HStack(spacing: 0) {
                         Text("Pouco iluminado")
                             .modifier(Indicadores())
                         Spacer()
@@ -42,19 +41,19 @@ struct InfoPageTwoView: View {
                 .modifier(Indicadores())
                 .padding(4)
                 .background(Color.black)
-            HStack(){
+            HStack {
                 Image(systemName: "clock")
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(.white)
-                VStack(spacing: 0){
-                    ZStack(alignment: .leading){
+                VStack(spacing: 0) {
+                    ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 12)
                             .frame(width: 278, height: 10, alignment: .leading)
                         RoundedRectangle(cornerRadius: 12)
                             .frame(width: 100, height: 10, alignment: .leading)
                             .foregroundColor(.white)
                     }
-                    HStack(spacing: 0){
+                    HStack(spacing: 0) {
                         Text("Muito Rápido")
                             .modifier(Indicadores())
                         Spacer()
@@ -68,19 +67,19 @@ struct InfoPageTwoView: View {
                 .modifier(Indicadores())
                 .padding(4)
                 .background(Color.black)
-            HStack(){
+            HStack {
                 Image(systemName: "waveform")
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(.white)
-                VStack(spacing: 0){
-                    ZStack(alignment: .leading){
+                VStack(spacing: 0) {
+                    ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 12)
                             .frame(width: 278, height: 10, alignment: .leading)
                         RoundedRectangle(cornerRadius: 12)
                             .frame(width: 100, height: 10, alignment: .leading)
                             .foregroundColor(.white)
                     }
-                    HStack(spacing: 0){
+                    HStack(spacing: 0) {
                         Text("Silencioso")
                             .modifier(Indicadores())
                             .padding(.leading, 0)
@@ -97,10 +96,11 @@ struct InfoPageTwoView: View {
         .padding(.vertical, 50)
     }
 }
+
 #if DEBUG
-struct InfoPageTwoView_Previews: PreviewProvider {
-    static var previews: some View {
-        InfoPageTwoView()
+    struct InfoPageTwoView_Previews: PreviewProvider {
+        static var previews: some View {
+            InfoPageTwoView()
+        }
     }
-}
 #endif

@@ -8,36 +8,35 @@
 import SwiftUI
 
 struct InformationView<ViewModelType>: View where ViewModelType: InformationViewModelProtocol {
-    //MARK: Atributos
-    
+    // MARK: Atributos
+
     @ObservedObject private(set) var viewModel: ViewModelType
-    
-    //TODO: Conteúdo das páginas
+
+    // TODO: Conteúdo das páginas
     private let InformationPages = Array(1...5)
-    
+
     var body: some View {
-        ZStack(){
+        ZStack {
             PlayerView()
                 .ignoresSafeArea()
-            TabView(){
+            TabView {
                 InfoPageOneView()
                 InfoPageTwoView()
                 InfoPageThreeView()
                     .ignoresSafeArea()
                 InfoPageFourView()
-                    
-                
             }
-        TopInfoView()
+            TopInfoView()
         }
         .tabViewStyle(PageTabViewStyle())
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
     }
 }
+
 #if DEBUG
-struct InformationView_Previews: PreviewProvider {
-    static var previews: some View {
-        InformationView(viewModel: InformationViewModel())
+    struct InformationView_Previews: PreviewProvider {
+        static var previews: some View {
+            InformationView(viewModel: InformationViewModel())
+        }
     }
-}
 #endif
