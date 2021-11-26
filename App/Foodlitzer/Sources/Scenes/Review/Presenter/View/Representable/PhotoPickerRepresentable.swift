@@ -4,13 +4,13 @@ import UIKit
 
 protocol MultiplePhotoPicker {
     var selectedImages: [UIImage] { get }
-    var selectedVideos: [Data] { get }
+    var selectedVideos: [URL] { get }
     var isPresented: Bool { get }
 
     func clearSelection()
     func handle(error: Error?)
     func selectPhoto(_ image: UIImage)
-    func selectVideo(_ url: Data)
+    func selectVideo(_ url: URL)
     func dismiss()
 }
 
@@ -22,7 +22,7 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
     // MARK: - Attributes
 
     @Binding var selectedImages: [UIImage]
-    @Binding var selectedVideos: [Data]
+    @Binding var selectedVideos: [URL]
     @Binding var isPresented: Bool
 
     // MARK: - Representable methods
@@ -59,7 +59,7 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
         }
     }
 
-    func selectVideo(_ data: Data) {
+    func selectVideo(_ data: URL) {
         DispatchQueue.main.async {
             selectedVideos.append(data)
         }
@@ -113,8 +113,8 @@ extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
         }
 
         let videoLoader: (PHPickerResult) -> Void = { [loadVideoCompletionHandler, movieIdentifier] in
-            $0.itemProvider.loadFileRepresentation(forTypeIdentifier: movieIdentifier,
-                                                   completionHandler: loadVideoCompletionHandler)
+            $0.itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: movieIdentifier,
+                                                          completionHandler: loadVideoCompletionHandler)
         }
 
         results.filter { $0.itemProvider.canLoadObject(ofClass: ImageType.self) }
@@ -133,14 +133,17 @@ extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
         photoPicker.selectPhoto(image)
     }
 
-    private func loadVideoCompletionHandler(url: URL?, error: Error?) {
-        guard let url = url,
-              let data = try? Data(contentsOf: url) else {
+    private func loadVideoCompletionHandler(url: URL?, isOriginal: Bool, error: Error?) {
+        guard isOriginal else {
+            debugPrint("Got temporary video file copy. File reference would be released, skipping file.")
+            return
+        }
+        guard let url = url, error == nil else {
             photoPicker.handle(error: error)
             return
         }
 
-        photoPicker.selectVideo(data)
+        photoPicker.selectVideo(url)
     }
 }
 

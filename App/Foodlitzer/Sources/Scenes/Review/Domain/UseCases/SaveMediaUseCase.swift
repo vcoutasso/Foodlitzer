@@ -1,3 +1,4 @@
+import AVFoundation
 import Foundation
 
 protocol SaveMediaUseCaseProtocol {
@@ -42,11 +43,40 @@ final class SaveMediaUseCase: SaveMediaUseCaseProtocol {
 
         let group = DispatchGroup()
 
-        // FIXME: Doesn't seem to work for large files (11MB was too big)
-        videoDTOs.forEach {
-            group.enter()
-            videoDatabaseService.addDocument($0, to: path)
-            group.leave()
+        videoDTOs.forEach { dto in
+            Task {
+                group.enter()
+
+                let exportSession = await compressVideo(url: dto.url)
+                guard let exportSession = exportSession else {
+                    debugPrint("Got nil export session. Aborting upload.")
+                    return
+                }
+
+                if case .completed = exportSession.status {
+                    guard let compressedData = try? Data(contentsOf: exportSession.outputURL!) else { return }
+
+                    videoDatabaseService.addDocument(RestaurantVideoDTO(url: dto.url, videoData: compressedData),
+                                                     to: path)
+                } else {
+                    debugPrint("Could not complete video file compression.")
+                }
+
+                group.leave()
+            }
         }
+    }
+
+    private func compressVideo(url: URL) async -> AVAssetExportSession? {
+        let urlAsset = AVURLAsset(url: url)
+        // TODO: Apparently Firestore caps at 10MB files. Medium quality is not always enough
+        guard let exportSession = AVAssetExportSession(asset: urlAsset,
+                                                       presetName: AVAssetExportPresetMediumQuality) else { return nil }
+
+        exportSession.outputURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
+        exportSession.outputFileType = .mp4
+        exportSession.shouldOptimizeForNetworkUse = true
+        await exportSession.export()
+        return exportSession
     }
 }

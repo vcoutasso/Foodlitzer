@@ -5,7 +5,7 @@ struct Review {
     let ambientLighting: CGFloat
     let waitingTime: CGFloat
     let ambientNoise: CGFloat
-    let userVideos: [Data]
+    let userVideos: [URL]
     let userPhotos: [UIImage]
     let userTags: [String]
     let userRating: Int

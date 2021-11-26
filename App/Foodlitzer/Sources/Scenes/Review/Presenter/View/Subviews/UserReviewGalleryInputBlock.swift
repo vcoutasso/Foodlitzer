@@ -8,7 +8,7 @@ struct UserReviewGalleryInputBlock: View {
 
     @State private var isShowingPhotoPicker = false
     @Binding var images: [UIImage]
-    @Binding var videos: [Data]
+    @Binding var videos: [URL]
 
     var body: some View {
         VStack {

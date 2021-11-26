@@ -4,7 +4,7 @@ protocol NewReviewViewModelProtocol: ObservableObject {
     var ambientLighting: CGFloat { get set }
     var waitingTime: CGFloat { get set }
     var ambientNoise: CGFloat { get set }
-    var userVideos: [Data] { get set }
+    var userVideos: [URL] { get set }
     var userPhotos: [UIImage] { get set }
     var userTags: [String] { get set }
     var userRating: Int { get set }
@@ -22,7 +22,7 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
     @Published var ambientLighting: CGFloat
     @Published var waitingTime: CGFloat
     @Published var ambientNoise: CGFloat
-    @Published var userVideos: [Data]
+    @Published var userVideos: [URL]
     @Published var userPhotos: [UIImage]
     @Published var userTags: [String]
     @Published var userRating: Int
@@ -69,7 +69,7 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
                             userTags: userTags,
                             userRating: userRating)
         let images = userPhotos.compactMap { RestaurantImageDTO(imageData: $0.compressedJPEG()!) }
-        let videos = userVideos.map { RestaurantVideoDTO(videoData: $0) }
+        let videos = userVideos.map { RestaurantVideoDTO(url: $0, videoData: nil) }
 
         // FIXME: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         saveReviewUseCase.execute(review: review, for: id)
