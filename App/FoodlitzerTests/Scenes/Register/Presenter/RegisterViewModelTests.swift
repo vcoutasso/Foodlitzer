@@ -10,6 +10,8 @@ final class RegisterViewModelTests: XCTestCase {
     // MARK: - Test doubles
 
     final class AuthenticationServiceDummy: AuthenticationServiceProtocol {
+        func editAccount(with name: String, email: String, completion: @escaping (AuthenticationResult) -> Void) {}
+
         var appUser: AppUser?
 
         var isUserSignedIn: Bool = false

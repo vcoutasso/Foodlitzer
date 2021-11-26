@@ -1,5 +1,6 @@
 import AVFoundation
 import Foundation
+import SwiftUI
 
 class MicrophoneMonitor: ObservableObject {
     // MARK: Atributes
@@ -8,8 +9,12 @@ class MicrophoneMonitor: ObservableObject {
     private var timer: Timer?
 
     private var currentSample: Int
-    private var numberOfSamples: Int = 75
 
+    private var numberOfSamples: Int = 65
+    
+    private var totalSamples: Float = 0
+    private var media: Int = 0
+    
     @Published public var soundSamples: [Float]
 
     init() {
@@ -43,9 +48,12 @@ class MicrophoneMonitor: ObservableObject {
         }
     }
 
-    private func normalizeSoundLevel(level: Float) -> CGFloat {
-        let level = max(0.2, CGFloat(level) + 100) / 2
-        return CGFloat(level * (300 / 50))
+    func normalizeSoundLevel(level: Float) -> CGFloat {
+
+        let level = max(0.2, CGFloat(level) + 50) / 2
+        totalSamples += Float(level * (50 / 25))
+        return CGFloat(level * (50 / 25))
+
     }
 
     func startMonitoring() {
@@ -58,6 +66,7 @@ class MicrophoneMonitor: ObservableObject {
             if self.currentSample == self.numberOfSamples {
                 self.audioRecorder.stop()
                 self.timer?.invalidate()
+                self.media = Int(self.totalSamples)/self.numberOfSamples
             }
         })
     }
@@ -66,5 +75,4 @@ class MicrophoneMonitor: ObservableObject {
         timer?.invalidate()
         audioRecorder.stop()
     }
-    // TO-DO
 }
