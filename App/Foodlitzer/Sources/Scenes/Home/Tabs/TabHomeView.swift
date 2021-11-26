@@ -1,10 +1,3 @@
-//
-//  TabHomeView.swift
-//  Foodlitzer
-//
-//  Created by Alessandra Souza da Silva on 24/11/21.
-//
-
 import SwiftUI
 
 // MARK: - Inner types
@@ -19,7 +12,9 @@ struct TabHomeView: View {
             description
             Spacer()
             bestReviewed
+            Spacer()
             placesToDiscover
+            Spacer()
         }
     }
 
@@ -41,13 +36,17 @@ struct TabHomeView: View {
                 .frame(width: 330, height: 149))
             HStack {
                 Image(systemName: "newspaper")
-                Text("New review")
-                    .font(.compact(.regular, size: 12))
-                    .foregroundColor(Color.white)
-                    .background(Rectangle()
-                        .frame(width: 195, height: 31, alignment: .center)
-                        .background(Color.black))
-
+                NavigationLink {
+                    NewReviewView(viewModel: NewReviewViewModelFactory.make())
+                } label: {
+                    Text("New review")
+                        .font(.compact(.regular, size: 12))
+                        .foregroundColor(Color.white)
+                        .background(Rectangle()
+                            .frame(width: 195, height: 31, alignment: .center)
+                            .background(Color.black))
+                }
+                .tint(.black)
             }.zIndex(10)
                 .offset(x: -18, y: 5)
         }
