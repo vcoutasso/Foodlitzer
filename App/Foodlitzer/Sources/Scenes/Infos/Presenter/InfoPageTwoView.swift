@@ -13,8 +13,7 @@ struct InfoPageTwoView: View {
         VStack(alignment: .leading){
             Spacer()
             Text("Iluminação")
-                .font(.system(size: 12, weight: .light))
-                .foregroundColor(.white)
+                .modifier(Indicadores())
                 .padding(4)
                 .background(Color.black)
             HStack(){
@@ -31,19 +30,16 @@ struct InfoPageTwoView: View {
                     }
                     HStack(spacing: 0){
                         Text("Pouco iluminado")
-                            .font(.system(size: 12, weight: .light))
-                            .foregroundColor(.white)
+                            .modifier(Indicadores())
                         Spacer()
                         Text("Muito iluminado")
-                            .font(.system(size: 12, weight: .light))
-                            .foregroundColor(.white)
+                            .modifier(Indicadores())
                     }
                     .frame(width: 278)
                 }
             }
             Text("Tempo de espera")
-                .font(.system(size: 12, weight: .light))
-                .foregroundColor(.white)
+                .modifier(Indicadores())
                 .padding(4)
                 .background(Color.black)
             HStack(){
@@ -60,19 +56,16 @@ struct InfoPageTwoView: View {
                     }
                     HStack(spacing: 0){
                         Text("Muito Rápido")
-                            .font(.system(size: 12, weight: .light))
-                            .foregroundColor(.white)
+                            .modifier(Indicadores())
                         Spacer()
                         Text("Muito lento")
-                            .font(.system(size: 12, weight: .light))
-                            .foregroundColor(.white)
+                            .modifier(Indicadores())
                     }
                     .frame(width: 278)
                 }
             }
             Text("Som ambiente")
-                .font(.system(size: 12, weight: .light))
-                .foregroundColor(.white)
+                .modifier(Indicadores())
                 .padding(4)
                 .background(Color.black)
             HStack(){
@@ -89,13 +82,11 @@ struct InfoPageTwoView: View {
                     }
                     HStack(spacing: 0){
                         Text("Silencioso")
-                            .font(.system(size: 12, weight: .light))
-                            .foregroundColor(.white)
+                            .modifier(Indicadores())
                             .padding(.leading, 0)
                         Spacer()
                         Text("Barulhento")
-                            .font(.system(size: 12, weight: .light))
-                            .foregroundColor(.white)
+                            .modifier(Indicadores())
                             .padding(.trailing, 0)
                     }
                     .frame(width: 278)

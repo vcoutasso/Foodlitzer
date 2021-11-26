@@ -17,23 +17,19 @@ struct TopInfoView: View {
                     showAlert = true
                 } label: {
                     Label("", systemImage: "chevron.backward")
-                        .font(.system(size: 24, weight: .regular))
-                        .foregroundColor(.white)
+                        .modifier(SimbolosPadrao())
                 }
                 Spacer()
                 Text("Bar do seu zé")
                     .frame(height: 33)
-                    .font(.system(size: 14, weight: .light))
                     .padding(.horizontal, 10)
-                    .background(Color.white)
-                    .border(Color(.black), width: 0.2)
+                    .modifier(FontePadrao())
                 Spacer()
                 Button {
                     showAlert = true
                 } label: {
                     Label("", systemImage: "info.circle")
-                        .font(.system(size: 24, weight: .regular))
-                        .foregroundColor(.white)
+                        .modifier(SimbolosPadrao())
                 }
             }
             .padding(.horizontal, 30)
@@ -41,8 +37,7 @@ struct TopInfoView: View {
             
             HStack() {
                 Image(systemName: "speaker.wave.3")
-                    .font(.system(size: 24, weight: .regular))
-                    .foregroundColor(.white)
+                    .modifier(SimbolosPadrao())
                 Spacer()
             }
             .padding(.horizontal, 30)
