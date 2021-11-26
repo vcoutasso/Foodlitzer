@@ -9,7 +9,7 @@ settings:
   CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: true
 
 options:
-  bundleIdPrefix: vcoutasso
+  bundleIdPrefix: dev.vcoutasso
 
 targets:
   Foodlitzer:
