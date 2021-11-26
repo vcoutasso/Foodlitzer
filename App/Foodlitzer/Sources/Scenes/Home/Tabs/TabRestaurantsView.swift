@@ -13,7 +13,6 @@ struct TabRestaurantsView: View {
                         DispatchQueue.main.async {
                             viewModel.handleButtonTapped { restaurants in
                                 self.restaurants = restaurants
-                                print(restaurants)
                             }
                         }
                         viewModel.handleOnAppear()
