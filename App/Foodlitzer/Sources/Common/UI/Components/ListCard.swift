@@ -58,6 +58,7 @@ struct ListCard: View {
         }
         .background(Color.white)
         .border(Color.black, width: 0.3)
-        .padding()
+        .padding(.horizontal, 35)
+        .padding(.bottom, 20)
     }
 }
