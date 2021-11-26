@@ -1,6 +1,6 @@
 import Combine
 
-final class TabHomeViewModel: ObservableObject {
+final class TabRestaurantViewModel: ObservableObject {
     // MARK: - Private properties
 
     private var userLocationUseCase: UserLocationUseCaseProtocol
@@ -20,7 +20,7 @@ final class TabHomeViewModel: ObservableObject {
         userLocationUseCase.setup()
     }
 
-    func handleButtonTapped(completion: @escaping ([TabHomeView.Model]) -> Void) {
+    func handleButtonTapped(completion: @escaping ([TabRestaurantsView.Model]) -> Void) {
         if let (latitude, longitude) = userLocationUseCase.execute() {
             let latitudeDescription = latitude.description
             let longitudeDescription = longitude.description
@@ -31,7 +31,9 @@ final class TabHomeViewModel: ObservableObject {
                 completion(restaurants.map { .init(id: $0.id,
                                                    name: $0.name,
                                                    address: $0.address,
-                                                   images: $0.images.compactMap { $0.asImage() })
+                                                   images: $0.images.compactMap { $0.asImage() },
+                                                   rating: $0.rating,
+                                                   price: $0.priceLevel)
                 })
             }
         }
@@ -39,7 +41,7 @@ final class TabHomeViewModel: ObservableObject {
 }
 
 enum TabHomeViewModelFactory {
-    static func make() -> TabHomeViewModel {
+    static func make() -> TabRestaurantViewModel {
         let restaurantInfoService = FirebaseDatabaseService<RestaurantInfoDTO>()
         let restaurantImageService = FirebaseDatabaseService<RestaurantImageDTO>()
         let restaurantVideoService = FirebaseDatabaseService<RestaurantVideoDTO>()
@@ -54,7 +56,7 @@ enum TabHomeViewModelFactory {
         let userLocationUseCase = UserLocationUseCase()
         let nearbyRestaurantsUseCase = FetchNearbyRestaurantsUseCase(repository: repository)
 
-        return TabHomeViewModel(userLocationUseCase: userLocationUseCase,
-                                nearbyRestaurantsUseCase: nearbyRestaurantsUseCase)
+        return TabRestaurantViewModel(userLocationUseCase: userLocationUseCase,
+                                      nearbyRestaurantsUseCase: nearbyRestaurantsUseCase)
     }
 }

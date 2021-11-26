@@ -15,5 +15,6 @@ struct TopHomeView: View {
 
             Spacer()
         }
+        .navigationBarHidden(true)
     }
 }
