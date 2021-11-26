@@ -1,6 +1,13 @@
+//
+//  TabHomeViewModel.swift
+//  Foodlitzer
+//
+//  Created by Alessandra Souza da Silva on 26/11/21.
+//
+
 import Combine
 
-final class TabRestaurantViewModel: ObservableObject {
+final class TabHomeViewModel: ObservableObject {
     // MARK: - Private properties
 
     private var userLocationUseCase: UserLocationUseCaseProtocol
@@ -20,7 +27,7 @@ final class TabRestaurantViewModel: ObservableObject {
         userLocationUseCase.setup()
     }
 
-    func handleButtonTapped(completion: @escaping ([TabRestaurantsView.Model]) -> Void) {
+    func handleButtonTapped(completion: @escaping ([TabHomeView.Restaurants]) -> Void) {
         if let (latitude, longitude) = userLocationUseCase.execute() {
             let latitudeDescription = latitude.description
             let longitudeDescription = longitude.description
@@ -40,8 +47,8 @@ final class TabRestaurantViewModel: ObservableObject {
     }
 }
 
-enum TabRestaurantViewModelFactory {
-    static func make() -> TabRestaurantViewModel {
+enum TabHomeViewModelFactory {
+    static func make() -> TabHomeViewModel {
         let restaurantInfoService = FirebaseDatabaseService<RestaurantInfoDTO>()
         let restaurantImageService = FirebaseDatabaseService<RestaurantImageDTO>()
         let restaurantVideoService = FirebaseDatabaseService<RestaurantVideoDTO>()
@@ -56,7 +63,7 @@ enum TabRestaurantViewModelFactory {
         let userLocationUseCase = UserLocationUseCase()
         let nearbyRestaurantsUseCase = FetchNearbyRestaurantsUseCase(repository: repository)
 
-        return TabRestaurantViewModel(userLocationUseCase: userLocationUseCase,
-                                      nearbyRestaurantsUseCase: nearbyRestaurantsUseCase)
+        return TabHomeViewModel(userLocationUseCase: userLocationUseCase,
+                                nearbyRestaurantsUseCase: nearbyRestaurantsUseCase)
     }
 }

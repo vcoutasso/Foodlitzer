@@ -5,22 +5,65 @@ import SwiftUI
 struct TabHomeView: View {
     // MARK: - Properties
 
+    @MainActor var viewModel: TabHomeViewModel
+    @State private(set) var restaurants: [Restaurants] = []
     var body: some View {
         VStack {
-            helloName
-            Spacer()
-            description
-            Spacer()
-            bestReviewed
-            Spacer()
-            placesToDiscover
-            Spacer()
+            ScrollView {
+                description
+                Spacer()
+                if restaurants.isEmpty {
+                    ProgressView()
+                        .padding(.top, 200)
+                        .onAppear {
+                            DispatchQueue.main.async {
+                                viewModel.handleButtonTapped { restaurants in
+                                    self.restaurants = restaurants
+                                }
+                            }
+                            viewModel.handleOnAppear()
+                        }
+                } else {
+                    Spacer()
+                    bestReviewed
+
+                    ScrollView(.vertical, showsIndicators: false) {
+                        ForEach(restaurants) { restaurant in
+                            MainCard(restaurantName: restaurant.name,
+                                     restaurantRate: Int(restaurant.rating),
+                                     isReviewed: false,
+                                     image: restaurant.images.first ?? Image("placeHolder"),
+                                     address: restaurant.address,
+                                     price: restaurant.price)
+                                .padding(.bottom, 20)
+                        }
+                    }
+
+                    Spacer()
+                    placesToDiscover
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            Rectangle()
+                                .foregroundColor(.clear)
+                                .frame(width: 30, height: 30)
+
+                            ForEach(restaurants) { restaurant in
+                                MiniCard(restaurantName: restaurant.name, restaurantRate: 5, isReviewed: true,
+                                         image: "placeHolder")
+                                    .padding(.trailing, 30)
+                            }
+                        } // TODO: Implementar histórico de visita do usuário
+                    }
+                    .padding(.bottom, 30)
+                }
+            }
         }
     }
 
     private var helloName: some View {
-        Text("Hi, Fulano")
+        Text("Hello")
             .font(.custom("Lora-Regular", size: 24))
+            .padding()
     }
 
     private var description: some View {
@@ -49,19 +92,19 @@ struct TabHomeView: View {
                 .tint(.black)
             }.zIndex(10)
                 .offset(x: -18, y: 5)
-        }
+        }.padding(.top, 50)
     }
 
     private var bestReviewed: some View {
         VStack {
             Text("Best Reviewed")
                 .font(.custom("Lora-Regular", size: 24))
+                .padding(.top, 30)
             Text("Check out these reviews about restaurants you don't know yet!")
                 .font(.compact(.light, size: 14))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color("textGray"))
                 .frame(width: 313, height: 40, alignment: .center)
-                .padding(.top, 5)
         }
     }
 
@@ -70,9 +113,19 @@ struct TabHomeView: View {
             Text("Places to Discover")
                 .font(.custom("Lora-Regular", size: 24))
             Text("Here are the latest restaurants you've reviewed.")
+
                 .font(.compact(.light, size: 14))
                 .foregroundColor(Color("textGray"))
-                .padding(.top, 5)
+                .padding()
         }
+    }
+
+    struct Restaurants: Identifiable {
+        let id: String
+        let name: String
+        let address: String
+        let images: [Image]
+        let rating: Float
+        let price: Int
     }
 }
