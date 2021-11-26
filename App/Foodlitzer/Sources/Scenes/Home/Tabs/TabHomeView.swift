@@ -12,8 +12,8 @@ import SwiftUI
 struct TabHomeView: View {
     // MARK: - Properties
 
-    @MainActor var viewModel: TabHomeViewModel
-    @State private(set) var restaurants: [Model] = []
+    @MainActor var viewModel: TabRestaurantViewModel
+//    @State private(set) var restaurants: [Model] = []
 
     var body: some View {
         VStack {
@@ -43,13 +43,6 @@ struct TabHomeView: View {
 //            }
 //        }
 //
-    }
-
-    struct Model: Identifiable {
-        let id: String
-        let name: String
-        let address: String
-        let images: [Image]
     }
 }
 

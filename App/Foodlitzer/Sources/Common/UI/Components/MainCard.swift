@@ -4,7 +4,7 @@ struct MainCard: View {
     var restaurantName: String
     var restaurantRate: Int
     var isReviewed: Bool
-    var image: String
+    var image: Image
     var address: String
     var price: Int
     @State private var maxRate = 5
@@ -12,18 +12,20 @@ struct MainCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ZStack {
-                Image(image)
+                image
                     .resizable()
                     .imageFilter()
                     .scaledToFill()
                     .frame(height: 120)
                     .clipped()
 
-                VStack {
-                    ReviewedTag()
-                        .padding(10)
+                if isReviewed {
+                    VStack {
+                        ReviewedTag()
+                            .padding(10)
+                    }
+                    .frame(width: 320, height: 120, alignment: .bottomTrailing)
                 }
-                .frame(width: 320, height: 120, alignment: .bottomTrailing)
 
                 VStack {
                     BookmarkButton()
