@@ -30,6 +30,8 @@ final class SearchViewModel: SearchViewModelProtocol {
         self.restaurantQueryUseCase = restaurantQueryUseCase
     }
 
+    // MARK: - Update results
+
     func updateResults() async {
         let field = "name"
         let dtos = await restaurantQueryUseCase.execute(query: searchText, for: field)

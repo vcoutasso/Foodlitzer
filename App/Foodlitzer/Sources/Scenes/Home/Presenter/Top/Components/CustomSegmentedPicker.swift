@@ -1,61 +1,63 @@
 import SwiftUI
 
 struct CustomSegmentedPicker: View {
-    @State var index = 1
+    @State var index = 0
     @State var offset: CGFloat = UIScreen.main.bounds.width
-    var width = UIScreen.main.bounds.width
+    private let width = UIScreen.main.bounds.width
+    private let minimumDragDistance: CGFloat = 50
+    private var computedOffset: CGFloat {
+        var newValue: CGFloat
+
+        if index == 0 {
+            newValue = width
+        } else if index == 1 {
+            newValue = 0
+        } else {
+            newValue = -width
+        }
+
+        return newValue
+    }
 
     var body: some View {
         VStack(spacing: 0) {
-            HeaderTabView(index: self.$index, offset: self.$offset)
+            HeaderTabView(index: $index, offset: $offset)
 
-            GeometryReader { g in
+            GeometryReader { geometry in
 
                 HStack(spacing: 0) {
                     TabHomeView()
-                        .frame(width: g.frame(in: .global).width)
+                        .frame(width: geometry.frame(in: .global).width)
 
                     TabRestaurantsView(viewModel: TabHomeViewModelFactory.make())
-                        .frame(width: g.frame(in: .global).width)
+                        .frame(width: geometry.frame(in: .global).width)
 
                     TabSavedView()
-                        .frame(width: g.frame(in: .global).width)
+                        .frame(width: geometry.frame(in: .global).width)
                 }
-                .offset(x: self.offset - self.width)
+                .offset(x: offset - width)
                 .highPriorityGesture(DragGesture()
-
-                    .onEnded { value in
-
-                        if value.translation.width > 50 { // minimum drag...
-                            print("right")
-                            self.changeView(left: false)
+                    .onEnded { gesture in
+                        if gesture.translation.width > minimumDragDistance {
+                            swipeLeft()
                         }
-                        if -value.translation.width > 50 {
-                            print("left")
-                            self.changeView(left: true)
+                        if -gesture.translation.width > minimumDragDistance {
+                            swipeRight()
                         }
                     })
             }
         }
     }
 
-    func changeView(left: Bool) {
-        if left {
-            if index != 3 {
-                index += 1
-            }
-        } else {
-            if index != 0 {
-                index -= 1
-            }
-        }
+    // TODO: Create and move this to viewmodel
 
-        if index == 1 {
-            offset = width
-        } else if index == 2 {
-            offset = 0
-        } else {
-            offset = -width
-        }
+    private func swipeLeft() {
+        index = max(index - 1, 0)
+        offset = computedOffset
+    }
+
+    private func swipeRight() {
+        index = min(index + 1, 2)
+        offset = computedOffset
     }
 }
