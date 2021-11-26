@@ -1,12 +1,10 @@
 import Foundation
 
 struct ReviewDTO: Codable {
-    let restaurantName: String
-    let restaurantAddress: String
-    let lightRate: Float
-    let waitRate: Float
-    let soundRate: Float
-    let userPhotos: [Data]
+    let restaurantID: String
+    let ambientLighting: Float
+    let waitingTime: Float
+    let ambientNoise: Float
     let userTags: [String]
-    let restaurantRate: Int
+    let userRating: Int
 }

@@ -4,13 +4,13 @@ import UIKit
 
 protocol MultiplePhotoPicker {
     var selectedImages: [UIImage] { get }
-    var selectedVideos: [URL] { get }
+    var selectedVideos: [Data] { get }
     var isPresented: Bool { get }
 
     func clearSelection()
     func handle(error: Error?)
     func selectPhoto(_ image: UIImage)
-    func selectVideo(_ url: URL)
+    func selectVideo(_ url: Data)
     func dismiss()
 }
 
@@ -22,7 +22,7 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
     // MARK: - Attributes
 
     @Binding var selectedImages: [UIImage]
-    @Binding var selectedVideos: [URL]
+    @Binding var selectedVideos: [Data]
     @Binding var isPresented: Bool
 
     // MARK: - Representable methods
@@ -50,15 +50,19 @@ struct PhotoPickerRepresentable: MultiplePhotoPicker, UIViewControllerRepresenta
     }
 
     func handle(error: Error?) {
-        debugPrint("Could not load image. Got error: '\(String(describing: error?.localizedDescription))'")
+        debugPrint("Could not load data. Got error: '\(String(describing: error?.localizedDescription))'")
     }
 
     func selectPhoto(_ image: UIImage) {
-        selectedImages.append(image)
+        DispatchQueue.main.async {
+            selectedImages.append(image)
+        }
     }
 
-    func selectVideo(_ url: URL) {
-        selectedVideos.append(url)
+    func selectVideo(_ data: Data) {
+        DispatchQueue.main.async {
+            selectedVideos.append(data)
+        }
     }
 
     func dismiss() {
@@ -130,12 +134,13 @@ extension PhotoPickerRepresentable.Coordinator: PHPickerViewControllerDelegate {
     }
 
     private func loadVideoCompletionHandler(url: URL?, error: Error?) {
-        guard let url = url else {
+        guard let url = url,
+              let data = try? Data(contentsOf: url) else {
             photoPicker.handle(error: error)
             return
         }
 
-        photoPicker.selectVideo(url)
+        photoPicker.selectVideo(data)
     }
 }
 

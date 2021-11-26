@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct UserReviewGalleryInputBlock: View {
     // MARK: - Attributes
@@ -6,13 +7,12 @@ struct UserReviewGalleryInputBlock: View {
     private static let imagePlaceholder = UIImage(systemName: "photo")!
 
     @State private var isShowingPhotoPicker = false
-    @State private var images = [imagePlaceholder]
-    @State private var videos = [URL]()
-    @Binding var content: [UIImage]
+    @Binding var images: [UIImage]
+    @Binding var videos: [Data]
 
     var body: some View {
         VStack {
-            if content.isEmpty {
+            if images.isEmpty {
                 HStack {
                     Image(uiImage: images.first ?? UserReviewGalleryInputBlock.imagePlaceholder)
                         .font(.system(size: 42, weight: .light, design: .default))
@@ -24,37 +24,20 @@ struct UserReviewGalleryInputBlock: View {
                 .padding(.horizontal, 40)
 
             } else {
+                // FIXME: Show preview of videos as well
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 0) {
                         Rectangle()
                             .foregroundColor(.clear)
                             .frame(width: 40, height: 40)
 
-                        ForEach(content, id: \.self) { media in
-
-                            Button {
-                                // TODO: esse botao do inferno se recusa mudar hit box, nesse momento esta inteiro clicavel para remover
-                                withAnimation {
-                                    if let index = content.firstIndex(of: media) {
-                                        content.remove(at: index)
-                                    }
-                                }
-                            } label: {
-                                ZStack {
-                                    Image(uiImage: media)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 100, height: 135)
-                                        .border(Color.black, width: 0.3)
-                                        .clipped()
-
-                                    Image(systemName: "xmark.circle")
-                                        .foregroundColor(.black)
-                                        .font(.system(size: 28, weight: .regular, design: .default))
-                                        .background(Circle().foregroundColor(Color.white).padding(2))
-                                        .offset(x: 32, y: -51)
-                                }
-                            }
+                        ForEach(images, id: \.self) { image in
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 100, height: 135)
+                                .border(Color.black, width: 0.3)
+                                .clipped()
                         }
                         .padding(.trailing, 15)
 

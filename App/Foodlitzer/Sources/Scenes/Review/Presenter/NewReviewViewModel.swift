@@ -1,35 +1,31 @@
 import SwiftUI
 
 protocol NewReviewViewModelProtocol: ObservableObject {
-    var restaurantName: String { get set }
-    var restaurantAddress: String { get set }
-    var lightRate: CGFloat { get set }
-    var waitRate: CGFloat { get set }
-    var soundRate: CGFloat { get set }
+    var ambientLighting: CGFloat { get set }
+    var waitingTime: CGFloat { get set }
+    var ambientNoise: CGFloat { get set }
     var userVideos: [Data] { get set }
     var userPhotos: [UIImage] { get set }
     var userTags: [String] { get set }
-    var restaurantRate: Int { get set }
+    var userRating: Int { get set }
     var query: String { get set }
     var currentTag: String { get set }
     var canSliderMove: Bool { get }
 
-    func getValue(_ value: CGFloat) -> String
+    func getValue(_ value: CGFloat) -> CGFloat
     func sendReview()
 }
 
 final class NewReviewViewModel: NewReviewViewModelProtocol {
     // MARK: - Properties
 
-    @Published var restaurantName: String
-    @Published var restaurantAddress: String
-    @Published var lightRate: CGFloat
-    @Published var waitRate: CGFloat
-    @Published var soundRate: CGFloat
+    @Published var ambientLighting: CGFloat
+    @Published var waitingTime: CGFloat
+    @Published var ambientNoise: CGFloat
     @Published var userVideos: [Data]
     @Published var userPhotos: [UIImage]
     @Published var userTags: [String]
-    @Published var restaurantRate: Int
+    @Published var userRating: Int
     @Published var query: String
     @Published var currentTag: String
     @Published var canSliderMove: Bool = true
@@ -37,40 +33,47 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
     // MARK: - Dependencies
 
     private let saveReviewUseCase: SaveReviewUseCaseProtocol
+    private let saveMediaUseCase: SaveMediaUseCaseProtocol
 
     // MARK: - Initialization
 
-    init(saveReviewUseCase: SaveReviewUseCaseProtocol) {
-        self.restaurantName = ""
-        self.restaurantAddress = ""
-        self.lightRate = 0
-        self.waitRate = 0
-        self.soundRate = 0
-        self.userPhotos = []
+    init(saveReviewUseCase: SaveReviewUseCaseProtocol,
+         saveMediaUseCase: SaveMediaUseCaseProtocol) {
+        self.ambientLighting = 0
+        self.waitingTime = 0
+        self.ambientNoise = 0
         self.userVideos = []
+        self.userPhotos = []
         self.userTags = []
-        self.restaurantRate = 0
+        self.userRating = 0
         self.canSliderMove = true
         self.query = ""
         self.currentTag = ""
         self.saveReviewUseCase = saveReviewUseCase
+        self.saveMediaUseCase = saveMediaUseCase
     }
 
-    func getValue(_ value: CGFloat) -> String {
-        let percent = value / (UIScreen.main.bounds.width - 171) // main.bounds slider + raio do Circle
-
-        return String(format: "%.2f", percent)
+    func getValue(_ value: CGFloat) -> CGFloat {
+        // FIXME: What does 171 mean??
+        value / (UIScreen.main.bounds.width - 171) // main.bounds slider + raio do Circle
     }
 
     func sendReview() {
-        _ = Review(restaurantName: restaurantName,
-                   restaurantAddress: restaurantAddress,
-                   lightRate: lightRate,
-                   waitRate: waitRate,
-                   soundRate: soundRate,
-                   userPhotos: userPhotos,
-                   userTags: userTags,
-                   restaurantRate: restaurantRate)
+        let id = "ChIJ09ULNYT73JQRH-GR32A5c18"
+        let review = Review(restaurantID: id,
+                            ambientLighting: getValue(ambientLighting),
+                            waitingTime: getValue(waitingTime),
+                            ambientNoise: ambientNoise,
+                            userVideos: userVideos,
+                            userPhotos: userPhotos,
+                            userTags: userTags,
+                            userRating: userRating)
+        let images = userPhotos.compactMap { RestaurantImageDTO(imageData: $0.compressedJPEG()!) }
+        let videos = userVideos.map { RestaurantVideoDTO(videoData: $0) }
+
+        // FIXME: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        saveReviewUseCase.execute(review: review, for: id)
+        saveMediaUseCase.execute(images: images, videos: videos, for: id)
     }
 }
 
@@ -79,7 +82,11 @@ enum NewReviewViewModelFactory {
         let reviewDatabaseService = FirebaseDatabaseService<ReviewDTO>()
         let saveReviewService = SaveReviewService(reviewsDatabaseService: reviewDatabaseService)
         let saveReviewUseCase = SaveReviewUseCase(saveReviewService: saveReviewService)
+        let imageDatabaseService = FirebaseDatabaseService<RestaurantImageDTO>()
+        let videoDatabaseService = FirebaseDatabaseService<RestaurantVideoDTO>()
+        let saveMediaUseCase = SaveMediaUseCase(imageDatabaseService: imageDatabaseService,
+                                                videoDatabaseService: videoDatabaseService)
 
-        return NewReviewViewModel(saveReviewUseCase: saveReviewUseCase)
+        return NewReviewViewModel(saveReviewUseCase: saveReviewUseCase, saveMediaUseCase: saveMediaUseCase)
     }
 }

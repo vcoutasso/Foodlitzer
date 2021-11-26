@@ -18,14 +18,12 @@ final class SaveReviewUseCase: SaveReviewUseCaseProtocol {
     // MARK: - Execute use case
 
     func execute(review: Review, for id: String) {
-        let dto = ReviewDTO(restaurantName: review.restaurantName,
-                            restaurantAddress: review.restaurantAddress,
-                            lightRate: Float(review.lightRate),
-                            waitRate: Float(review.waitRate),
-                            soundRate: Float(review.soundRate),
-                            userPhotos: review.userPhotos.compactMap { $0.compressedJPEG() },
+        let dto = ReviewDTO(restaurantID: id,
+                            ambientLighting: Float(review.ambientLighting),
+                            waitingTime: Float(review.waitingTime),
+                            ambientNoise: Float(review.ambientNoise),
                             userTags: review.userTags,
-                            restaurantRate: review.restaurantRate)
+                            userRating: review.userRating)
 
         saveReviewService.saveReview(dto, for: id)
     }

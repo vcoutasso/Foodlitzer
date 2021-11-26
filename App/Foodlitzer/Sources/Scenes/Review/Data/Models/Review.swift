@@ -1,12 +1,12 @@
 import UIKit
 
 struct Review {
-    let restaurantName: String
-    let restaurantAddress: String
-    let lightRate: CGFloat
-    let waitRate: CGFloat
-    let soundRate: CGFloat
+    let restaurantID: String
+    let ambientLighting: CGFloat
+    let waitingTime: CGFloat
+    let ambientNoise: CGFloat
+    let userVideos: [Data]
     let userPhotos: [UIImage]
     let userTags: [String]
-    let restaurantRate: Int
+    let userRating: Int
 }

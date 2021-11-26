@@ -24,11 +24,11 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
 
                     RestaurantsSearchBlock(query: $viewModel.query)
 
-                    ItemEvaluation(item: $viewModel.lightRate, isEditing: viewModel.canSliderMove,
+                    ItemEvaluation(item: $viewModel.ambientLighting, isEditing: viewModel.canSliderMove,
                                    restaurantFeatures: lightEvatuation)
                         .padding(.horizontal, 40)
 
-                    ItemEvaluation(item: $viewModel.waitRate, isEditing: viewModel.canSliderMove,
+                    ItemEvaluation(item: $viewModel.waitingTime, isEditing: viewModel.canSliderMove,
                                    restaurantFeatures: waitEvaluation)
                         .padding(.horizontal, 40)
 
@@ -65,7 +65,7 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
 
                     // MARK: - Photo picker
 
-                    UserReviewGalleryInputBlock(content: $viewModel.userPhotos)
+                    UserReviewGalleryInputBlock(images: $viewModel.userPhotos, videos: $viewModel.userVideos)
 
                     // TODO: verificar como passa os dados
 
@@ -81,7 +81,7 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
                         .padding(.horizontal, 40)
                         .id(tagPosition)
 
-                    UserRatingBlock(userRate: $viewModel.restaurantRate)
+                    UserRatingBlock(userRate: $viewModel.userRating)
                         .padding(.horizontal, 40)
 
                     Button {
