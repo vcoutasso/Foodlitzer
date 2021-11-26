@@ -8,7 +8,7 @@ class MicrophoneMonitor: ObservableObject {
     private var timer: Timer?
 
     private var currentSample: Int
-    private var numberOfSamples: Int = 75
+    var numberOfSamples: Int = 75
 
     @Published public var soundSamples: [Float]
 
@@ -43,7 +43,7 @@ class MicrophoneMonitor: ObservableObject {
         }
     }
 
-    private func normalizeSoundLevel(level: Float) -> CGFloat {
+    func normalizeSoundLevel(level: Float) -> CGFloat {
         let level = max(0.2, CGFloat(level) + 100) / 2
         return CGFloat(level * (300 / 50))
     }
@@ -66,5 +66,5 @@ class MicrophoneMonitor: ObservableObject {
         timer?.invalidate()
         audioRecorder.stop()
     }
-    // TO-DO
+    // TO-DO: passar pelas 75 amostras e mostra a média
 }

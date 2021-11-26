@@ -8,13 +8,12 @@ struct Application: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                TopHomeView()
-
-//                if authenticationService.isUserSignedIn {
-//                    LandigPageView()
-//                } else {
-//                    OnboardingView(viewModel: OnboardingViewModel())
-//                }
+                if authenticationService.isUserSignedIn {
+                    // NewReviewView(viewModel: NewReviewViewModelFactory.make())
+                    LandigPageView()
+                } else {
+                    OnboardingView(viewModel: OnboardingViewModel())
+                }
             }
         }
     }

@@ -16,5 +16,6 @@ struct RestaurantImageDTO: Codable {
 
 struct RestaurantVideoDTO: Codable {
     @DocumentID var id: String?
-    let videoURL: URL
+    let url: URL
+    let videoData: Data?
 }
