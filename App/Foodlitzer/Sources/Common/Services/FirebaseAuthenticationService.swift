@@ -79,6 +79,10 @@ final class FirebaseAuthenticationService: RemoteAuthenticationServiceProtocol {
         }
     }
 
+    func editAccount(with name: String, email: String, completion: @escaping (AuthenticationResult) -> Void) {
+        // TODO: - Create method
+    }
+
     private func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
         if let currentUser = defaultAuth.currentUser {
             let changeRequest = currentUser.createProfileChangeRequest()

@@ -1,115 +1,61 @@
 import SwiftUI
 
 struct CustomSegmentedPicker: View {
-    // MARK: - State Atributes
-
-    @State private var atHome = true
-    @State private var atRestaurants = false
-    @State private var atSaved = false
-
-    // MARK: - Animation Atribute
-
-    @Namespace private var animation
-
-    // MARK: - Private Layout Metrics:
-
-    private var segmentedPadding: CGFloat = 5
-
-    // MARK: - View
+    @State var index = 1
+    @State var offset: CGFloat = UIScreen.main.bounds.width
+    var width = UIScreen.main.bounds.width
 
     var body: some View {
-        HStack(alignment: .top) {
-            homeTab
+        VStack(spacing: 0) {
+            HeaderTabView(index: self.$index, offset: self.$offset)
 
-            Spacer()
+            GeometryReader { g in
 
-            restaurantsTab
+                HStack(spacing: 0) {
+                    TabHomeView(viewModel: TabHomeViewModelFactory.make())
+                        .frame(width: g.frame(in: .global).width)
 
-            Spacer()
+                    TabRestaurantsView()
+                        .frame(width: g.frame(in: .global).width)
 
-            savedTab
-        }
-        .padding(.horizontal, 50)
-    }
+                    TabSavedView()
+                        .frame(width: g.frame(in: .global).width)
+                }
+                .offset(x: self.offset - self.width)
+                .highPriorityGesture(DragGesture()
 
-    // MARK: - Extracted Views
+                    .onEnded { value in
 
-    private var homeTab: some View {
-        Button {
-            setCurrentTabTo(.home)
-        } label: {
-            VStack(spacing: segmentedPadding) {
-                Text(Strings.Tab.home)
-                    .font(.compact(atHome ? .regular : .light, size: 14))
-                    .foregroundColor(atHome ? .black : .black.opacity(0.5))
-                    .padding(.horizontal, segmentedPadding)
-
-                if atHome { animateSegmentedBar }
+                        if value.translation.width > 50 { // minimum drag...
+                            print("right")
+                            self.changeView(left: false)
+                        }
+                        if -value.translation.width > 50 {
+                            print("left")
+                            self.changeView(left: true)
+                        }
+                    })
             }
-            .fixedSize(horizontal: true, vertical: false)
-        }
-    }
-
-    private var restaurantsTab: some View {
-        Button {
-            setCurrentTabTo(.restaurant)
-        } label: {
-            VStack(spacing: segmentedPadding) {
-                Text(Strings.Tab.restaurants)
-                    .font(.compact(atRestaurants ? .regular : .light, size: 14))
-                    .foregroundColor(atRestaurants ? .black : .black.opacity(0.5))
-                    .padding(.horizontal, segmentedPadding)
-
-                if atRestaurants { animateSegmentedBar }
-            }
-            .fixedSize(horizontal: true, vertical: false)
         }
     }
 
-    private var savedTab: some View {
-        Button {
-            setCurrentTabTo(.saved)
-        } label: {
-            VStack(spacing: segmentedPadding) {
-                Text(Strings.Tab.saved)
-                    .font(.compact(atSaved ? .regular : .light, size: 14))
-                    .foregroundColor(atSaved ? .black : .black.opacity(0.5))
-                    .padding(.horizontal, segmentedPadding)
-
-                if atSaved { animateSegmentedBar }
+    func changeView(left: Bool) {
+        if left {
+            if index != 3 {
+                index += 1
             }
-            .fixedSize(horizontal: true, vertical: false)
+        } else {
+            if index != 0 {
+                index -= 1
+            }
         }
-    }
 
-    // MARK: - Component
-
-    private var animateSegmentedBar: some View {
-        Rectangle()
-            .segmentedPickerBarStyle()
-            .matchedGeometryEffect(id: Strings.Animation.segmentedPicker, in: animation)
-    }
-
-    // MARK: - Method:
-
-    func setCurrentTabTo(_ button: Tab) {
-        withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.8)) {
-            switch button {
-            case .home:
-                atHome = true
-                atRestaurants = false
-                atSaved = false
-
-            case .restaurant:
-                atHome = false
-                atRestaurants = true
-                atSaved = false
-
-            case .saved:
-                atHome = false
-                atRestaurants = false
-                atSaved = true
-            }
+        if index == 1 {
+            offset = width
+        } else if index == 2 {
+            offset = 0
+        } else {
+            offset = -width
         }
     }
 }

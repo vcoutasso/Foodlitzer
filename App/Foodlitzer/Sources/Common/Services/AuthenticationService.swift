@@ -74,4 +74,8 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
     func resetPassword() {
         backendService.resetPassword()
     }
+
+    func editAccount(with name: String,
+                     email: String,
+                     completion: @escaping (AuthenticationResult) -> Void) {}
 }
