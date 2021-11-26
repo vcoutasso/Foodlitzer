@@ -15,7 +15,7 @@ struct CustomSegmentedPicker: View {
                     TabHomeView(viewModel: TabHomeViewModelFactory.make())
                         .frame(width: g.frame(in: .global).width)
 
-                    TabRestaurantsView()
+                    TabRestaurantsView(viewModel: TabHomeViewModelFactory.make())
                         .frame(width: g.frame(in: .global).width)
 
                     TabSavedView()
