@@ -48,21 +48,21 @@ struct HeaderTabView: View {
                             .frame(height: 2)
                     }
                 }
-                Button {
-                    self.index = 2
-                    self.offset = -self.width
-                } label: {
-                    VStack {
-                        HStack {
-                            Text("Saved")
-                                .font(.compact(.regular, size: 14))
-                                .foregroundColor(self.index == 2 ? .black : Color.black.opacity(0.7))
-                        }
-                        Capsule()
-                            .fill(self.index == 2 ? Color.black : Color.clear)
-                            .frame(height: 2)
-                    }
-                }
+//                Button {
+//                    self.index = 2
+//                    self.offset = -self.width
+//                } label: {
+//                    VStack {
+//                        HStack {
+//                            Text("Saved")
+//                                .font(.compact(.regular, size: 14))
+//                                .foregroundColor(self.index == 2 ? .black : Color.black.opacity(0.7))
+//                        }
+//                        Capsule()
+//                            .fill(self.index == 2 ? Color.black : Color.clear)
+//                            .frame(height: 2)
+//                    }
+//                }
             }
         })
     }

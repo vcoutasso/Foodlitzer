@@ -32,8 +32,8 @@ struct CustomSegmentedPicker: View {
                     TabRestaurantsView(viewModel: TabHomeViewModelFactory.make())
                         .frame(width: geometry.frame(in: .global).width)
 
-                    TabSavedView()
-                        .frame(width: geometry.frame(in: .global).width)
+                    // TabSavedView()
+                    //    .frame(width: geometry.frame(in: .global).width)
                 }
                 .offset(x: offset - width)
                 .highPriorityGesture(DragGesture()
@@ -57,7 +57,7 @@ struct CustomSegmentedPicker: View {
     }
 
     private func swipeRight() {
-        index = min(index + 1, 2)
+        index = min(index + 1, 1)
         offset = computedOffset
     }
 }
