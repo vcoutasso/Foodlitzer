@@ -48,6 +48,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
 
     func editAccount() {
         authenticationService.editAccount(with: editingName, email: editingEmail) { _ in
+            // TODO: - Implementar editar dados da conta
         }
     }
 }

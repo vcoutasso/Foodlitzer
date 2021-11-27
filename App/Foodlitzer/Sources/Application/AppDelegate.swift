@@ -6,6 +6,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil)
         -> Bool {
+        UINavigationBar.appearance().tintColor = .black
+
         // Google Places API configuration
         guard let path = Bundle.main.path(forResource: Strings.GooglePlaces.infoFilename,
                                           ofType: Strings.GooglePlaces.infoFileExtension),

@@ -16,13 +16,11 @@ struct EditProfileButtonView<Destination: View>: View {
 
     var body: some View {
         NavigationLink(destination: destination()) {
-            HStack {
+            HStack(alignment: .center) {
                 Image(systemName: "pencil")
                     .font(.system(size: 20))
             }
-            .font(.system(size: 14, weight: .regular))
-            .foregroundColor(Color("iconsHeaderGray"))
-            .padding()
+            .foregroundColor(Color.black)
         }
     }
 }
