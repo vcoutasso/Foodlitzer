@@ -11,9 +11,13 @@ protocol NewReviewViewModelProtocol: ObservableObject {
     var query: String { get set }
     var currentTag: String { get set }
     var canSliderMove: Bool { get }
+    var isRecordingButtonActive: Bool { get }
+    var soundSamplesCount: Int { get }
+    var readingsInfo: [SoundSampleInfo] { get }
 
     func getValue(_ value: CGFloat) -> CGFloat
     func sendReview()
+    func recordAudio()
 }
 
 final class NewReviewViewModel: NewReviewViewModelProtocol {
@@ -29,16 +33,27 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
     @Published var query: String
     @Published var currentTag: String
     @Published var canSliderMove: Bool = true
+    @Published var isRecordingButtonActive: Bool = true
+
+    var soundSamplesCount: Int {
+        micRecordingService?.numberOfSamples ?? 0
+    }
+
+    var readingsInfo: [SoundSampleInfo] {
+        micRecordingService?.normalizedSoundLevels ?? []
+    }
 
     // MARK: - Dependencies
 
+    @Published private var micRecordingService: LoudnessEvaluationService?
     private let saveReviewUseCase: SaveReviewUseCaseProtocol
     private let saveMediaUseCase: SaveMediaUseCaseProtocol
 
     // MARK: - Initialization
 
     init(saveReviewUseCase: SaveReviewUseCaseProtocol,
-         saveMediaUseCase: SaveMediaUseCaseProtocol) {
+         saveMediaUseCase: SaveMediaUseCaseProtocol,
+         micRecordingService: LoudnessEvaluationService?) {
         self.ambientLighting = 0
         self.waitingTime = 0
         self.ambientNoise = 0
@@ -51,6 +66,7 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
         self.currentTag = ""
         self.saveReviewUseCase = saveReviewUseCase
         self.saveMediaUseCase = saveMediaUseCase
+        self.micRecordingService = micRecordingService
     }
 
     func getValue(_ value: CGFloat) -> CGFloat {
@@ -59,6 +75,7 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
     }
 
     func sendReview() {
+        // FIXME: This should represent the actual restaurant id
         let id = "ChIJ09ULNYT73JQRH-GR32A5c18"
         let review = Review(restaurantID: id,
                             ambientLighting: getValue(ambientLighting),
@@ -74,6 +91,20 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
         saveReviewUseCase.execute(review: review, for: id)
         saveMediaUseCase.execute(images: images, videos: videos, for: id)
     }
+
+    func recordAudio() {
+        isRecordingButtonActive = false
+        micRecordingService?.execute { [weak self] in
+            self?.objectWillChange.send()
+        } completion: { [weak self] in
+            guard let self = self else { return }
+
+            self.isRecordingButtonActive = true
+            self.ambientNoise = CGFloat(self.readingsInfo
+                .map { $0.level }
+                .reduce(0.0, +) / Float(self.readingsInfo.count)) / 50
+        }
+    }
 }
 
 enum NewReviewViewModelFactory {
@@ -85,7 +116,9 @@ enum NewReviewViewModelFactory {
         let videoDatabaseService = FirebaseDatabaseService<RestaurantVideoDTO>()
         let saveMediaUseCase = SaveMediaUseCase(imageDatabaseService: imageDatabaseService,
                                                 videoDatabaseService: videoDatabaseService)
-
-        return NewReviewViewModel(saveReviewUseCase: saveReviewUseCase, saveMediaUseCase: saveMediaUseCase)
+        let microphoneService = LoudnessEvaluationService()
+        return NewReviewViewModel(saveReviewUseCase: saveReviewUseCase,
+                                  saveMediaUseCase: saveMediaUseCase,
+                                  micRecordingService: microphoneService)
     }
 }

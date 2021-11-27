@@ -49,10 +49,21 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
                         .padding(.horizontal, 40)
                         .padding(.bottom, 10)
 
+                        HStack(spacing: 2.8) {
+                            Spacer()
+
+                            ForEach(viewModel.readingsInfo, id: \.self) { reading in
+                                soundBar(for: reading.level)
+                            }
+
+                            Spacer()
+                        }
+
                         DefaultButton(label: "Avaliar Agora") {
-                            SoundBars()
+                            viewModel.recordAudio()
                         }
                         .padding(.horizontal, 40)
+                        .disabled(!viewModel.isRecordingButtonActive)
                     }
 
                     HStack {
@@ -99,7 +110,19 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
         }
     }
 
-    func getValue(_ value: CGFloat) -> String {
+    // MARK: - Views
+
+    private func soundBar(for level: Float) -> some View {
+        VStack {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color(Assets.Colors.foodlitzerBlack))
+                .frame(width: 1.8, height: CGFloat(level))
+        }
+    }
+
+    // MARK: - Helper methods
+
+    private func getValue(_ value: CGFloat) -> String {
         let percent = value / (UIScreen.main.bounds.width - 171) // main.bounds slider + raio do Circle
 
         return String(format: "%.2f", percent)
