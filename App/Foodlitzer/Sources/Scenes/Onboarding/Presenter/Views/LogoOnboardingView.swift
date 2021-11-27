@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct LogoOnboardingView: View {
-    var currentPage: Int
     var body: some View {
         VStack(alignment: .center) {
             HStack {
@@ -39,6 +38,6 @@ struct LogoOnboardingView: View {
 
 struct LogoOnboardingView_Previews: PreviewProvider {
     static var previews: some View {
-        LogoOnboardingView(currentPage: 0)
+        LogoOnboardingView()
     }
 }
