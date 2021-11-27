@@ -7,6 +7,7 @@ protocol ProfileViewModelProtocol: ObservableObject {
     var userEmail: String? { get }
     func signOut()
     func delete()
+    func editAccount()
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {
@@ -47,8 +48,17 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     }
 
     func editAccount() {
-        authenticationService.editAccount(with: editingName, email: editingEmail) { _ in
-            // TODO: - Implementar editar dados da conta
+        guard let newName = editingName.isEmpty ? userName : editingName,
+              let newEmail = editingEmail.isEmpty ? userEmail : editingEmail
+        else { return }
+
+        authenticationService.editAccount(with: newName, email: newEmail) { result in
+            switch result {
+            case let .failure(error):
+                debugPrint("Could not edit account: \(error.localizedDescription)")
+            case let .success(user):
+                print("user: \(user!.name), email: \(user!.email)")
+            }
         }
     }
 }

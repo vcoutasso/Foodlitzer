@@ -3,7 +3,7 @@ import SwiftUI
 struct EditProfileView: View {
     @Binding var userName: String
     @Binding var userEmail: String
-
+    var edit: () -> Void
     @Environment(\.presentationMode) var presentationMode
 
     let nameHolder: String
@@ -52,7 +52,7 @@ struct EditProfileView: View {
 
     private var button: some View {
         DefaultButton(label: "OK") {
-            // Edit action here
+            edit() // chama o método, mas muda os dados de conta
             presentationMode.wrappedValue.dismiss()
         }
     }

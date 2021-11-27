@@ -36,9 +36,10 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
                         .padding(.trailing, 5)
 
                     EditProfileButtonView(destination: { EditProfileView(userName: $viewModel.editingName,
-                                                                         userEmail: $viewModel.editingName,
-                                                                         nameHolder: viewModel.userName!,
-                                                                         userHolder: viewModel.userEmail!) })
+                                                                         userEmail: $viewModel.editingEmail,
+                                                                         edit: viewModel.editAccount,
+                                                                         nameHolder: viewModel.userName ?? "N/A",
+                                                                         userHolder: viewModel.userEmail ?? "N/A") })
                 }
                 .padding(.bottom, 20)
                 .padding(.top, 35)
