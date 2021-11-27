@@ -1,25 +1,30 @@
-//
-//  EditProfileView.swift
-//  Foodlitzer
-//
-//  Created by Alessandra Souza da Silva on 25/11/21.
-//
-
 import SwiftUI
 
 struct EditProfileView: View {
     @Binding var userName: String
     @Binding var userEmail: String
+    var edit: () -> Void
+    @Environment(\.presentationMode) var presentationMode
+
+    let nameHolder: String
+    let userHolder: String
+
     var body: some View {
-        editText
-        nameField
-        emailField
+        VStack {
+            editText
+            nameField
+            emailField
+            button
+            Spacer()
+        }
+        .padding(.horizontal, 45)
     }
 
     private var editText: some View {
         VStack {
             Text("Edit Profile")
                 .font(.custom("Lora-Regular", size: 36))
+                .padding(.top, 15)
         }
     }
 
@@ -27,24 +32,28 @@ struct EditProfileView: View {
         HStack {
             Image(systemName: "person")
                 .foregroundColor(Color("iconsGray"))
-            TextField(Localizable.Register.Name.placeholder, text: $userName)
-                .frame(width: 309)
+            TextField(nameHolder, text: $userName)
                 .autocapitalization(.words)
-        }.underlineTextField()
+        }
+        .underlineTextField()
     }
 
     private var emailField: some View {
         HStack {
             Image(systemName: "envelope")
                 .foregroundColor(Color("iconsGray"))
-            TextField(Localizable.Register.Email.placeholder, text: $userEmail)
-                .frame(width: 309)
+            TextField(userHolder, text: $userEmail)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
-                .overlay(Rectangle()
-                    .stroke(lineWidth: 1)
-                    // .foregroundColor(viewModel.shouldPromptInvalidEmail ? .red : .clear)
-                )
-        }.underlineTextField()
+        }
+        .underlineTextField()
+        .padding(.bottom, 65)
+    }
+
+    private var button: some View {
+        DefaultButton(label: "OK") {
+            edit() // chama o método, mas muda os dados de conta
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
