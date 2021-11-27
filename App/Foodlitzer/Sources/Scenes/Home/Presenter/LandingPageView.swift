@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct LandigPageView: View {
+struct LandingPageView: View {
     var body: some View {
         TopHomeView()
     }

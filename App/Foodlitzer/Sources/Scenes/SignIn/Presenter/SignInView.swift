@@ -52,7 +52,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
     private var emailField: some View {
         HStack {
             Image(systemName: "envelope")
-                .foregroundColor(Assets.Colors.unavailableGray.color)
+                .foregroundColor(Color(Assets.Colors.unavailableGray))
             TextField(Localizable.SignIn.Email.placeholder, text: $viewModel.email)
                 .frame(width: 309)
                 .font(.system(size: 18, weight: .regular))
@@ -64,7 +64,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
     private var passwordField: some View {
         HStack {
             Image(systemName: "lock")
-                .foregroundColor(Assets.Colors.unavailableGray.color)
+                .foregroundColor(Color(Assets.Colors.unavailableGray))
             SecureField(Localizable.SignIn.Password.placeholder, text: $viewModel.password)
                 .frame(width: 309)
         }.underlineTextField()

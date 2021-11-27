@@ -46,7 +46,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
     private var nameField: some View {
         HStack {
             Image(systemName: "person")
-                .foregroundColor(Assets.Colors.unavailableGray.color)
+                .foregroundColor(Color(Assets.Colors.unavailableGray))
             TextField(Localizable.Register.Name.placeholder, text: $viewModel.nameText)
                 .frame(width: 309)
                 .autocapitalization(.words)
@@ -56,7 +56,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
     private var emailField: some View {
         HStack {
             Image(systemName: "envelope")
-                .foregroundColor(Assets.Colors.unavailableGray.color)
+                .foregroundColor(Color(Assets.Colors.unavailableGray))
             TextField(Localizable.Register.Email.placeholder, text: $viewModel.emailText)
                 .frame(width: 309)
                 .autocapitalization(.none)
@@ -70,7 +70,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
     private var passwordField: some View {
         HStack {
             Image(systemName: "lock")
-                .foregroundColor(Assets.Colors.unavailableGray.color)
+                .foregroundColor(Color(Assets.Colors.unavailableGray))
             SecureField(Localizable.Register.Password.placeholder, text: $viewModel.passwordText)
                 .frame(width: 309)
                 .overlay(Rectangle()
@@ -82,7 +82,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
     private var confirmPasswordField: some View {
         HStack {
             Image(systemName: "lock")
-                .foregroundColor(Assets.Colors.unavailableGray.color)
+                .foregroundColor(Color(Assets.Colors.unavailableGray))
             SecureField(Localizable.Register.ConfirmPassword.placeholder, text: $viewModel.confirmPasswordText)
                 .frame(width: 309)
                 .overlay(Rectangle()

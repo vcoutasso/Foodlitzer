@@ -4,9 +4,9 @@ struct LogoOnboardingView: View {
     var body: some View {
         VStack(alignment: .center) {
             HStack {
-                Assets.Images.onionsDiamond.image
+                Image(Assets.Images.onionsDiamond)
                     .offset(x: 10, y: 50)
-                Assets.Images.newspaperDiamond.image
+                Image(Assets.Images.newspaperDiamond)
                     .offset(x: 20, y: 50)
             }
             ZStack(alignment: .center) {
@@ -14,15 +14,17 @@ struct LogoOnboardingView: View {
                     .fill(Color.white)
                     .rotationEffect(.degrees(45))
                     .frame(width: 223, height: 223)
-                Assets.Images.brandLogo.image
+                Image(Assets.Images.foodlitzerLogo)
+                    .resizable()
+                    .frame(width: 243, height: 110)
             }.offset(y: -80)
             HStack {
-                Assets.Images.newspaperDiamond.image
+                Image(Assets.Images.newspaperDiamond)
                     .offset(x: 8, y: -207)
                 rectangleFish
             }
 
-        }.background(Assets.Colors.backgroundGray.color)
+        }.background(Color(Assets.Colors.backgroundGray))
     }
 
     private var rectangleFish: some View {
@@ -31,7 +33,7 @@ struct LogoOnboardingView: View {
                 .fill(Color("blueFish"))
                 .rotationEffect(.degrees(45))
                 .frame(width: 223, height: 223)
-            Assets.Images.goldenFish.image
+            Image("Images/goldenFish")
         }.offset(y: -210)
     }
 }

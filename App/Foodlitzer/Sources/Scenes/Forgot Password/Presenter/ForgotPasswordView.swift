@@ -11,7 +11,7 @@ struct ForgotPasswordView<ViewModelType>: View where ViewModelType: ForgotPasswo
 
             HStack {
                 Image(systemName: "lock")
-                    .foregroundColor(Assets.Colors.unavailableGray.color)
+                    .foregroundColor(Color(Assets.Colors.unavailableGray))
                 TextField("E-mail Adress", text: $viewModel.email)
                     .frame(width: 286)
                     .keyboardType(.emailAddress)

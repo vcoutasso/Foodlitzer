@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "onboarding4.png",
+      "filename" : "foodlitzerLogo.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "foodlitzerLogo@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "foodlitzerLogo@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

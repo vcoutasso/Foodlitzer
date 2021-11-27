@@ -10,7 +10,26 @@
 {% set symbolType %}{{param.symbolTypeName|default:"SymbolAsset"}}{% endset %}
 {% set forceNamespaces %}{{param.forceProvidesNamespaces|default:"false"}}{% endset %}
 {% set accessModifier %}{% if param.publicAccess %}public{% else %}internal{% endif %}{% endset %}
-import SwiftUI
+#if os(macOS)
+  import AppKit
+#elseif os(iOS)
+{% if resourceCount.arresourcegroup > 0 %}
+  import ARKit
+{% endif %}
+  import UIKit
+#elseif os(tvOS) || os(watchOS)
+  import UIKit
+#endif
+
+// Deprecated typealiases
+{% if resourceCount.color > 0 %}
+@available(*, deprecated, renamed: "{{colorType}}.MyColor", message: "This typealias will be removed in SwiftGen 7.0")
+{{accessModifier}} typealias {{param.colorAliasName|default:"AssetColorTypeAlias"}} = {{colorType}}.MyColor
+{% endif %}
+{% if resourceCount.image > 0 %}
+@available(*, deprecated, renamed: "{{imageType}}.MyImage", message: "This typealias will be removed in SwiftGen 7.0")
+{{accessModifier}} typealias {{param.imageAliasName|default:"AssetImageTypeAlias"}} = {{imageType}}.MyImage
+{% endif %}
 
 // swiftlint:disable superfluous_disable_command file_length implicit_return
 
@@ -133,35 +152,172 @@ import SwiftUI
 }
 #endif
 {% endif %}
-
 {% if resourceCount.color > 0 %}
 
 {{accessModifier}} final class {{colorType}} {
   {{accessModifier}} fileprivate(set) var name: String
 
+  #if os(macOS)
+  {{accessModifier}} typealias MyColor = NSColor
+  #elseif os(iOS) || os(tvOS) || os(watchOS)
+  {{accessModifier}} typealias MyColor = UIColor
+  #endif
+
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  {{accessModifier}} private(set) lazy var color: Color = {
-    Color(name)
+  {{accessModifier}} private(set) lazy var color: MyColor = {
+    guard let color = MyColor(asset: self) else {
+      fatalError("Unable to load color asset named \(name).")
+    }
+    return color
   }()
+
+  #if os(iOS) || os(tvOS)
+  @available(iOS 11.0, tvOS 11.0, *)
+  {{accessModifier}} func color(compatibleWith traitCollection: UITraitCollection) -> MyColor {
+    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
+    guard let color = MyColor(named: name, in: bundle, compatibleWith: traitCollection) else {
+      fatalError("Unable to load color asset named \(name).")
+    }
+    return color
+  }
+  #endif
 
   fileprivate init(name: String) {
     self.name = name
   }
 }
-{% endif %}
 
+{{accessModifier}} extension {{colorType}}.MyColor {
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
+  convenience init?(asset: {{colorType}}) {
+    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
+    #if os(iOS) || os(tvOS)
+    self.init(named: asset.name, in: bundle, compatibleWith: nil)
+    #elseif os(macOS)
+    self.init(named: NSColor.Name(asset.name), bundle: bundle)
+    #elseif os(watchOS)
+    self.init(named: asset.name)
+    #endif
+  }
+}
+{% endif %}
+{% if resourceCount.data > 0 %}
+
+{{accessModifier}} struct {{dataType}} {
+  {{accessModifier}} fileprivate(set) var name: String
+
+  @available(iOS 9.0, tvOS 9.0, watchOS 6.0, macOS 10.11, *)
+  {{accessModifier}} var data: NSDataAsset {
+    guard let data = NSDataAsset(asset: self) else {
+      fatalError("Unable to load data asset named \(name).")
+    }
+    return data
+  }
+}
+
+@available(iOS 9.0, tvOS 9.0, watchOS 6.0, macOS 10.11, *)
+{{accessModifier}} extension NSDataAsset {
+  convenience init?(asset: {{dataType}}) {
+    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
+    #if os(iOS) || os(tvOS) || os(watchOS)
+    self.init(name: asset.name, bundle: bundle)
+    #elseif os(macOS)
+    self.init(name: NSDataAsset.Name(asset.name), bundle: bundle)
+    #endif
+  }
+}
+{% endif %}
 {% if resourceCount.image > 0 %}
 
 {{accessModifier}} struct {{imageType}} {
   {{accessModifier}} fileprivate(set) var name: String
 
+  #if os(macOS)
+  {{accessModifier}} typealias MyImage = NSImage
+  #elseif os(iOS) || os(tvOS) || os(watchOS)
+  {{accessModifier}} typealias MyImage = UIImage
+  #endif
+
   @available(iOS 8.0, tvOS 9.0, watchOS 2.0, macOS 10.7, *)
-  {{accessModifier}} var image: Image {
-    Image(name)
+  {{accessModifier}} var image: MyImage {
+    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
+    #if os(iOS) || os(tvOS)
+    let image = MyImage(named: name, in: bundle, compatibleWith: nil)
+    #elseif os(macOS)
+    let name = NSImage.Name(self.name)
+    let image = (bundle == .main) ? NSImage(named: name) : bundle.image(forResource: name)
+    #elseif os(watchOS)
+    let image = MyImage(named: name)
+    #endif
+    guard let result = image else {
+      fatalError("Unable to load image asset named \(name).")
+    }
+    return result
+  }
+
+  #if os(iOS) || os(tvOS)
+  @available(iOS 8.0, tvOS 9.0, *)
+  {{accessModifier}} func image(compatibleWith traitCollection: UITraitCollection) -> MyImage {
+    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
+    guard let result = MyImage(named: name, in: bundle, compatibleWith: traitCollection) else {
+      fatalError("Unable to load image asset named \(name).")
+    }
+    return result
+  }
+  #endif
+}
+
+{{accessModifier}} extension {{imageType}}.MyImage {
+  @available(iOS 8.0, tvOS 9.0, watchOS 2.0, *)
+  @available(macOS, deprecated,
+    message: "This initializer is unsafe on macOS, please use the {{imageType}}.image property")
+  convenience init?(asset: {{imageType}}) {
+    #if os(iOS) || os(tvOS)
+    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
+    self.init(named: asset.name, in: bundle, compatibleWith: nil)
+    #elseif os(macOS)
+    self.init(named: NSImage.Name(asset.name))
+    #elseif os(watchOS)
+    self.init(named: asset.name)
+    #endif
   }
 }
 {% endif %}
+{% if resourceCount.symbol > 0 %}
 
+{{accessModifier}} struct {{symbolType}} {
+  {{accessModifier}} fileprivate(set) var name: String
+
+  #if os(iOS) || os(tvOS) || os(watchOS)
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+  {{accessModifier}} typealias Configuration = UIImage.SymbolConfiguration
+  {{accessModifier}} typealias MyImage = UIImage
+
+  @available(iOS 12.0, tvOS 12.0, watchOS 5.0, *)
+  {{accessModifier}} var image: MyImage {
+    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
+    #if os(iOS) || os(tvOS)
+    let image = MyImage(named: name, in: bundle, compatibleWith: nil)
+    #elseif os(watchOS)
+    let image = MyImage(named: name)
+    #endif
+    guard let result = image else {
+      fatalError("Unable to load symbol asset named \(name).")
+    }
+    return result
+  }
+
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+  {{accessModifier}} func image(with configuration: Configuration) -> MyImage {
+    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
+    guard let result = MyImage(named: name, in: bundle, with: configuration) else {
+      fatalError("Unable to load symbol asset named \(name).")
+    }
+    return result
+  }
+  #endif
+}
+{% endif %}
 {% if not param.bundle %}
 
 // swiftlint:disable convenience_type
