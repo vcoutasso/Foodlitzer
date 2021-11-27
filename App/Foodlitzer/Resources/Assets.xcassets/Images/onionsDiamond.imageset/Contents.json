@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "cebola.png",
+      "filename" : "onionsDiamond.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "onionsDiamond@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "onionsDiamond@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

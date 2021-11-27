@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "miniLogo.png",
+      "filename" : "goldenFish.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "miniLogo@2x.png",
+      "filename" : "goldenFish@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "miniLogo@3x.png",
+      "filename" : "goldenFish@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

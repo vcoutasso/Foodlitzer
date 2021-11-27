@@ -32,7 +32,7 @@ struct TabHomeView: View {
                             MainCard(restaurantName: restaurant.name,
                                      restaurantRate: Int(restaurant.rating),
                                      isReviewed: false,
-                                     image: restaurant.images.first ?? Image("placeHolder"),
+                                     image: restaurant.images.first ?? Assets.Images.placeholderPizza.image,
                                      address: restaurant.address,
                                      price: restaurant.price)
                                 .padding(.bottom, 20)
@@ -49,7 +49,7 @@ struct TabHomeView: View {
 
                             ForEach(restaurants) { restaurant in
                                 MiniCard(restaurantName: restaurant.name, restaurantRate: 5, isReviewed: true,
-                                         image: "placeHolder")
+                                         image: Assets.Images.placeholderPizza.image)
                                     .padding(.trailing, 30)
                             }
                         } // TODO: Implementar histórico de visita do usuário

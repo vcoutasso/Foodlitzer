@@ -4,12 +4,12 @@ struct MiniCard: View {
     var restaurantName: String
     var restaurantRate: Int
     var isReviewed: Bool
-    var image: String
+    var image: Image
     @State private var maxRate = 5
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Image(image)
+            image
                 .resizable()
                 .scaledToFill()
                 .imageFilter()

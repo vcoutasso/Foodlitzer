@@ -10,7 +10,7 @@ struct HeaderComponent: View {
 
             Spacer()
 
-            Image("miniLogo")
+            Assets.Images.brandLettering.image
 
             Spacer()
 

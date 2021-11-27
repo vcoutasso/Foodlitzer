@@ -23,7 +23,7 @@ struct InfoPageOneView: View {
 
                 HStack(spacing: 0) {
                     HStack(spacing: 0) {
-                        Image("GoogleIcon")
+                        Assets.Images.googleIcon.image
                             .padding(.horizontal, 7)
                         Image(systemName: "star")
                         Image(systemName: "star")
@@ -42,7 +42,7 @@ struct InfoPageOneView: View {
                     .frame(width: 175, height: 30)
                 }
                 HStack {
-                    Image("FoodlitzerIcon")
+                    Assets.Images.brandIcon.image
                         .frame(width: 10, height: 15)
                         .padding(.horizontal, 7)
                     Image(systemName: "hand.thumbsup.fill")
