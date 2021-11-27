@@ -23,7 +23,7 @@ struct LogoOnboardingView: View {
                 rectangleFish
             }
 
-        }.background(Color("background"))
+        }.background(Assets.Colors.backgroundGray.color)
     }
 
     private var rectangleFish: some View {

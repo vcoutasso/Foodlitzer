@@ -26,7 +26,7 @@ struct EditProfileView: View {
     private var nameField: some View {
         HStack {
             Image(systemName: "person")
-                .foregroundColor(Color("iconsGray"))
+                .foregroundColor(Assets.Colors.unavailableGray.color)
             TextField(Localizable.Register.Name.placeholder, text: $userName)
                 .frame(width: 309)
                 .autocapitalization(.words)
@@ -36,7 +36,7 @@ struct EditProfileView: View {
     private var emailField: some View {
         HStack {
             Image(systemName: "envelope")
-                .foregroundColor(Color("iconsGray"))
+                .foregroundColor(Assets.Colors.unavailableGray.color)
             TextField(Localizable.Register.Email.placeholder, text: $userEmail)
                 .frame(width: 309)
                 .autocapitalization(.none)
