@@ -18,7 +18,7 @@ struct MiniCard: View {
                 .border(Color.black, width: 0.3)
 
             Text(restaurantName.uppercased())
-                .font(.compact(.regular, size: 12))
+                .font(.sfCompactText(.regular, size: 12))
                 .padding(10)
                 .frame(height: 50)
 

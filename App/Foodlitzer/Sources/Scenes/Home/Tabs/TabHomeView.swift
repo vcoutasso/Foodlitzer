@@ -70,7 +70,7 @@ struct TabHomeView: View {
         VStack(alignment: .center) {
             VStack {
                 Text("Getting to know a restaurant is key to having a good dining experience. But you already knew that! Wanna tell us about an experience you've had!")
-                    .font(.compact(.light, size: 14))
+                    .font(.sfCompactText(.light, size: 14))
                     .lineSpacing(10)
                     .frame(width: 291, height: 98, alignment: .center)
                     .multilineTextAlignment(.center)
@@ -83,7 +83,7 @@ struct TabHomeView: View {
                     NewReviewView(viewModel: NewReviewViewModelFactory.make())
                 } label: {
                     Text("New review")
-                        .font(.compact(.regular, size: 12))
+                        .font(.sfCompactText(.regular, size: 12))
                         .foregroundColor(Color.white)
                         .background(Rectangle()
                             .frame(width: 195, height: 31, alignment: .center)
@@ -101,7 +101,7 @@ struct TabHomeView: View {
                 .font(.custom("Lora-Regular", size: 24))
                 .padding(.top, 30)
             Text("Check out these reviews about restaurants you don't know yet!")
-                .font(.compact(.light, size: 14))
+                .font(.sfCompactText(.light, size: 14))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color("textGray"))
                 .frame(width: 313, height: 40, alignment: .center)
@@ -114,7 +114,7 @@ struct TabHomeView: View {
                 .font(.custom("Lora-Regular", size: 24))
             Text("Here are the latest restaurants you've reviewed.")
 
-                .font(.compact(.light, size: 14))
+                .font(.sfCompactText(.light, size: 14))
                 .foregroundColor(Color("textGray"))
                 .padding()
         }

@@ -44,7 +44,7 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
                                 .foregroundColor(.black)
 
                             Text("Avaliação sonora:")
-                                .font(.compact(.regular, size: 14))
+                                .font(.sfCompactText(.regular, size: 14))
                         }
                         .padding(.horizontal, 40)
                         .padding(.bottom, 10)

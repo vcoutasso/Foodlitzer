@@ -21,3 +21,10 @@ xcassets:
       output: Assets.swift
       params:
         enumName: Assets
+fonts:
+  inputs: Fonts
+  outputs:
+    - templatePath: templates/swiftui-fonts-template.stencil
+      output: Fonts.swift
+      params:
+          enumName: Fonts

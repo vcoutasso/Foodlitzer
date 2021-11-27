@@ -23,7 +23,7 @@ struct TabRestaurantsView: View {
                     .padding(.top, 55)
 
                 Text("Here are some restaurants near you.")
-                    .font(.compact(.regular, size: 14))
+                    .font(.sfCompactText(.regular, size: 14))
                     .padding(.bottom, 30)
 
                 ForEach(restaurants) { restaurant in
@@ -44,7 +44,7 @@ struct TabRestaurantsView: View {
                     // destination
                 } label: {
                     Text("Show More")
-                        .font(.compact(.regular, size: 14))
+                        .font(.sfCompactText(.regular, size: 14))
                         .foregroundColor(.white)
                         .frame(width: UIScreen.main.bounds.width - 80, height: 40)
                         .background(Color.black)
@@ -55,7 +55,7 @@ struct TabRestaurantsView: View {
                     .font(.lora(.regular, size: 24))
 
                 Text("Here are the latest restaurants you've reviewed.")
-                    .font(.compact(.regular, size: 14))
+                    .font(.sfCompactText(.regular, size: 14))
                     .padding(.bottom, 20)
 
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -77,7 +77,7 @@ struct TabRestaurantsView: View {
                     // destination
                 } label: {
                     Text("Show More")
-                        .font(.compact(.light, size: 14))
+                        .font(.sfCompactText(.light, size: 14))
                         .foregroundColor(.white)
                         .frame(width: UIScreen.main.bounds.width - 80, height: 40)
                         .background(Color.black)

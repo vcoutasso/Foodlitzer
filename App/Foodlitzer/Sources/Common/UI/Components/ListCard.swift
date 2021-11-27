@@ -9,7 +9,7 @@ struct ListCard: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text(content.name.uppercased())
-                    .font(.compact(.regular, size: 12))
+                    .font(.sfCompactText(.regular, size: 12))
                     .padding(10)
                     .frame(height: 50)
 
@@ -27,7 +27,7 @@ struct ListCard: View {
                     .padding(.leading, 10)
                     .font(.system(size: 12, weight: .light, design: .default))
                 Text(content.address)
-                    .font(.compact(.light, size: 11))
+                    .font(.sfCompactText(.light, size: 11))
                     .padding(5)
             }
 
@@ -39,7 +39,7 @@ struct ListCard: View {
 
                 ForEach(0..<content.price) { _ in
                     Text("$")
-                        .font(.compact(.light, size: 11))
+                        .font(.sfCompactText(.light, size: 11))
                 }
 
                 Spacer()

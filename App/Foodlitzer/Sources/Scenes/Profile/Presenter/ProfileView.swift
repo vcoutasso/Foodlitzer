@@ -33,7 +33,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
     private var account: some View {
         VStack {
             Text("Account")
-                .font(.compact(.light, size: 18))
+                .font(.sfCompactText(.light, size: 18))
                 .foregroundColor(Color.black)
                 .background(Rectangle()
                     .strokeBorder(Color.black, lineWidth: 0.5)
@@ -44,7 +44,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
             VStack {
                 HStack {
                     Text("Name: \(viewModel.userName ?? "N/A")")
-                        .font(.compact(.regular, size: 24))
+                        .font(.sfCompactText(.regular, size: 24))
                     EditProfileButtonView(destination: { EditProfileView(userName: $viewModel.editingName,
                                                                          userEmail: $viewModel.editingEmail)
                     })
@@ -78,7 +78,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
 
     private var permissionTitle: some View {
         Text("Permissions")
-            .font(.compact(.light, size: 18))
+            .font(.sfCompactText(.light, size: 18))
             .foregroundColor(Color.black)
             .background(Rectangle()
                 .strokeBorder(Color.black, lineWidth: 0.5)
@@ -91,7 +91,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
             Image(systemName: "mappin")
                 .frame(width: 38, height: 38)
             Text("LOCALIZATION")
-                .font(.compact(.regular, size: 14))
+                .font(.sfCompactText(.regular, size: 14))
                 .frame(width: 200)
             Toggle("", isOn: $isLocationOn)
                 .tint(.black)
@@ -104,7 +104,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
             Image(systemName: "mic.fill")
                 .frame(width: 38, height: 38)
             Text("MIC")
-                .font(.compact(.regular, size: 14))
+                .font(.sfCompactText(.regular, size: 14))
                 .frame(width: 200)
             Toggle("", isOn: $isMicOn)
                 .tint(.black)
@@ -117,7 +117,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
             Image(systemName: "gear")
                 .frame(width: 38, height: 38)
             Text("PLACEHOLDER")
-                .font(.compact(.regular, size: 14))
+                .font(.sfCompactText(.regular, size: 14))
                 .frame(width: 200)
             Toggle("", isOn: $isMicOn)
                 .tint(.black)
