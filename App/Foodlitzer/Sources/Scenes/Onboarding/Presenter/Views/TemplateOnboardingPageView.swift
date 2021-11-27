@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TemplateOnboardingPageView: View {
-    var image: String
+    var image: Image
     var text: String
     var body: some View {
         VStack {
@@ -17,7 +17,7 @@ struct TemplateOnboardingPageView: View {
                 .frame(width: 284, height: 139, alignment: .center)
                 .multilineTextAlignment(.center)
 
-            Image(image)
+            image
         }
     }
 }

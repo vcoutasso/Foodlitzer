@@ -17,7 +17,7 @@ struct OnboardingBottomView: View {
             }
 
         }.ignoresSafeArea()
-            .background(Color("background"))
+            .background(Color(Assets.Colors.backgroundGray))
     }
 }
 

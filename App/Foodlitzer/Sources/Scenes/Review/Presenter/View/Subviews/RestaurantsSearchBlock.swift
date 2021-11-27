@@ -6,7 +6,7 @@ struct RestaurantsSearchBlock: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("Informações básicas")
-                .font(.compact(.regular, size: 14))
+                .font(.sfCompactText(.regular, size: 14))
                 .padding(.bottom, 15)
 
             SearchBar(query: $query, showCancelButton: .constant(false))

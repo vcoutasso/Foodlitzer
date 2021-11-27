@@ -11,10 +11,9 @@ final class NearbyPlacesService: NearbyPlacesServiceProtocol {
 
     // MARK: - Instance Properties
 
-    private var apiKey: String!
-
     private let nearbyRadius: Int
     private let placeType: String
+    private var apiKey: String!
 
     // MARK: - Dependencies
 

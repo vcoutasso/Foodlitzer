@@ -10,7 +10,9 @@ struct HeaderComponent: View {
 
             Spacer()
 
-            Image("miniLogo")
+            Image(Assets.Images.foodlitzerLettering)
+                .resizable()
+                .frame(width: 93, height: 22)
 
             Spacer()
 

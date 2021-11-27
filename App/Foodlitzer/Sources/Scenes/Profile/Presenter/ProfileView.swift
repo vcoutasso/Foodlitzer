@@ -32,7 +32,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
             VStack {
                 HStack(alignment: .center, spacing: 0) {
                     Text(viewModel.userName ?? "N/A")
-                        .font(.compact(.regular, size: 24))
+                        .font(.sfCompactText(.light, size: 24))
                         .padding(.trailing, 5)
 
                     EditProfileButtonView(destination: { EditProfileView(userName: $viewModel.editingName,
@@ -46,7 +46,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
                 .padding(.leading, 20)
 
                 Text(viewModel.userEmail ?? "N/A")
-                    .font(.compact(.regular, size: 14))
+                    .font(.sfCompactText(.regular, size: 14))
                     .padding(.bottom, 20)
             }
             .frame(width: UIScreen.main.bounds.width - 70)
@@ -55,7 +55,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
             VStack {
                 HStack(alignment: .center) {
                     Text("Account")
-                        .font(.compact(.light, size: 18))
+                        .font(.sfCompactText(.light, size: 18))
                         .padding(.horizontal, 65)
                         .padding(.vertical, 10)
                 }
@@ -153,7 +153,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
             viewModel.signOut()
         } label: {
             Text("Logout")
-                .font(.compact(.regular, size: 14))
+                .font(.sfCompactText(.regular, size: 14))
                 .frame(width: UIScreen.main.bounds.width - 70, height: 40)
                 .foregroundColor(.white)
                 .background(Color.black)

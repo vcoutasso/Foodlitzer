@@ -16,9 +16,11 @@ struct OnboardingView<ViewModelType>: View where ViewModelType: OnboardingViewMo
                     .tag(1)
                 SecondPageOnboardingView()
                     .tag(2)
-                TemplateOnboardingPageView(image: "onboarding3", text: "Review the places you've been to")
+                TemplateOnboardingPageView(image: Image(Assets.Images.onboardingPage3),
+                                           text: "Review the places you've been to")
                     .tag(3)
-                TemplateOnboardingPageView(image: "onboarding4", text: "And find great new restaurants to experience!")
+                TemplateOnboardingPageView(image: Image(Assets.Images.onboardingPage4),
+                                           text: "And find great new restaurants to experience!")
                     .tag(4)
             }
             .edgesIgnoringSafeArea(.top)
@@ -26,7 +28,7 @@ struct OnboardingView<ViewModelType>: View where ViewModelType: OnboardingViewMo
             .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
 
             OnboardingBottomView(pageNumber: viewModel.currentPage)
-        }.background(Color("background"))
+        }.background(Color(Assets.Colors.backgroundGray))
     }
 }
 
