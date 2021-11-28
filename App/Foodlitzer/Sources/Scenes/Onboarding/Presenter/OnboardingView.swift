@@ -12,19 +12,23 @@ struct OnboardingView<ViewModelType>: View where ViewModelType: OnboardingViewMo
     var body: some View {
         VStack {
             TabView(selection: $viewModel.currentPage) {
-                ForEach(onboardingPages, id: \.self) { index in
-                    LogoOnboardingView(currentPage: index)
-                        .clipped()
-                        .ignoresSafeArea()
-                        .tag(index)
-                }
+                LogoOnboardingView()
+                    .tag(1)
+                SecondPageOnboardingView()
+                    .tag(2)
+                TemplateOnboardingPageView(image: Image(Assets.Images.onboardingPage3),
+                                           text: "Review the places you've been to")
+                    .tag(3)
+                TemplateOnboardingPageView(image: Image(Assets.Images.onboardingPage4),
+                                           text: "And find great new restaurants to experience!")
+                    .tag(4)
             }
             .edgesIgnoringSafeArea(.top)
             .tabViewStyle(PageTabViewStyle())
             .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
 
             OnboardingBottomView(pageNumber: viewModel.currentPage)
-        }.background(Color("background"))
+        }.background(Color(Assets.Colors.backgroundGray))
     }
 }
 

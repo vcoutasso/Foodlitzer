@@ -25,7 +25,7 @@ struct HeaderTabView: View {
                     VStack {
                         HStack {
                             Text("Home")
-                                .font(.compact(.regular, size: 14))
+                                .font(.sfCompactText(.regular, size: 14))
                                 .foregroundColor(self.index == 0 ? .black : Color.black.opacity(0.7))
                         }
                         Capsule()
@@ -40,7 +40,7 @@ struct HeaderTabView: View {
                     VStack {
                         HStack {
                             Text("Restaurants")
-                                .font(.compact(.regular, size: 14))
+                                .font(.sfCompactText(.regular, size: 14))
                                 .foregroundColor(self.index == 1 ? .black : Color.black.opacity(0.7))
                         }
                         Capsule()

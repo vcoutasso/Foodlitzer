@@ -1,13 +1,12 @@
 import SwiftUI
 
 struct LogoOnboardingView: View {
-    var currentPage: Int
     var body: some View {
         VStack(alignment: .center) {
             HStack {
-                Image("cebola")
+                Image(Assets.Images.onionsDiamond)
                     .offset(x: 10, y: 50)
-                Image("newspaperLosango1")
+                Image(Assets.Images.newspaperDiamond)
                     .offset(x: 20, y: 50)
             }
             ZStack(alignment: .center) {
@@ -15,15 +14,17 @@ struct LogoOnboardingView: View {
                     .fill(Color.white)
                     .rotationEffect(.degrees(45))
                     .frame(width: 223, height: 223)
-                Image("foodlitzerLogo")
+                Image(Assets.Images.foodlitzerLogo)
+                    .resizable()
+                    .frame(width: 243, height: 110)
             }.offset(y: -80)
             HStack {
-                Image("newspaperLosango2")
+                Image(Assets.Images.newspaperDiamond)
                     .offset(x: 8, y: -207)
                 rectangleFish
             }
 
-        }.background(Color("background"))
+        }.background(Color(Assets.Colors.backgroundGray))
     }
 
     private var rectangleFish: some View {
@@ -32,13 +33,13 @@ struct LogoOnboardingView: View {
                 .fill(Color("blueFish"))
                 .rotationEffect(.degrees(45))
                 .frame(width: 223, height: 223)
-            Image("fish")
+            Image("Images/goldenFish")
         }.offset(y: -210)
     }
 }
 
 struct LogoOnboardingView_Previews: PreviewProvider {
     static var previews: some View {
-        LogoOnboardingView(currentPage: 0)
+        LogoOnboardingView()
     }
 }

@@ -21,7 +21,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Images/Icon" translatesAutoresizingMaskIntoConstraints="NO" id="iEM-5o-na7">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Images/brandIcon" translatesAutoresizingMaskIntoConstraints="NO" id="iEM-5o-na7">
                                 <rect key="frame" x="116" y="375" width="183" height="146"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -41,6 +41,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Images/Icon" width="161" height="164"/>
+        <image name="Images/brandIcon" width="161" height="164"/>
     </resources>
 </document>

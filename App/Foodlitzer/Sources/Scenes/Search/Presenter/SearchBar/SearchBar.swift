@@ -38,7 +38,7 @@ struct SearchBar: View {
         .keyboardType(.default)
         .padding(.leading, 40)
         .padding(.trailing, 35)
-        .font(.compact(.light, size: 14))
+        .font(.sfCompactText(.light, size: 14))
         .frame(height: 35)
         .customStroke()
         .overlay(clearFieldButton)

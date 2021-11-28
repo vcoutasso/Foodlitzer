@@ -17,7 +17,14 @@ strings:
 xcassets:
   inputs: Assets.xcassets
   outputs:
-    - templateName: swift5
+    - templatePath: templates/swiftui-xcassets-template.stencil
       output: Assets.swift
       params:
         enumName: Assets
+fonts:
+  inputs: Fonts
+  outputs:
+    - templatePath: templates/swiftui-fonts-template.stencil
+      output: Fonts.swift
+      params:
+          enumName: Fonts

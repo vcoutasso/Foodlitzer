@@ -23,7 +23,7 @@ struct VerticalCard: View {
             }
 
             Text(restaurantName.uppercased())
-                .font(.compact(.regular, size: 12))
+                .font(.sfCompactText(.regular, size: 12))
                 .padding(10)
                 .multilineTextAlignment(.center)
                 .frame(height: 80)

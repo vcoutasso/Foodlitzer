@@ -36,7 +36,7 @@ struct MainCard: View {
 
             HStack {
                 Text(restaurantName.uppercased())
-                    .font(.compact(.regular, size: 12))
+                    .font(.sfCompactText(.regular, size: 12))
                     .padding(10)
                     .frame(height: 50)
 
@@ -49,7 +49,7 @@ struct MainCard: View {
                     .padding(.leading, 10)
                     .font(.system(size: 12, weight: .light, design: .default))
                 Text(address)
-                    .font(.compact(.light, size: 11))
+                    .font(.sfCompactText(.light, size: 11))
                     .padding(5)
             }
 
@@ -61,7 +61,7 @@ struct MainCard: View {
 
                 ForEach(0..<price) { _ in
                     Text("$")
-                        .font(.compact(.light, size: 11))
+                        .font(.sfCompactText(.light, size: 11))
                 }
 
                 Spacer()

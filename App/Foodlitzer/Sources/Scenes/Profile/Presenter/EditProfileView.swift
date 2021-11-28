@@ -23,7 +23,7 @@ struct EditProfileView: View {
     private var editText: some View {
         VStack {
             Text("Edit Profile")
-                .font(.custom("Lora-Regular", size: 36))
+                .font(.lora(.regular, size: 36))
                 .padding(.top, 15)
         }
     }
@@ -31,7 +31,7 @@ struct EditProfileView: View {
     private var nameField: some View {
         HStack {
             Image(systemName: "person")
-                .foregroundColor(Color("iconsGray"))
+                .foregroundColor(Color(Assets.Colors.unavailableGray))
             TextField(nameHolder, text: $userName)
                 .autocapitalization(.words)
         }
@@ -41,7 +41,7 @@ struct EditProfileView: View {
     private var emailField: some View {
         HStack {
             Image(systemName: "envelope")
-                .foregroundColor(Color("iconsGray"))
+                .foregroundColor(Color(Assets.Colors.unavailableGray))
             TextField(userHolder, text: $userEmail)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
@@ -52,7 +52,7 @@ struct EditProfileView: View {
 
     private var button: some View {
         DefaultButton(label: "OK") {
-            edit() // chama o método, mas muda os dados de conta
+            edit() // FIXME: chama o método, mas muda nao os dados de conta
             presentationMode.wrappedValue.dismiss()
         }
     }
