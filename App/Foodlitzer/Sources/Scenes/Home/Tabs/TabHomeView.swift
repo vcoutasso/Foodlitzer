@@ -10,8 +10,6 @@ struct TabHomeView: View {
     var body: some View {
         VStack {
             ScrollView {
-                description
-                Spacer()
                 if restaurants.isEmpty {
                     ProgressView()
                         .padding(.top, 200)
@@ -24,6 +22,8 @@ struct TabHomeView: View {
                             viewModel.handleOnAppear()
                         }
                 } else {
+                    description
+
                     Spacer()
                     bestReviewed
 

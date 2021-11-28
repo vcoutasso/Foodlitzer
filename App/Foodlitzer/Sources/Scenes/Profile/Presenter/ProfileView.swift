@@ -3,10 +3,10 @@ import SwiftUI
 struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelProtocol {
     // MARK: - View model
 
+    @ObservedObject var viewModel: ViewModelType
+
     @State private var isLocationOn = true
     @State private var isMicOn = false
-
-    @ObservedObject private(set) var viewModel: ViewModelType
 
     // MARK: - Views
 
@@ -35,9 +35,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
                         .font(.sfCompactText(.light, size: 24))
                         .padding(.trailing, 5)
 
-                    EditProfileButtonView(destination: { EditProfileView(userName: $viewModel.editingName,
-                                                                         userEmail: $viewModel.editingEmail,
-                                                                         edit: viewModel.editAccount,
+                    EditProfileButtonView(destination: { EditProfileView(commitChanges: viewModel.editAccount,
                                                                          nameHolder: viewModel.userName ?? "N/A",
                                                                          userHolder: viewModel.userEmail ?? "N/A") })
                 }

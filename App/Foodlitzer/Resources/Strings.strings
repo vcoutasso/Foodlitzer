@@ -16,6 +16,7 @@
 "symbols.navigation" = "chevron.right";
 "symbols.password" = "lock";
 "symbols.email" = "envelope";
+"symbols.person" = "person";
 
 "tab.home" = "Home";
 "tab.restaurants" = "Restaurants";

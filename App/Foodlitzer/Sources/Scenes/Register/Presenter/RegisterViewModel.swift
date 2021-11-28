@@ -8,6 +8,7 @@ protocol RegisterViewModelProtocol: ObservableObject {
     var emailText: String { get set }
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
+    var invalidAttempt: Bool { get set }
 
     // Presentation logic
     var shouldPromptInvalidEmail: Bool { get }
@@ -25,10 +26,8 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     @Published var emailText: String
     @Published var passwordText: String
     @Published var confirmPasswordText: String
-
-    // MARK: - Private Atributes
-
-    private var invalidAttempt: Bool
+    @Published var shouldInvalidCredentials: Bool
+    @Published var invalidAttempt: Bool
 
     // MARK: - Computed variables
 
@@ -76,6 +75,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         self.isEmailValid = false
         self.isPasswordValid = false
         self.authenticationService = authenticationService
+        self.shouldInvalidCredentials = false
     }
 
     // MARK: - Account creation
@@ -101,11 +101,8 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     private func createAccount() {
         authenticationService.createAccount(with: nameText,
                                             email: emailText,
-                                            password: passwordText) { [weak self] result in
-            switch result {
-            case let .success(user):
-                debugPrint("User logged in with name: '\(user!.name))' and email: '\(user!.email)'")
-            case let .failure(error):
+                                            password: passwordText) { [weak self] error in
+            if let error = error {
                 self?.updateFailureFlags(for: error)
             }
             self?.objectWillChange.send()
@@ -113,6 +110,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     }
 
     private func resetFlags() {
+        shouldInvalidCredentials = false
         invalidAttempt = false
         isEmailValid = true
         isPasswordValid = true

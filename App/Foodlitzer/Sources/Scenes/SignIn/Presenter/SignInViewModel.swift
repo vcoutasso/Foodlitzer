@@ -29,7 +29,7 @@ final class SignInViewModel: SignInViewModelProtocol {
 
     // MARK: - Computed Variables
 
-    var isButtonDisabled: Bool { email.isEmpty || password.isEmpty || shouldPromptInvalidCredentials == true }
+    var isButtonDisabled: Bool { email.isEmpty || password.isEmpty || shouldPromptInvalidCredentials }
 
     // MARK: - Private Atributes
 
@@ -52,8 +52,8 @@ final class SignInViewModel: SignInViewModelProtocol {
     func handleSignInButtonTapped() {
         resetFlags()
 
-        authenticationService.signIn(withEmail: email, password: password) { [weak self] result in
-            self?.signInCallback(result: result)
+        authenticationService.signIn(withEmail: email, password: password) { [weak self] error in
+            self?.signInCallback(error: error)
         }
     }
 
@@ -67,19 +67,18 @@ final class SignInViewModel: SignInViewModelProtocol {
 
     // MARK: - Helper Methods
 
-    func resetFlags() {
+    private func resetFlags() {
         shouldPromptInvalidCredentials = false
         shouldPresentProfileView = false
         shouldPresentRegistrationView = false
         shouldPresentResetPasswordView = false
     }
 
-    func signInCallback(result: AuthenticationResult) {
-        switch result {
-        case .success:
-            shouldPresentProfileView = true
-        case .failure:
+    private func signInCallback(error: AuthenticationError?) {
+        if error != nil {
             shouldPromptInvalidCredentials = true
+        } else {
+            shouldPresentProfileView = true
         }
     }
 }

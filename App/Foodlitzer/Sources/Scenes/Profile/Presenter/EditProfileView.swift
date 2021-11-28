@@ -1,11 +1,12 @@
 import SwiftUI
 
 struct EditProfileView: View {
-    @Binding var userName: String
-    @Binding var userEmail: String
-    var edit: () -> Void
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
 
+    @State var userName: String = ""
+    @State var userEmail: String = ""
+
+    let commitChanges: (_ name: String, _ email: String, @escaping () -> Void) -> Void
     let nameHolder: String
     let userHolder: String
 
@@ -51,9 +52,11 @@ struct EditProfileView: View {
     }
 
     private var button: some View {
-        DefaultButton(label: "OK") {
-            edit() // FIXME: chama o método, mas muda nao os dados de conta
-            presentationMode.wrappedValue.dismiss()
+        DefaultButton(label: "Save Changes") {
+            // TODO: Show activity indicator
+            commitChanges(userName, userEmail) {
+                dismiss()
+            }
         }
     }
 }

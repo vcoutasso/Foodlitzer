@@ -8,12 +8,18 @@
 "signIn.signUp.text" = "DON'T HAVE AN ACCOUNT YET?";
 
 "signUp.createAccountButton.text" = "Create account";
+
 "signIn.signInButtonMessage.placeholder" = "Continue with email";
+
+"signUp.subtitle.text" = "Hello! Welcome to Foodlitzer!\nWe're excited to have you sharing and discovering experiences had in restaurants!";
+"signUp.signIn.text" = "ALREADY HAVE AN ACCOUNT?";
+
 
 "register.name.placeholder" = "Name";
 "register.email.placeholder" = "E-mail";
 "register.password.placeholder" = "Password";
 "register.confirmPassword.placeholder" = "Confirm password";
+"register.test.text" = "dkasljdasljdlaksd";
 
 "search.placeholder.text" = "Find a restaurant";
 
@@ -40,5 +46,3 @@
 //New Review
 
 //Restaurant Infos
-
-

@@ -1,10 +1,3 @@
-//
-//  EditProfileButtonView.swift
-//  Foodlitzer
-//
-//  Created by Alessandra Souza da Silva on 25/11/21.
-//
-
 import SwiftUI
 
 struct EditProfileButtonView<Destination: View>: View {

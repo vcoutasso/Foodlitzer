@@ -1,7 +1,9 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-final class FirebaseDatabaseService<DataType>: RemoteDatabaseServiceProtocol where DataType: Codable {
+final class FirebaseDatabaseService<T>: RemoteDatabaseServiceProtocol where T: Codable {
+    typealias DataType = T
+
     // MARK: - Properties
 
     private let database = Firestore.firestore()
