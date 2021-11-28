@@ -32,8 +32,10 @@ struct UserRate: View {
     }
 }
 
-struct UserRate_Previews: PreviewProvider {
-    static var previews: some View {
-        UserRate(rating: .constant(4))
+#if DEBUG
+    struct UserRate_Previews: PreviewProvider {
+        static var previews: some View {
+            UserRate(rating: .constant(4))
+        }
     }
-}
+#endif

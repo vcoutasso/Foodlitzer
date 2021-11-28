@@ -17,8 +17,10 @@ struct SignWithAppleButtonView: View {
     }
 }
 
-struct SingWithAppleButtonView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignWithAppleButtonView()
+#if DEBUG
+    struct SingWithAppleButtonView_Previews: PreviewProvider {
+        static var previews: some View {
+            SignWithAppleButtonView()
+        }
     }
-}
+#endif

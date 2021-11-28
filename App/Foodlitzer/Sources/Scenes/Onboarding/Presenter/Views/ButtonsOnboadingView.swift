@@ -22,10 +22,12 @@ struct ButtonsOnboadingView<Destination: View>: View {
     }
 }
 
-struct ButtonsOnboadingView_Previews: PreviewProvider {
-    static var previews: some View {
-        ButtonsOnboadingView(text: "Continue with phone number") {
-            EmptyView()
+#if DEBUG
+    struct ButtonsOnboadingView_Previews: PreviewProvider {
+        static var previews: some View {
+            ButtonsOnboadingView(text: "Continue with phone number") {
+                EmptyView()
+            }
         }
     }
-}
+#endif

@@ -15,8 +15,10 @@ struct TabSavedView: View {
     }
 }
 
-struct TabSavedView_Previews: PreviewProvider {
-    static var previews: some View {
-        TabSavedView()
+#if DEBUG
+    struct TabSavedView_Previews: PreviewProvider {
+        static var previews: some View {
+            TabSavedView()
+        }
     }
-}
+#endif

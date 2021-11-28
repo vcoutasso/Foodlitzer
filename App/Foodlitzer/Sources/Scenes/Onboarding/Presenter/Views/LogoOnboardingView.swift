@@ -38,8 +38,10 @@ struct LogoOnboardingView: View {
     }
 }
 
-struct LogoOnboardingView_Previews: PreviewProvider {
-    static var previews: some View {
-        LogoOnboardingView()
+#if DEBUG
+    struct LogoOnboardingView_Previews: PreviewProvider {
+        static var previews: some View {
+            LogoOnboardingView()
+        }
     }
-}
+#endif

@@ -23,9 +23,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>localization</string>
+	<string>Want to use your location to determine nearby locations</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Want to use your mic to determinet ambient sound</string>
+	<string>Want to use your mic to determine ambient sound</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lora-Bold.ttf</string>

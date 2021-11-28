@@ -18,10 +18,12 @@ struct OpenRegisterView<Destination: View>: View {
     }
 }
 
-struct OpenRegisterView_Previews: PreviewProvider {
-    static var previews: some View {
-        OpenRegisterView {
-            EmptyView()
+#if DEBUG
+    struct OpenRegisterView_Previews: PreviewProvider {
+        static var previews: some View {
+            OpenRegisterView {
+                EmptyView()
+            }
         }
     }
-}
+#endif

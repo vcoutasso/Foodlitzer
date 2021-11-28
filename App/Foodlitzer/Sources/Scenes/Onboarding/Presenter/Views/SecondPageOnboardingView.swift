@@ -72,8 +72,10 @@ struct SecondPageOnboardingView: View {
     }
 }
 
-struct SecondPageOnboardingView_Previews: PreviewProvider {
-    static var previews: some View {
-        SecondPageOnboardingView()
+#if DEBUG
+    struct SecondPageOnboardingView_Previews: PreviewProvider {
+        static var previews: some View {
+            SecondPageOnboardingView()
+        }
     }
-}
+#endif
