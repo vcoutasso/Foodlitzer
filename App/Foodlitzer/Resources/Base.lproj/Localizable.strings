@@ -52,3 +52,12 @@
 //New Review
 
 //Restaurant Infos
+
+//Settings
+"settings.title.text" = "Settings";
+"settings.conta.text" = "Account";
+"settings.logoutButton.text" = "Logout";
+
+//Edit Profile
+"editProfile.title.text" = "Edit Profile";
+"editProfile.saveChangesButton" = "Save Changes";
