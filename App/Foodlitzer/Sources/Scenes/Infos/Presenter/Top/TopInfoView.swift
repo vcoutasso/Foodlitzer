@@ -53,8 +53,10 @@ struct TopInfoView: View {
     }
 }
 
-struct TopInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        TopInfoView()
+#if DEBUG
+    struct TopInfoView_Previews: PreviewProvider {
+        static var previews: some View {
+            TopInfoView()
+        }
     }
-}
+#endif

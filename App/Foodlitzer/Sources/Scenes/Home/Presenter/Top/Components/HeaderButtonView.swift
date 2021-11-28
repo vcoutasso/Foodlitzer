@@ -28,10 +28,12 @@ struct HeaderButtonView<Destination: View>: View {
     }
 }
 
-struct HeaderButtonView_Previews: PreviewProvider {
-    static var previews: some View {
-        HeaderButtonView(text: "gear") {
-            EmptyView()
+#if DEBUG
+    struct HeaderButtonView_Previews: PreviewProvider {
+        static var previews: some View {
+            HeaderButtonView(text: "gear") {
+                EmptyView()
+            }
         }
     }
-}
+#endif

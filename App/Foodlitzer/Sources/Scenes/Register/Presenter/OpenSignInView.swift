@@ -17,10 +17,12 @@ struct OpenSignInView<Destination: View>: View {
     }
 }
 
-struct OpenSignInView_Previews: PreviewProvider {
-    static var previews: some View {
-        OpenSignInView {
-            EmptyView()
+#if DEBUG
+    struct OpenSignInView_Previews: PreviewProvider {
+        static var previews: some View {
+            OpenSignInView {
+                EmptyView()
+            }
         }
     }
-}
+#endif
