@@ -11,103 +11,143 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
 
     @Environment(\.presentationMode) var presentation
     @ObservedObject private(set) var viewModel: ViewModelType
+    @Namespace var buttonPosion
+
+    @State var editingName = false
+    @State var editingEmail = false
+    @State var fade = false
+    @FocusState private var isTextFieldFocusedPass: Bool
+    @FocusState private var isTextFieldFocusedConf: Bool
 
     // MARK: - Views
 
     var body: some View {
-        VStack {
-            signUpText
+        ScrollView {
+            ScrollViewReader { value in
+                VStack(spacing: 0) {
+                    signUpText
 
-            nameField
+                    nameField
 
-            emailField
+                    emailField
 
-            passwordField
+                    passwordField
 
-            confirmPasswordField
+                    confirmPasswordField
 
-            signUpButton
+                    signUpButton
+                        .id(buttonPosion)
+                        .onChange(of: viewModel.nameText) { _ in
+                            withAnimation {
+                                value.scrollTo(buttonPosion)
+                            }
+                        }
 
-            registerButton
+                    registerButton
+                }
+                .padding(.horizontal, 30)
+            }
         }
     }
 
     private var signUpText: some View {
         VStack {
-            Text("Sign Up")
-                .font(.custom("Lora-Regular", size: 36))
-            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis tortor facilisis.")
-                .multilineTextAlignment(.center)
-                .font(.system(size: 14, weight: .light))
-                .frame(width: 300, height: 83, alignment: .center)
-                .padding(.bottom, 20)
+            Text(Localizable.SignUp.CreateAccountButton.text)
+                .font(.lora(.regular, fixedSize: 36))
+                .padding(.bottom, 35)
+
+            Text(Localizable.SignUp.Subtitle.text)
+                .largeTextDisplay()
         }
     }
 
     private var nameField: some View {
         HStack {
-            Image(systemName: "person")
+            Image(systemName: Strings.Symbols.person)
                 .foregroundColor(Color(Assets.Colors.unavailableGray))
-            TextField(Localizable.Register.Name.placeholder, text: $viewModel.nameText)
-                .frame(width: 309)
-                .autocapitalization(.words)
-        }.underlineTextField(isEditing: false)
+            TextField(Localizable.Register.Name.placeholder, text: $viewModel.nameText) { change in
+                editingName = change
+            }
+            .frame(width: UIScreen.main.bounds.width - 80)
+            .autocapitalization(.words)
+        }
+        .underlineTextField(isEditing: editingName)
+        .padding(.bottom, 0)
     }
 
     private var emailField: some View {
-        HStack {
-            Image(systemName: "envelope")
-                .foregroundColor(Color(Assets.Colors.unavailableGray))
-            TextField(Localizable.Register.Email.placeholder, text: $viewModel.emailText)
-                .frame(width: 309)
+        ZStack {
+            HStack {
+                Image(systemName: Strings.Symbols.email)
+                    .foregroundColor(Color(Assets.Colors.unavailableGray))
+                TextField(Localizable.Register.Email.placeholder, text: $viewModel.emailText) { change in
+                    editingEmail = change
+                }
+                .frame(width: UIScreen.main.bounds.width - 80)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
-                .overlay(Rectangle()
-                    .stroke(lineWidth: 1)
-                    .foregroundColor(viewModel.shouldPromptInvalidEmail ? .red : .clear))
-        }.underlineTextField(isEditing: false)
+            }
+            .padding(.bottom, 0)
+            .underlineTextField(isEditing: editingEmail)
+
+            if viewModel.invalidAttempt {
+                XMark(fade: $fade, set: $viewModel.invalidAttempt)
+            }
+        }
     }
 
     private var passwordField: some View {
-        HStack {
-            Image(systemName: "lock")
-                .foregroundColor(Color(Assets.Colors.unavailableGray))
-            SecureField(Localizable.Register.Password.placeholder, text: $viewModel.passwordText)
-                .frame(width: 309)
-                .overlay(Rectangle()
-                    .stroke(lineWidth: 1)
-                    .foregroundColor(viewModel.shouldPromptInvalidPassword ? .red : .clear))
-        }.underlineTextField(isEditing: false)
+        ZStack {
+            HStack {
+                Image(systemName: Strings.Symbols.password)
+                    .foregroundColor(Color(Assets.Colors.unavailableGray))
+                SecureField(Localizable.Register.Password.placeholder, text: $viewModel.passwordText)
+                    .frame(width: UIScreen.main.bounds.width - 80)
+                    .focused($isTextFieldFocusedPass)
+            }
+            .underlineTextField(isEditing: isTextFieldFocusedPass)
+            .padding(.bottom, 0)
+
+            if viewModel.invalidAttempt {
+                XMark(fade: $fade, set: $viewModel.invalidAttempt)
+            }
+        }
     }
 
     private var confirmPasswordField: some View {
-        HStack {
-            Image(systemName: "lock")
-                .foregroundColor(Color(Assets.Colors.unavailableGray))
-            SecureField(Localizable.Register.ConfirmPassword.placeholder, text: $viewModel.confirmPasswordText)
-                .frame(width: 309)
-                .overlay(Rectangle()
-                    .stroke(lineWidth: 1)
-                    .foregroundColor(viewModel.shouldPromptPasswordMismatch ? .red : .clear))
-        }.underlineTextField(isEditing: false)
+        ZStack {
+            HStack {
+                Image(systemName: Strings.Symbols.password)
+                    .foregroundColor(Color(Assets.Colors.unavailableGray))
+                SecureField(Localizable.Register.ConfirmPassword.placeholder, text: $viewModel.confirmPasswordText)
+                    .frame(width: UIScreen.main.bounds.width - 80)
+                    .focused($isTextFieldFocusedConf)
+            }
+            .underlineTextField(isEditing: isTextFieldFocusedConf)
+
+            if viewModel.invalidAttempt {
+                XMark(fade: $fade, set: $viewModel.invalidAttempt)
+            }
+        }
+        .padding(.bottom, 50)
     }
 
     private var signUpButton: some View {
         Button {
             viewModel.handleRegisterButtonTapped()
         } label: {
-            Text("Sign Up")
+            Text(Localizable.SignUp.CreateAccountButton.text)
                 .frame(width: LayoutMetrics.buttonWidth, height: LayoutMetrics.buttonHeight)
-                .foregroundColor(.white)
-                .background(Color.black)
+                .foregroundColor(viewModel.isButtonDisabled ? .black.opacity(0.3) : .white)
+                .background(viewModel.isButtonDisabled ? Color.white : Color.black)
         }
-        .disabled(viewModel.isButtonDisabled)
-        .padding(.vertical, LayoutMetrics.buttonPadding)
+        .buttonDisableAnimation(state: viewModel.isButtonDisabled)
+        .padding(.bottom, 10)
     }
 
     private var registerButton: some View {
         HStack {
-            Text("ALREADY HAVE AN ACCOUNT?")
+            Text(Localizable.SignUp.SignIn.text)
                 .font(.system(size: 12, weight: .light))
 
             OpenSignInView {
@@ -119,11 +159,3 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
         }
     }
 }
-
-#if DEBUG
-    struct RegisterView_Previews: PreviewProvider {
-        static var previews: some View {
-            RegisterView(viewModel: RegisterViewModelFactory.make())
-        }
-    }
-#endif
