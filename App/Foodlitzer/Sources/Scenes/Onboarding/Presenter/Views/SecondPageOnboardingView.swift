@@ -15,6 +15,7 @@ struct SecondPageOnboardingView: View {
                 light
                 waitingTime
                 backgroundNoise
+
             }
         }
     }
@@ -69,6 +70,7 @@ struct SecondPageOnboardingView: View {
                 .background(Rectangle().fill(.black)
                     .frame(width: 128, height: 23))
         }.padding(.vertical, 30)
+            .padding(.bottom, 70)
     }
 }
 
