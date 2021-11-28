@@ -142,9 +142,6 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
                 .font(.sfCompactText(.light, size: 12))
             OpenRegisterView {
                 RegisterView(viewModel: RegisterViewModelFactory.make())
-                    .onAppear {
-                        viewModel.handleRegisterButtonTapped()
-                    }
             }
         }
     }
