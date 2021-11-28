@@ -55,3 +55,11 @@
 
 //Restaurant Infos
 
+//Settings
+"settings.title.text" = "Configuração";
+"settings.conta.text" = "Conta";
+"settings.logoutButton.text" = "Deslogar";
+
+//Edit Profile
+"editProfile.title.text" = "Editar Perfil";
+"editProfile.saveChangesButton" = "Salvar Mudanças";

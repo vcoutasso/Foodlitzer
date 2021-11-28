@@ -23,7 +23,7 @@ struct EditProfileView: View {
 
     private var editText: some View {
         VStack {
-            Text("Edit Profile")
+            Text(Localizable.EditProfile.Title.text)
                 .font(.lora(.regular, size: 36))
                 .padding(.top, 15)
         }
@@ -52,7 +52,7 @@ struct EditProfileView: View {
     }
 
     private var button: some View {
-        DefaultButton(label: "Save Changes") {
+        DefaultButton(label: Localizable.EditProfile.saveChangesButton) {
             // TODO: Show activity indicator
             commitChanges(userName, userEmail) {
                 dismiss()

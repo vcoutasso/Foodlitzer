@@ -13,7 +13,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
     var body: some View {
         VStack {
             VStack {
-                Text("Settings")
+                Text(Localizable.Settings.Title.text)
                     .font(.custom("Lora-Regular", size: 36))
                     .padding(.top, 10)
                     .padding(.bottom, 65)
@@ -52,7 +52,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
 
             VStack {
                 HStack(alignment: .center) {
-                    Text("Account")
+                    Text(Localizable.Settings.Conta.text)
                         .font(.sfCompactText(.light, size: 18))
                         .padding(.horizontal, 65)
                         .padding(.vertical, 10)
@@ -150,7 +150,7 @@ struct ProfileView<ViewModelType>: View where ViewModelType: ProfileViewModelPro
         Button {
             viewModel.signOut()
         } label: {
-            Text("Logout")
+            Text(Localizable.Settings.LogoutButton.text)
                 .font(.sfCompactText(.regular, size: 14))
                 .frame(width: UIScreen.main.bounds.width - 70, height: 40)
                 .foregroundColor(.white)
