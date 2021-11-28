@@ -8,6 +8,9 @@
 "signIn.signUp.text" = "AINDA NÃO POSSUI UMA CONTA?";
 
 "signUp.createAccountButton.text" = "Criar conta";
+"signUp.subtitle.text" = "Olá! Bem vindo(a) ao Foodlitzer!\nEstamos animados por ter você aqui compartilhando experiências em restaurantes!";
+"signUp.signIn.text" = "JÁ POSSUI UMA CONTA?";
+
 
 "register.name.placeholder" = "Nome";
 "register.email.placeholder" = "E-mail";
