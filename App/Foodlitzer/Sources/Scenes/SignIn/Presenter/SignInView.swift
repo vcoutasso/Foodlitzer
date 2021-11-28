@@ -62,7 +62,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             Text(Localizable.SignIn.Subtitle.text)
                 .lineSpacing(15)
                 .multilineTextAlignment(.center)
-                .font(.compact(.light, size: 14))
+                .font(.sfCompactText(.light, size: 14))
                 .padding(.horizontal, 40)
                 .padding(.bottom, 40)
         }
@@ -72,7 +72,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
         ZStack {
             HStack {
                 Image(systemName: Strings.Symbols.email)
-                    .foregroundColor(Color("iconsGray"))
+                    .foregroundColor(Color.black.opacity(0.3))
 
                 TextField(Localizable.SignIn.Email.placeholder, text: $viewModel.email) { change in
                     withAnimation {
@@ -114,7 +114,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
         ZStack {
             HStack {
                 Image(systemName: Strings.Symbols.password)
-                    .foregroundColor(Color("iconsGray"))
+                    .foregroundColor(Color.black.opacity(0.3))
 
                 SecureField(Localizable.SignIn.Password.placeholder, text: $viewModel.password)
                     .focused($isTextFieldFocused)
@@ -163,7 +163,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             viewModel.handleSignInButtonTapped()
         } label: {
             Text(Localizable.SignIn.SignInButton.text)
-                .font(.compact(.regular, size: 14))
+                .font(.sfCompactText(.regular, size: 14))
                 .frame(width: UIScreen.main.bounds.width - 60, height: LayoutMetrics.buttonHeight)
                 .foregroundColor(viewModel.isButtonDisabled ? .black.opacity(0.3) : .white)
                 .background(viewModel.isButtonDisabled ? Color.white : Color.black)
@@ -178,7 +178,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
     private var registerButton: some View {
         HStack {
             Text(Localizable.SignIn.SignUp.text)
-                .font(.compact(.light, size: 12))
+                .font(.sfCompactText(.light, size: 12))
             OpenRegisterView {
                 RegisterView(viewModel: RegisterViewModelFactory.make())
                     .onAppear {
