@@ -11,6 +11,7 @@ private enum LayoutMetrics {
 struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
     @State var editingEmail = false
     @State var editingPassword = false
+    @State var fade = false
     @FocusState private var isTextFieldFocused: Bool
     @Namespace var buttonPosion
 
@@ -31,10 +32,6 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
                     passwordField
 
                     forgotPasswordButton
-
-                    if viewModel.shouldPromptInvalidCredentials {
-                        invalidCredentials
-                    }
 
                     signInButton
                         .id(buttonPosion)
@@ -72,48 +69,80 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
     }
 
     private var emailField: some View {
-        HStack {
-            Image(systemName: Strings.Symbols.email)
-                .foregroundColor(Color("iconsGray"))
+        ZStack {
+            HStack {
+                Image(systemName: Strings.Symbols.email)
+                    .foregroundColor(Color("iconsGray"))
 
-            TextField(Localizable.SignIn.Email.placeholder, text: $viewModel.email) { change in
-                withAnimation {
-                    editingEmail = change
+                TextField(Localizable.SignIn.Email.placeholder, text: $viewModel.email) { change in
+                    withAnimation {
+                        editingEmail = change
+                    }
                 }
+                .frame(width: UIScreen.main.bounds.width - 80)
+                .font(.system(size: 18, weight: .regular))
+                .autocapitalization(.none)
+                .keyboardType(.emailAddress)
             }
-            .frame(width: UIScreen.main.bounds.width - 80)
-            .font(.system(size: 18, weight: .regular))
-            .autocapitalization(.none)
-            .keyboardType(.emailAddress)
-        }
-        .padding(.bottom, 5)
-        .overlay(Rectangle()
-            .frame(width: UIScreen.main.bounds.width - 50, height: 0.3)
-            .padding(.top, 34))
+            .padding(.bottom, 5)
+            .overlay(Rectangle()
+                .frame(width: UIScreen.main.bounds.width - 50, height: 0.3)
+                .padding(.top, 34))
 
-        .underlineTextField(isEditing: editingEmail)
+            .underlineTextField(isEditing: editingEmail)
+
+            if viewModel.shouldPromptInvalidCredentials {
+                Image(systemName: "xmark.circle")
+                    .font(.system(size: 18))
+                    .foregroundColor(fade ? .black : .clear)
+                    .frame(width: UIScreen.main.bounds.width - 50, height: 0.3, alignment: .trailing)
+                    .animation(.default, value: fade)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 3)) {
+                            fade = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                fade = false
+                                viewModel.shouldPromptInvalidCredentials = false
+                            }
+                        }
+                    }
+            }
+        }
     }
 
     private var passwordField: some View {
-        HStack {
-            Image(systemName: Strings.Symbols.password)
-                .foregroundColor(Color("iconsGray"))
+        ZStack {
+            HStack {
+                Image(systemName: Strings.Symbols.password)
+                    .foregroundColor(Color("iconsGray"))
 
-            SecureField(Localizable.SignIn.Password.placeholder, text: $viewModel.password)
-                .focused($isTextFieldFocused)
-                .frame(width: UIScreen.main.bounds.width - 80)
+                SecureField(Localizable.SignIn.Password.placeholder, text: $viewModel.password)
+                    .focused($isTextFieldFocused)
+                    .frame(width: UIScreen.main.bounds.width - 80)
+            }
+            .overlay(Rectangle()
+                .frame(width: UIScreen.main.bounds.width - 50, height: 0.3)
+                .padding(.top, 34))
+            .font(.system(size: 18, weight: .regular))
+            .underlineTextField(isEditing: isTextFieldFocused)
+
+            if viewModel.shouldPromptInvalidCredentials {
+                Image(systemName: "xmark.circle")
+                    .font(.system(size: 18))
+                    .foregroundColor(fade ? .black : .clear)
+                    .frame(width: UIScreen.main.bounds.width - 50, height: 0.3, alignment: .trailing)
+                    .animation(.default, value: fade)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 3)) {
+                            fade = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                fade = false
+                                viewModel.shouldPromptInvalidCredentials = false
+                            }
+                        }
+                    }
+            }
         }
-        .overlay(Rectangle()
-            .frame(width: UIScreen.main.bounds.width - 50, height: 0.3)
-            .padding(.top, 34))
-        .font(.system(size: 18, weight: .regular))
-        .underlineTextField(isEditing: isTextFieldFocused)
-    }
-
-    private var invalidCredentials: some View {
-        Text(Localizable.SignIn.InvalidCredentials.prompt)
-            .padding()
-            .foregroundColor(.red)
     }
 
     private var forgotPasswordButton: some View {
@@ -136,12 +165,14 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             Text(Localizable.SignIn.SignInButton.text)
                 .font(.compact(.regular, size: 14))
                 .frame(width: UIScreen.main.bounds.width - 60, height: LayoutMetrics.buttonHeight)
-                .foregroundColor(.white)
-                .background(Color.black)
+                .foregroundColor(viewModel.isButtonDisabled ? .black.opacity(0.3) : .white)
+                .background(viewModel.isButtonDisabled ? Color.white : Color.black)
         }
         .disabled(viewModel.isButtonDisabled)
+        .border(Color.black.opacity(0.3), width: viewModel.isButtonDisabled ? 0.3 : 0)
         .padding(.vertical, LayoutMetrics.buttonPadding)
         .padding(.bottom, 30)
+        .animation(.default, value: viewModel.isButtonDisabled)
     }
 
     private var registerButton: some View {
