@@ -103,6 +103,9 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
                 .focused($isTextFieldFocused)
                 .frame(width: UIScreen.main.bounds.width - 80)
         }
+        .overlay(Rectangle()
+            .frame(width: UIScreen.main.bounds.width - 50, height: 0.3)
+            .padding(.top, 34))
         .font(.system(size: 18, weight: .regular))
         .underlineTextField(isEditing: isTextFieldFocused)
     }
