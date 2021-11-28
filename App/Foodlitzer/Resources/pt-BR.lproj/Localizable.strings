@@ -11,11 +11,21 @@
 "signUp.subtitle.text" = "Olá! Bem vindo(a) ao Foodlitzer!\nEstamos animados por ter você aqui compartilhando experiências em restaurantes!";
 "signUp.signIn.text" = "JÁ POSSUI UMA CONTA?";
 
-
 "register.name.placeholder" = "Nome";
 "register.email.placeholder" = "E-mail";
 "register.password.placeholder" = "Senha";
 "register.confirmPassword.placeholder" = "Confirme a senha";
+
+"newReview.title.text" = "Nova review";
+"newReview.restaurant.text" = "Informações básicas";
+"newReview.light.text" = "Como você avalia a iluminação do local?";
+"newReview.time.text" = "Como você avalia o tempo de esperar pela comida?";
+"newReview.sound.text" = "Avaliação sonora:";
+"newReview.soundButton.text" = "Avaliar agora";
+"newReview.mediaButton.text" = "Selecionar imagens e vídeos";
+"newReview.rate.text" = "Dê sua nota geral para o restaurante";
+"newReview.next.text" = "Next";
+
 
 "search.placeholder.text" = "Busque por um restaurante";
 

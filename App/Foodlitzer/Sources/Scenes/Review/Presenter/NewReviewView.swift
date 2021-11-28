@@ -14,7 +14,7 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
                     HStack {
                         Spacer()
 
-                        Text("New Review")
+                        Text(Localizable.)
                             .font(.lora(.regular, size: 36))
 
                         Spacer()
@@ -144,3 +144,11 @@ let waitEvaluation = FeatureDefinition(question: "Como você avalia o tempo de e
                                        rate: ["Muito rápido", "Muito demorado"])
 
 // let soundEvaluation: FeatureDefinition = FeatureDefinition(question: "Avaliação sonora:", symbol: "waveform")
+
+#if DEBUG
+    struct NewReviewView_Previews: PreviewProvider {
+        static var previews: some View {
+            NewReviewView(viewModel: NewReviewViewModelFactory.make())
+        }
+    }
+#endif
