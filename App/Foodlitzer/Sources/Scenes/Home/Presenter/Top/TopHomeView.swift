@@ -11,3 +11,9 @@ struct TopHomeView: View {
         .navigationBarHidden(true)
     }
 }
+
+struct TopHomePreview_Previews: PreviewProvider {
+    static var previews: some View {
+        TopHomeView()
+    }
+}
