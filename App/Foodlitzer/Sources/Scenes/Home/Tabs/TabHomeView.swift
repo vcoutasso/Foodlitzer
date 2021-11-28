@@ -15,14 +15,14 @@ struct TabHomeView: View {
                 if restaurants.isEmpty {
                     ProgressView()
                         .padding(.top, 200)
-//                        .onAppear {
-//                            DispatchQueue.main.async {
-//                                viewModel.handleButtonTapped { restaurants in
-//                                    self.restaurants = restaurants
-//                                }
-//                            }
-//                            viewModel.handleOnAppear()
-//                        }
+                        .onAppear {
+                            DispatchQueue.main.async {
+                                viewModel.handleButtonTapped { restaurants in
+                                    self.restaurants = restaurants
+                                }
+                            }
+                            viewModel.handleOnAppear()
+                        }
                 } else {
                     Spacer()
                     bestReviewed
