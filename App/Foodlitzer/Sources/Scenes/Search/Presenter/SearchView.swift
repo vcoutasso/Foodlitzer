@@ -9,9 +9,6 @@ struct SearchView<ViewModelProtocol>: View where ViewModelProtocol: SearchViewMo
             SearchBar(query: $viewModel.searchText, showCancelButton: $showCancelButton)
                 .padding(.bottom, 10)
 
-            // TODO: progressView enquanto pesquisa
-            // TODO: dismiss swipe direita
-
             Rectangle()
                 .foregroundColor(Color.black)
                 .frame(height: 0.4)
