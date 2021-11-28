@@ -10,6 +10,8 @@ struct SearchBar: View {
     @Binding var query: String
     @Binding var showCancelButton: Bool
 
+    @State var changePadding: CGFloat = 20
+
     @Environment(\.presentationMode) var presentationMode
     @FocusState private var focusedField: FocusField?
 
@@ -22,6 +24,7 @@ struct SearchBar: View {
             if showCancelButton { cancelButton }
         }
         .padding(.leading, 20)
+        .padding(.trailing, changePadding)
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Anything over 0.5 seems to work
                 self.focusedField = .field
@@ -72,6 +75,7 @@ struct SearchBar: View {
                 self.query = ""
                 self.showCancelButton = false
                 presentationMode.wrappedValue.dismiss()
+                changePadding = 0
             }
         }
         .font(.system(size: 11, weight: .medium, design: .default))
@@ -79,5 +83,10 @@ struct SearchBar: View {
         .transition(.move(edge: .trailing))
         .animation(.default, value: query)
         .padding(.horizontal, 20)
+        .onDisappear {
+            withAnimation {
+                changePadding = 20
+            }
+        }
     }
 }
