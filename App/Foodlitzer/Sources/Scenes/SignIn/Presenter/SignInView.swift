@@ -60,11 +60,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
                 .padding(.bottom, 35)
 
             Text(Localizable.SignIn.Subtitle.text)
-                .lineSpacing(15)
-                .multilineTextAlignment(.center)
-                .font(.sfCompactText(.light, size: 14))
-                .padding(.horizontal, 40)
-                .padding(.bottom, 40)
+                .largeTextDisplay()
         }
     }
 
@@ -86,11 +82,10 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             }
             .padding(.bottom, 5)
             .overlay(bottomLine())
-
             .underlineTextField(isEditing: editingEmail)
 
             if viewModel.shouldPromptInvalidCredentials {
-                XMark(fade: $fade, verify: $viewModel.shouldPromptInvalidCredentials)
+                XMark(fade: $fade, set: $viewModel.shouldPromptInvalidCredentials)
             }
         }
     }
@@ -110,7 +105,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             .underlineTextField(isEditing: isTextFieldFocused)
 
             if viewModel.shouldPromptInvalidCredentials {
-                XMark(fade: $fade, verify: $viewModel.shouldPromptInvalidCredentials)
+                XMark(fade: $fade, set: $viewModel.shouldPromptInvalidCredentials)
             }
         }
     }

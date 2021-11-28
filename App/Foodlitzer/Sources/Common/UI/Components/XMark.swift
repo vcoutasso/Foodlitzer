@@ -2,7 +2,7 @@ import SwiftUI
 
 struct XMark: View {
     @Binding var fade: Bool
-    @Binding var verify: Bool
+    @Binding var set: Bool
 
     var body: some View {
         Image(systemName: "xmark.circle")
@@ -15,7 +15,7 @@ struct XMark: View {
                     fade = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         fade = false
-                        verify = false
+                        set = false
                     }
                 }
             }

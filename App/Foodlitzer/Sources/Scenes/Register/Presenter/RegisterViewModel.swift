@@ -8,6 +8,7 @@ protocol RegisterViewModelProtocol: ObservableObject {
     var emailText: String { get set }
     var passwordText: String { get set }
     var confirmPasswordText: String { get set }
+    var invalidAttempt: Bool { get set }
 
     // Presentation logic
     var shouldPromptInvalidEmail: Bool { get }
@@ -25,10 +26,8 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     @Published var emailText: String
     @Published var passwordText: String
     @Published var confirmPasswordText: String
-
-    // MARK: - Private Atributes
-
-    private var invalidAttempt: Bool
+    @Published var shouldInvalidCredentials: Bool
+    @Published var invalidAttempt: Bool
 
     // MARK: - Computed variables
 
@@ -76,6 +75,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
         self.isEmailValid = false
         self.isPasswordValid = false
         self.authenticationService = authenticationService
+        self.shouldInvalidCredentials = false
     }
 
     // MARK: - Account creation
@@ -113,6 +113,7 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     }
 
     private func resetFlags() {
+        shouldInvalidCredentials = false
         invalidAttempt = false
         isEmailValid = true
         isPasswordValid = true

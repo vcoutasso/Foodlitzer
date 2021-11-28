@@ -41,4 +41,8 @@ extension View {
             .padding(.top, 35))
             .foregroundColor(.black)
     }
+
+    func largeTextDisplay() -> some View {
+        modifier(LargeTextDisplay())
+    }
 }
