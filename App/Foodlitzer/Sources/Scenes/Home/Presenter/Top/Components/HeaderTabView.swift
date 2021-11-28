@@ -39,7 +39,7 @@ struct HeaderTabView: View {
                 } label: {
                     VStack {
                         HStack {
-                            Text("Restaurants")
+                            Text(Localizable.Restaurants.label)
                                 .font(.sfCompactText(.regular, size: 14))
                                 .foregroundColor(self.index == 1 ? .black : Color.black.opacity(0.7))
                         }

@@ -39,7 +39,7 @@
 "home.bestReview.label" = "Best Reviewd";
 "home.bestReview.text" = "Check out these reviews about restaurantes you don't know yet!";
 "home.placeDiscover.label" = "Places to discover";
-"home.place.discover.text" = "Here are new restaurants to explore!";
+"home.placeDiscover.text" = "Here are new restaurants to explore!";
 
 //Restaurants
 "restaurants.label" = "Restaurants";
@@ -47,7 +47,7 @@
 "restaurants.nearby.text" = "Here are some restaurants near where you are:";
 "restaurants.experienced.label" = "Experienced Restaurants";
 "restaurants.experienced.text" = "Here are the latest restaurants you've reviwed.";
-"restaurantes.showMore.text" = "Show more";
+"restaurants.showMore.text" = "Show more";
 
 //New Review
 
