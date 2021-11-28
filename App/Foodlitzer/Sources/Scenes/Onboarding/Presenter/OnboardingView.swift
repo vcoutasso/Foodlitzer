@@ -17,10 +17,10 @@ struct OnboardingView<ViewModelType>: View where ViewModelType: OnboardingViewMo
                 SecondPageOnboardingView()
                     .tag(2)
                 TemplateOnboardingPageView(image: Image(Assets.Images.onboardingPage3),
-                                           text: "Review the places you've been to")
+                                           text: Localizable.OnBoarding.PageTwo.text)
                     .tag(3)
                 TemplateOnboardingPageView(image: Image(Assets.Images.onboardingPage4),
-                                           text: "And find great new restaurants to experience!")
+                                           text: Localizable.OnBoarding.PageThree.text)
                     .tag(4)
             }
             .edgesIgnoringSafeArea(.top)

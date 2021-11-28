@@ -1,4 +1,3 @@
-//OnBoarding + Sign in, sign up
 "signIn.signInButton.text" = "Sign In";
 "signIn.registerButton.text" = "Create new account";
 "signIn.invalidCredentials.prompt" = "Invalid credentials";
@@ -9,6 +8,7 @@
 "signIn.signUp.text" = "DON'T HAVE AN ACCOUNT YET?";
 
 "signUp.createAccountButton.text" = "Create account";
+"signIn.signInButtonMessage.placeholder" = "Continue with email";
 
 "register.name.placeholder" = "Name";
 "register.email.placeholder" = "E-mail";
@@ -19,7 +19,21 @@
 
 "tag.reviewed.text" = "Reviewed";
 
+//OnBoarding
+"onBoarding.pageOne.text" = "Get valuable information about restaurants near you";
+"onBoarding.pageTwo.text" = "Review the places you've been to";
+"onBoarding.pageThree.text" = "And find great new restaurants to experience!";
+"onBoarding.light.text" = "Light";
+"onBoarding.waitingTime.text" = "Waiting Time";
+"onBoarding.noise.text" = "Background Noise";
+
 //Home
+"home.newReviewMessage.text" = "Getting to know a restaurant is key to having a good dining experience. But you already knew that! Feel free to tell us about the experiences you've had!";
+"home.newReviewButton.text" = "New Review";
+"home.bestReview.label" = "Best Reviewd";
+"home.bestReview.text" = "Check out these reviews about restaurantes you don't know yet!";
+"home.placeDiscover.label" = "Places to discover";
+"home.place.discover.text" = "Here are new restaurants to explore!";
 
 //Restaurants
 

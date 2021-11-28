@@ -20,10 +20,11 @@ struct SecondPageOnboardingView: View {
     }
 
     private var title: some View {
-        Text("Get valuable information about restaurants near you")
+        Text(Localizable.OnBoarding.PageOne.text)
             .font(.custom("Lora-Regular", size: 34))
-            .frame(width: 338, height: 139, alignment: .center)
             .multilineTextAlignment(.center)
+            .lineSpacing(15)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     private var light: some View {
@@ -33,11 +34,11 @@ struct SecondPageOnboardingView: View {
                 .foregroundColor(Color("onboardingGray"))
                 .frame(width: 30, height: 42)
                 .padding(.trailing, 20)
-            Text("Light")
+            Text(Localizable.OnBoarding.Light.text)
                 .font(.sfCompactText(.light, size: 12))
                 .foregroundColor(.white)
-                .background(Rectangle().fill(.black)
-                    .frame(width: 53, height: 23))
+                .frame(width: 128, height: 23)
+                .background(Rectangle().fill(.black))
         }.padding(.vertical, 30)
     }
 
@@ -48,11 +49,11 @@ struct SecondPageOnboardingView: View {
                 .foregroundColor(Color("onboardingGray"))
                 .frame(width: 30, height: 42)
                 .padding(.trailing, 20)
-            Text("Waiting Time")
+            Text(Localizable.OnBoarding.WaitingTime.text)
                 .font(.sfCompactText(.light, size: 12))
                 .foregroundColor(.white)
-                .background(Rectangle().fill(.black)
-                    .frame(width: 97, height: 23))
+                .frame(width: 128, height: 23)
+                .background(Rectangle().fill(.black))
         }.padding(.vertical, 30)
     }
 
@@ -63,11 +64,11 @@ struct SecondPageOnboardingView: View {
                 .foregroundColor(Color("onboardingGray"))
                 .frame(width: 30, height: 42)
                 .padding(.trailing, 20)
-            Text("Background Noise")
+            Text(Localizable.OnBoarding.Noise.text)
                 .font(.sfCompactText(.light, size: 12))
                 .foregroundColor(.white)
-                .background(Rectangle().fill(.black)
-                    .frame(width: 128, height: 23))
+                .frame(width: 128, height: 23)
+                .background(Rectangle().fill(.black))
         }.padding(.vertical, 30)
     }
 }
