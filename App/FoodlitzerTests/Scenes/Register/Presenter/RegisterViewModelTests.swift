@@ -12,7 +12,7 @@ final class RegisterViewModelTests: XCTestCase {
     final class AuthenticationServiceDummy: AuthenticationServiceProtocol {
         func editAccount(with name: String, email: String, completion: @escaping (AuthenticationResult) -> Void) {}
 
-        var appUser: AppUser?
+        var currentUser: AppUser?
 
         var isUserSignedIn: Bool = false
 

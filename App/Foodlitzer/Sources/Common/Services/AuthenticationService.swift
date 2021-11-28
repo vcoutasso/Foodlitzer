@@ -1,9 +1,7 @@
 import FirebaseAuth
-
-typealias AuthenticationResult = Result<AppUser?, AuthenticationError>
+import Foundation
 
 protocol AuthenticationServiceProtocol: RemoteAuthenticationServiceProtocol {
-    var appUser: AppUser? { get }
     var isUserSignedIn: Bool { get }
 }
 
@@ -11,6 +9,7 @@ enum AuthenticationError: Error {
     case invalidEmail
     case invalidPassword
     case invalidCredentials
+    case userNotLoggedIn
     case unknown
 }
 
@@ -28,11 +27,13 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
     // MARK: - Properties
 
     private lazy var backendUpdateCallback: (AppUser?) -> Void = { [weak self] user in
-        self?.appUser = user
+        debugPrint("Authentication state did change with user: \(String(describing: user))")
         self?.objectWillChange.send()
     }
 
-    var appUser: AppUser?
+    var currentUser: AppUser? {
+        backendService.currentUser
+    }
 
     var isUserSignedIn: Bool {
         backendService.isUserSignedIn
@@ -46,25 +47,17 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
 
     func signIn(withEmail email: String,
                 password: String,
-                completion: @escaping (AuthenticationResult) -> Void) {
+                completion: @escaping (AuthenticationError?) -> Void) {
         backendService.signIn(withEmail: email, password: password, completion: completion)
     }
 
     func createAccount(with name: String,
                        email: String,
                        password: String,
-                       completion: @escaping (AuthenticationResult) -> Void) {
-        backendService.createAccount(with: name, email: email, password: password) { [weak self] result in
-            if case let .success(user) = result {
-                self?.updateCurrentUser(with: user)
-            }
-
-            completion(result)
+                       completion: @escaping (AuthenticationError?) -> Void) {
+        backendService.createAccount(with: name, email: email, password: password) { error in
+            completion(error)
         }
-    }
-
-    private func updateCurrentUser(with user: AppUser?) {
-        appUser = user
     }
 
     func signOut() {
@@ -77,5 +70,7 @@ final class AuthenticationService: AuthenticationServiceProtocol, ObservableObje
 
     func editAccount(with name: String,
                      email: String,
-                     completion: @escaping (AuthenticationResult) -> Void) {}
+                     completion: @escaping (AuthenticationError?) -> Void) {
+        backendService.editAccount(with: name, email: email, completion: completion)
+    }
 }

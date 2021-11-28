@@ -9,6 +9,10 @@ final class RestaurantQueryUseCase: RestaurantQueryUseCaseProtocol {
 
     private let restaurantDatabaseService: FirebaseDatabaseService<RestaurantInfoDTO>
 
+    // MARK: - Constants
+
+    private let queryPath = "restaurants"
+
     // MARK: - Initialization
 
     init(restaurantDatabaseService: FirebaseDatabaseService<RestaurantInfoDTO>) {
@@ -18,7 +22,6 @@ final class RestaurantQueryUseCase: RestaurantQueryUseCaseProtocol {
     // MARK: - Fetch query
 
     func execute(query: String, for field: String) async -> [RestaurantInfoDTO] {
-        let path = "restaurants"
-        return await restaurantDatabaseService.queryCollection(from: path, where: field, matches: query)
+        await restaurantDatabaseService.queryCollection(from: queryPath, where: field, matches: query)
     }
 }

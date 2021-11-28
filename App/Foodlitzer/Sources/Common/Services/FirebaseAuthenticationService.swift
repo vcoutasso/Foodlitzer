@@ -8,6 +8,10 @@ final class FirebaseAuthenticationService: RemoteAuthenticationServiceProtocol {
 
     // MARK: - Computed variables
 
+    var currentUser: AppUser? {
+        currentUser(from: defaultAuth.currentUser)
+    }
+
     var isUserSignedIn: Bool {
         defaultAuth.currentUser != nil
     }
@@ -20,48 +24,43 @@ final class FirebaseAuthenticationService: RemoteAuthenticationServiceProtocol {
 
     // MARK: - Authentication methods
 
-    // TODO: Refactor to avoid duplication
     func signIn(withEmail email: String,
                 password: String,
-                completion: @escaping (AuthenticationResult) -> Void) {
-        defaultAuth.signIn(withEmail: email, password: password) { [weak self] authResult, error in
-            guard let self = self else { return }
-
-            var result: AuthenticationResult = .failure(.unknown)
-
-            if let authResult = authResult {
-                result = .success(self.appUser(from: authResult.user))
+                completion: @escaping (AuthenticationError?) -> Void) {
+        defaultAuth.signIn(withEmail: email, password: password) { authResult, error in
+            if authResult != nil {
+                completion(nil)
             } else if let error = (error as NSError?) {
-                debugPrint("Error trying to sign in: \(error.localizedDescription)")
+                debugPrint("Error signing in: \(error.localizedDescription)")
 
                 switch AuthErrorCode(rawValue: error.code) {
                 case .userNotFound, .wrongPassword:
-                    result = .failure(.invalidCredentials)
+                    completion(.invalidCredentials)
                 default:
-                    result = .failure(.unknown)
+                    completion(.unknown)
                 }
+            } else {
+                completion(.unknown)
             }
-
-            completion(result)
         }
     }
 
     func createAccount(with name: String,
                        email: String,
                        password: String,
-                       completion: @escaping (AuthenticationResult) -> Void) {
+                       completion: @escaping (AuthenticationError?) -> Void) {
         defaultAuth.createUser(withEmail: email, password: password) { [weak self] authResult, error in
             guard let self = self else {
-                completion(.failure(.unknown))
+                completion(.unknown)
                 return
             }
 
-            if let authResult = authResult {
+            if authResult != nil {
                 self.updateDisplayName(with: name) { error in
                     if error == nil {
-                        completion(.success(self.appUser(from: authResult.user)))
+                        completion(nil)
                     } else {
-                        completion(.failure(.unknown))
+                        completion(.unknown)
                     }
                 }
             } else if let error = (error as NSError?) {
@@ -69,36 +68,64 @@ final class FirebaseAuthenticationService: RemoteAuthenticationServiceProtocol {
 
                 switch AuthErrorCode(rawValue: error.code) {
                 case .invalidEmail:
-                    completion(.failure(.invalidEmail))
+                    completion(.invalidEmail)
                 case .weakPassword:
-                    completion(.failure(.invalidPassword))
+                    completion(.invalidPassword)
                 default:
-                    completion(.failure(.unknown))
+                    completion(.unknown)
+                }
+            } else {
+                completion(.unknown)
+            }
+        }
+    }
+
+    func editAccount(with name: String, email: String, completion: @escaping (AuthenticationError?) -> Void) {
+        guard let currentUser = defaultAuth.currentUser else {
+            completion(.userNotLoggedIn)
+            return
+        }
+
+        updateDisplayName(with: name) { error in
+            guard error == nil else {
+                completion(.unknown)
+                return
+            }
+
+            currentUser.updateEmail(to: email) { error in
+                guard error == nil else {
+                    debugPrint("Error updating user email: \(error!.localizedDescription)")
+                    completion(.unknown)
+                    return
+                }
+
+                currentUser.reload { reloadError in
+                    if let error = reloadError {
+                        debugPrint("Error updating cached user data: \(error.localizedDescription)")
+                    }
+
+                    completion(nil)
                 }
             }
         }
     }
 
-    func editAccount(with name: String, email: String, completion: @escaping (AuthenticationResult) -> Void) {
-        // TODO: - Create method
-    }
-
     private func updateDisplayName(with name: String, completion: @escaping (Error?) -> Void) {
-        if let currentUser = defaultAuth.currentUser {
-            let changeRequest = currentUser.createProfileChangeRequest()
-            changeRequest.displayName = name
-            changeRequest.commitChanges { error in
-                if let nsError = (error as NSError?) {
-                    debugPrint("Error trying to update display name: \(nsError.localizedDescription)")
+        guard let currentUser = defaultAuth.currentUser else { return }
+
+        let changeRequest = currentUser.createProfileChangeRequest()
+        changeRequest.displayName = name
+        changeRequest.commitChanges { error in
+            if let error = error {
+                debugPrint("Error updating display name: \(error.localizedDescription)")
+            }
+
+            currentUser.reload { reloadError in
+                if let error = reloadError {
+                    debugPrint("Error updating cached user data: \(error.localizedDescription)")
                 }
 
-                currentUser.reload { reloadError in
-                    if reloadError != nil {
-                        debugPrint("Error trying to updated cached user data")
-                    }
-
-                    completion(error)
-                }
+                completion(error)
             }
         }
     }
@@ -133,11 +160,11 @@ final class FirebaseAuthenticationService: RemoteAuthenticationServiceProtocol {
         authStateListener = defaultAuth.addStateDidChangeListener { [weak self] _, user in
             guard let self = self else { return }
 
-            callback(self.appUser(from: user))
+            callback(self.currentUser(from: user))
         }
     }
 
-    private func appUser(from user: User?) -> AppUser? {
+    private func currentUser(from user: User?) -> AppUser? {
         guard let user = user else { return nil }
 
         return AppUser(id: user.uid, name: user.displayName ?? "N/A", email: user.email ?? "N/A")

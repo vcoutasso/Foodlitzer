@@ -1,27 +1,22 @@
-import Foundation
+import Combine
 
 protocol ProfileViewModelProtocol: ObservableObject {
-    var editingName: String { get set }
-    var editingEmail: String { get set }
     var userName: String? { get }
     var userEmail: String? { get }
     func signOut()
     func delete()
-    func editAccount()
+    func editAccount(with name: String, and email: String, completion: @escaping () -> Void)
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {
     // MARK: - Published Atributes
 
-    @Published var editingName: String
-    @Published var editingEmail: String
-
     var userName: String? {
-        authenticationService.appUser?.name
+        authenticationService.currentUser?.name
     }
 
     var userEmail: String? {
-        authenticationService.appUser?.email
+        authenticationService.currentUser?.email
     }
 
     // MARK: - Dependencies
@@ -32,8 +27,6 @@ final class ProfileViewModel: ProfileViewModelProtocol {
 
     init(authenticationService: AuthenticationServiceProtocol) {
         self.authenticationService = authenticationService
-        self.editingName = authenticationService.appUser?.name ?? ""
-        self.editingEmail = authenticationService.appUser?.email ?? ""
     }
 
     // MARK: - Public Method
@@ -47,18 +40,17 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         // TODO: - Delete Method
     }
 
-    func editAccount() {
-        guard let newName = editingName.isEmpty ? userName : editingName,
-              let newEmail = editingEmail.isEmpty ? userEmail : editingEmail
+    func editAccount(with name: String, and email: String, completion: @escaping () -> Void) {
+        guard let newName = name.isEmpty ? userName : name,
+              let newEmail = email.isEmpty ? userEmail : email
         else { return }
 
-        authenticationService.editAccount(with: newName, email: newEmail) { result in
-            switch result {
-            case let .failure(error):
+        authenticationService.editAccount(with: newName, email: newEmail) { [weak self] error in
+            if let error = error {
                 debugPrint("Could not edit account: \(error.localizedDescription)")
-            case let .success(user):
-                print("user: \(user!.name), email: \(user!.email)")
             }
+            completion()
+            self?.objectWillChange.send()
         }
     }
 }
