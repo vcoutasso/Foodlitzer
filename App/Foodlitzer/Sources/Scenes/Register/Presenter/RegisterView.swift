@@ -9,6 +9,7 @@ private enum LayoutMetrics {
 struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelProtocol {
     // MARK: - Attributes
 
+    @Environment(\.presentationMode) var presentation
     @ObservedObject private(set) var viewModel: ViewModelType
 
     // MARK: - Views
@@ -50,7 +51,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
             TextField(Localizable.Register.Name.placeholder, text: $viewModel.nameText)
                 .frame(width: 309)
                 .autocapitalization(.words)
-        }.underlineTextField()
+        }.underlineTextField(isEditing: false)
     }
 
     private var emailField: some View {
@@ -64,7 +65,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
                 .overlay(Rectangle()
                     .stroke(lineWidth: 1)
                     .foregroundColor(viewModel.shouldPromptInvalidEmail ? .red : .clear))
-        }.underlineTextField()
+        }.underlineTextField(isEditing: false)
     }
 
     private var passwordField: some View {
@@ -76,7 +77,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
                 .overlay(Rectangle()
                     .stroke(lineWidth: 1)
                     .foregroundColor(viewModel.shouldPromptInvalidPassword ? .red : .clear))
-        }.underlineTextField()
+        }.underlineTextField(isEditing: false)
     }
 
     private var confirmPasswordField: some View {
@@ -88,7 +89,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
                 .overlay(Rectangle()
                     .stroke(lineWidth: 1)
                     .foregroundColor(viewModel.shouldPromptPasswordMismatch ? .red : .clear))
-        }.underlineTextField()
+        }.underlineTextField(isEditing: false)
     }
 
     private var signUpButton: some View {
@@ -113,7 +114,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
                 SignInView(viewModel: SignInViewModelFactory.make())
                     .onAppear {
                         viewModel.handleRegisterButtonTapped()
-                    }.navigationBarHidden(true)
+                    }
             }
         }
     }

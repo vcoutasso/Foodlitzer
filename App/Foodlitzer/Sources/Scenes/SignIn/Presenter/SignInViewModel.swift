@@ -5,7 +5,7 @@ protocol SignInViewModelProtocol: ObservableObject {
     var email: String { get set }
     var password: String { get set }
     // Presentation logic
-    var shouldPromptInvalidCredentials: Bool { get }
+    var shouldPromptInvalidCredentials: Bool { get set }
     var shouldPresentProfileView: Bool { get set }
     var shouldPresentRegistrationView: Bool { get set }
     var shouldPresentResetPasswordView: Bool { get set }
@@ -29,7 +29,7 @@ final class SignInViewModel: SignInViewModelProtocol {
 
     // MARK: - Computed Variables
 
-    var isButtonDisabled: Bool { email.isEmpty || password.isEmpty }
+    var isButtonDisabled: Bool { email.isEmpty || password.isEmpty || shouldPromptInvalidCredentials == true }
 
     // MARK: - Private Atributes
 

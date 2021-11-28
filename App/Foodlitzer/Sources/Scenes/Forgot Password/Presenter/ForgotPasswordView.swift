@@ -17,7 +17,7 @@ struct ForgotPasswordView<ViewModelType>: View where ViewModelType: ForgotPasswo
                     .keyboardType(.emailAddress)
                     .padding()
 
-            }.underlineTextField()
+            }.underlineTextField(isEditing: false)
 
             Button {
                 viewModel.sendPasswordReset()

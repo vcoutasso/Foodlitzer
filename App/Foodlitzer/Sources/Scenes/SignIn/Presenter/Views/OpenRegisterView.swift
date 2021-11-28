@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OpenRegisterView<Destination: View>: View {
     var destination: () -> Destination
+
     init(destination: @escaping () -> Destination) {
         self.destination = destination
     }

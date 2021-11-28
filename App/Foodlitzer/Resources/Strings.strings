@@ -14,6 +14,8 @@
 "symbols.price" = "dollarsign.circle";
 "symbols.address" = "location";
 "symbols.navigation" = "chevron.right";
+"symbols.password" = "lock";
+"symbols.email" = "envelope";
 
 "tab.home" = "Home";
 "tab.restaurants" = "Restaurants";
@@ -43,7 +45,4 @@
 "font.loraSemiboldItalic" = "Lora-SemiBoldItalic";
 "font.loraBold" = "Lora-Bold";
 "font.loraBoldItalic" = "Lora-BoldItalic";
-
-
-
 

@@ -4,6 +4,8 @@
 "signIn.email.placeholder" = "Email";
 "signIn.password.placeholder" = "Password";
 "signIn.forgotPassword.placeholder" = "Forgot password?";
+"signIn.subtitle.text" = "Hi there! Welcome back!\nFeel free to sign in and start sharing and discovering experiences had in restaurants!";
+"signIn.signUp.text" = "DON'T HAVE AN ACCOUNT YET?";
 
 "signUp.createAccountButton.text" = "Create account";
 
