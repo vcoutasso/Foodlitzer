@@ -101,11 +101,8 @@ final class RegisterViewModel: RegisterViewModelProtocol {
     private func createAccount() {
         authenticationService.createAccount(with: nameText,
                                             email: emailText,
-                                            password: passwordText) { [weak self] result in
-            switch result {
-            case let .success(user):
-                debugPrint("User logged in with name: '\(user!.name))' and email: '\(user!.email)'")
-            case let .failure(error):
+                                            password: passwordText) { [weak self] error in
+            if let error = error {
                 self?.updateFailureFlags(for: error)
             }
             self?.objectWillChange.send()

@@ -14,11 +14,24 @@ final class SearchViewModel: SearchViewModelProtocol {
     @Published var cardModels = [ListCard.CardModel]()
     @Published var searchText: String = "" {
         didSet {
-            Task {
-                await self.updateResults()
-            }
+            subject.send()
         }
     }
+
+    private var cancellable: AnyCancellable?
+    private lazy var subject: PassthroughSubject<Void, Never> = {
+        let subject = PassthroughSubject<Void, Never>()
+        cancellable = subject.debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+            .subscribe(on: RunLoop.main)
+            .eraseToAnyPublisher()
+            .sink { _ in
+                Task {
+                    await self.updateResults()
+                }
+            }
+
+        return subject
+    }()
 
     // MARK: - Dependencies
 
@@ -28,6 +41,10 @@ final class SearchViewModel: SearchViewModelProtocol {
 
     init(restaurantQueryUseCase: RestaurantQueryUseCaseProtocol) {
         self.restaurantQueryUseCase = restaurantQueryUseCase
+    }
+
+    deinit {
+        cancellable?.cancel()
     }
 
     // MARK: - Update results
