@@ -35,7 +35,7 @@ struct EditProfileView: View {
             TextField(nameHolder, text: $userName)
                 .autocapitalization(.words)
         }
-        .underlineTextField()
+        .underlineTextField(isEditing: false)
     }
 
     private var emailField: some View {
@@ -46,7 +46,7 @@ struct EditProfileView: View {
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
         }
-        .underlineTextField()
+        .underlineTextField(isEditing: false)
         .padding(.bottom, 65)
     }
 

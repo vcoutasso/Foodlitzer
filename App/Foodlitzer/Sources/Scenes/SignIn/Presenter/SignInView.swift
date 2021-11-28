@@ -1,6 +1,7 @@
 import SwiftUI
 
 // TODO: Extract this into specialized views (custom modifiers maybe?)
+
 private enum LayoutMetrics {
     static let buttonWidth: CGFloat = 310
     static let buttonHeight: CGFloat = 40
@@ -8,6 +9,11 @@ private enum LayoutMetrics {
 }
 
 struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProtocol {
+    @State var editingEmail = false
+    @State var editingPassword = false
+    @FocusState private var isTextFieldFocused: Bool
+    @Namespace var buttonPosion
+
     // MARK: - Attributes
 
     @ObservedObject private(set) var viewModel: ViewModelType
@@ -15,59 +21,90 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
     // MARK: - Views
 
     var body: some View {
-        VStack {
-            signInText
+        ScrollView {
+            ScrollViewReader { value in
+                VStack(spacing: 10) {
+                    signInText
 
-            emailField
+                    emailField
 
-            passwordField
+                    passwordField
 
-            if viewModel.shouldPromptInvalidCredentials {
-                invalidCredentials
+                    forgotPasswordButton
+
+                    if viewModel.shouldPromptInvalidCredentials {
+                        invalidCredentials
+                    }
+
+                    signInButton
+                        .id(buttonPosion)
+                        .onChange(of: editingEmail || isTextFieldFocused == true) { _ in
+                            withAnimation {
+                                value.scrollTo(buttonPosion)
+                            }
+                        }
+
+                    registerButton
+                }
+                .halfSheet(showSheet: $viewModel.shouldPresentResetPasswordView) {
+                    ForgotPasswordView(viewModel: ForgotPasswordViewModelFactory.make())
+                }
             }
-
-            forgotPasswordButton
-
-            signInButton
-
-            registerButton
-        }
-        .halfSheet(showSheet: $viewModel.shouldPresentResetPasswordView) {
-            ForgotPasswordView(viewModel: ForgotPasswordViewModelFactory.make())
+            .onTapGesture {
+                self.hideKeyboard()
+            }
         }
     }
 
     private var signInText: some View {
-        VStack {
-            Text("Sign In")
-                .font(.custom("Lora-Regular", size: 36))
-            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis tortor facilisis.")
+        VStack(spacing: 35) {
+            Text(Localizable.SignIn.SignInButton.text)
+                .font(.lora(.regular, size: 36))
+                .padding(.bottom, 35)
+
+            Text(Localizable.SignIn.Subtitle.text)
+                .lineSpacing(15)
                 .multilineTextAlignment(.center)
-                .font(.system(size: 14, weight: .light))
-                .frame(width: 300, height: 83, alignment: .center)
-                .padding(.bottom, 20)
+                .font(.compact(.light, size: 14))
+                .padding(.horizontal, 40)
+                .padding(.bottom, 40)
         }
     }
 
     private var emailField: some View {
         HStack {
-            Image(systemName: "envelope")
+            Image(systemName: Strings.Symbols.email)
                 .foregroundColor(Color("iconsGray"))
-            TextField(Localizable.SignIn.Email.placeholder, text: $viewModel.email)
-                .frame(width: 309)
-                .font(.system(size: 18, weight: .regular))
-                .autocapitalization(.none)
-                .keyboardType(.emailAddress)
-        }.underlineTextField()
+
+            TextField(Localizable.SignIn.Email.placeholder, text: $viewModel.email) { change in
+                withAnimation {
+                    editingEmail = change
+                }
+            }
+            .frame(width: UIScreen.main.bounds.width - 80)
+            .font(.system(size: 18, weight: .regular))
+            .autocapitalization(.none)
+            .keyboardType(.emailAddress)
+        }
+        .padding(.bottom, 5)
+        .overlay(Rectangle()
+            .frame(width: UIScreen.main.bounds.width - 50, height: 0.3)
+            .padding(.top, 34))
+
+        .underlineTextField(isEditing: editingEmail)
     }
 
     private var passwordField: some View {
         HStack {
-            Image(systemName: "lock")
+            Image(systemName: Strings.Symbols.password)
                 .foregroundColor(Color("iconsGray"))
+
             SecureField(Localizable.SignIn.Password.placeholder, text: $viewModel.password)
-                .frame(width: 309)
-        }.underlineTextField()
+                .focused($isTextFieldFocused)
+                .frame(width: UIScreen.main.bounds.width - 80)
+        }
+        .font(.system(size: 18, weight: .regular))
+        .underlineTextField(isEditing: isTextFieldFocused)
     }
 
     private var invalidCredentials: some View {
@@ -84,8 +121,9 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             }
             .font(.system(size: 14, weight: .light))
             .foregroundColor(.black)
-
-        }.padding(20)
+        }
+        .padding(.trailing, 40)
+        .padding(.bottom, 90)
     }
 
     private var signInButton: some View {
@@ -93,44 +131,42 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
             viewModel.handleSignInButtonTapped()
         } label: {
             Text(Localizable.SignIn.SignInButton.text)
-                .frame(width: LayoutMetrics.buttonWidth, height: LayoutMetrics.buttonHeight)
+                .font(.compact(.regular, size: 14))
+                .frame(width: UIScreen.main.bounds.width - 60, height: LayoutMetrics.buttonHeight)
                 .foregroundColor(.white)
                 .background(Color.black)
         }
         .disabled(viewModel.isButtonDisabled)
         .padding(.vertical, LayoutMetrics.buttonPadding)
+        .padding(.bottom, 30)
     }
 
     private var registerButton: some View {
         HStack {
-            Text("DON'T HAVE AN ACCOUNT YET?")
-                .font(.system(size: 12, weight: .light))
+            Text(Localizable.SignIn.SignUp.text)
+                .font(.compact(.light, size: 12))
             OpenRegisterView {
                 RegisterView(viewModel: RegisterViewModelFactory.make())
                     .onAppear {
                         viewModel.handleRegisterButtonTapped()
-                    }.navigationBarHidden(true)
+                    }
             }
-
-        }.padding(.top, 15)
+        }
     }
 }
 
 extension View {
-    func underlineTextField() -> some View {
+    func underlineTextField(isEditing: Bool) -> some View {
         padding(.vertical, 20)
-            .overlay(Rectangle()
-                .strokeBorder(lineWidth: 0.2)
-                .frame(height: 1)
-                .padding(.top, 35))
+            .overlay(ZStack {
+                Rectangle()
+                    .frame(width: UIScreen.main.bounds.width - 50, height: 0.3)
+
+                Rectangle()
+                    .frame(width: isEditing ? UIScreen.main.bounds.width - 50 : 0, height: isEditing ? 1.5 : 0.3)
+                    .animation(.default, value: isEditing)
+            }
+            .padding(.top, 35))
             .foregroundColor(.black)
     }
 }
-
-#if DEBUG
-    struct SignInView_Previews: PreviewProvider {
-        static var previews: some View {
-            SignInView(viewModel: SignInViewModelFactory.make())
-        }
-    }
-#endif
