@@ -44,6 +44,13 @@
 
 //Restaurants
 
+"restaurants.label" = "Restaurantes";
+"restaurants.nearby.label" = "Restaurantes próximos";
+"restaurants.nearby.text" = "Aqui estão alguns restaurantes perto de você";
+"restaurants.experienced.label" = "Restaurantes Avaliados";
+"restaurants.experienced.text" = "Aqui estão os ultimos restaurantes que você avaliou";
+"restaurantes.showMore.text" = "Mostrar mais";
+
 //New Review
 
 //Restaurant Infos

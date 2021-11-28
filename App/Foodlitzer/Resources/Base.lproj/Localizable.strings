@@ -42,6 +42,12 @@
 "home.place.discover.text" = "Here are new restaurants to explore!";
 
 //Restaurants
+"restaurants.label" = "Restaurants";
+"restaurants.nearby.label" = "Nearby Restaurants";
+"restaurants.nearby.text" = "Here are some restaurants near where you are:";
+"restaurants.experienced.label" = "Experienced Restaurants";
+"restaurants.experienced.text" = "Here are the latest restaurants you've reviwed.";
+"restaurantes.showMore.text" = "Show more";
 
 //New Review
 
