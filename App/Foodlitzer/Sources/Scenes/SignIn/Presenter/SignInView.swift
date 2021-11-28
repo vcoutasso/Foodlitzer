@@ -35,7 +35,7 @@ struct SignInView<ViewModelType>: View where ViewModelType: SignInViewModelProto
 
                     signInButton
                         .id(buttonPosion)
-                        .onChange(of: editingEmail || isTextFieldFocused == true) { _ in
+                        .onChange(of: editingEmail || isTextFieldFocused) { _ in
                             withAnimation {
                                 value.scrollTo(buttonPosion)
                             }

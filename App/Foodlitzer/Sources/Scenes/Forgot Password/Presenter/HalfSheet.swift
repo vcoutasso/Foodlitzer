@@ -29,9 +29,7 @@ struct HalfSheet<SheetView: View>: UIViewControllerRepresentable {
             if let sheet = sheetController.sheetPresentationController {
                 sheet.detents = [.medium()]
             }
-            uiViewController.present(sheetController, animated: true) {
-                // self.showSheet = true
-            }
+            uiViewController.present(sheetController, animated: true, completion: nil)
         } else {
             uiViewController.dismiss(animated: true, completion: nil)
         }
@@ -48,7 +46,7 @@ struct HalfSheet<SheetView: View>: UIViewControllerRepresentable {
             self.parent = parent
         }
 
-        func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
             parent.showSheet = false
         }
     }

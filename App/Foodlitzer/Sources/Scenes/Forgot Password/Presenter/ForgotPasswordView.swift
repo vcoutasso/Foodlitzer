@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ForgotPasswordView<ViewModelType>: View where ViewModelType: ForgotPasswordViewModelProtocol {
     @ObservedObject var viewModel: ViewModelType
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         VStack(spacing: 30) {
@@ -21,7 +21,7 @@ struct ForgotPasswordView<ViewModelType>: View where ViewModelType: ForgotPasswo
 
             Button {
                 viewModel.sendPasswordReset()
-                presentationMode.wrappedValue.dismiss()
+                dismiss()
             } label: {
                 Text("Send e-mail")
                     .frame(width: 302, height: 40)
