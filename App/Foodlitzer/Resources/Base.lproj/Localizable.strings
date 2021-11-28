@@ -1,3 +1,4 @@
+//OnBoarding + Sign in, sign up
 "signIn.signInButton.text" = "Sign In";
 "signIn.registerButton.text" = "Create new account";
 "signIn.invalidCredentials.prompt" = "Invalid credentials";
@@ -17,3 +18,13 @@
 "search.placeholder.text" = "Find a restaurant";
 
 "tag.reviewed.text" = "Reviewed";
+
+//Home
+
+//Restaurants
+
+//New Review
+
+//Restaurant Infos
+
+
