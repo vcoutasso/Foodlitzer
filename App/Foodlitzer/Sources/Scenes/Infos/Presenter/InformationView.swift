@@ -1,10 +1,3 @@
-//
-//  InformationView.swift
-//  Foodlitzer
-//
-//  Created by Bruna Naomi Yamanaka Silva on 25/11/21.
-//
-
 import SwiftUI
 
 struct InformationView: View {
@@ -13,7 +6,7 @@ struct InformationView: View {
     var restaurantName: String
     var restaurantRate: Int
     var isReviewed: Bool
-    var image: Image
+    var images: [Image]
     var address: String
     var price: Int
 
@@ -25,13 +18,13 @@ struct InformationView: View {
                 InfoPageOneView(restaurantName: restaurantName,
                                 restaurantRate: restaurantRate,
                                 isReviewed: isReviewed,
-                                image: image,
+                                image: images.first ?? Image(Assets.Images.placeholderPizza),
                                 address: address,
                                 price: price)
                 InfoPageTwoView()
-                InfoPageThreeView()
+                InfoPageThreeView(imagens: images)
                     .ignoresSafeArea()
-                InfoPageFourView()
+                // InfoPageFourView()
             }
             TopInfoView(restaurantName: restaurantName)
         }

@@ -1,10 +1,3 @@
-//
-//  TopInfoView.swift
-//  Foodlitzer
-//
-//  Created by Bruna Naomi Yamanaka Silva on 26/11/21.
-//
-
 import SwiftUI
 
 struct TopInfoView: View {
@@ -25,15 +18,11 @@ struct TopInfoView: View {
             }
             .background(Color.white.border(Color.black, width: 0.3))
             .frame(height: 45)
+            .fixedSize(horizontal: true, vertical: false)
             .padding(.horizontal, 30)
             .padding(.vertical, 10)
 
             Spacer()
-//            HStack {
-//                Image(systemName: "speaker.wave.3")
-//                    .modifier(SimbolosPadrao())
-//                Spacer()
-//            }
         }
         .padding(.top, 10)
 

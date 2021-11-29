@@ -16,6 +16,7 @@ struct LogoOnboardingView: View {
                     .frame(width: 223, height: 223)
                 Image(Assets.Images.foodlitzerLogo)
                     .resizable()
+                    .scaledToFit()
                     .frame(width: 243, height: 110)
             }.offset(y: -80)
             HStack {

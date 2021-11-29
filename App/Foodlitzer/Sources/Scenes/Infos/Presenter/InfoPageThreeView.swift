@@ -1,23 +1,19 @@
-//
-//  InfoPageThreeView.swift
-//  Foodlitzer
-//
-//  Created by Bruna Naomi Yamanaka Silva on 25/11/21.
-//
-
 import SwiftUI
 
 struct InfoPageThreeView: View {
     @State private var showAlert = false
 
-    var imagens: [String] = ["imagem1", "imagem1", "imagem1", "imagem1", "imagem1"]
+    let imagens: [Image]
 
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
-                ForEach(imagens, id: \.self) { imagem in
-                    Image(imagem)
-                        .padding(.vertical, 10)
+                ForEach(imagens.indices, id: \.self) { index in
+                    imagens[index]
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: UIScreen.main.bounds.width - 70, height: 400)
+                        .padding(.bottom, 10)
                 }
             }
         }
@@ -28,7 +24,7 @@ struct InfoPageThreeView: View {
 #if DEBUG
     struct InfoPageThreeView_Previews: PreviewProvider {
         static var previews: some View {
-            InfoPageThreeView()
+            InfoPageThreeView(imagens: [])
                 .ignoresSafeArea()
                 .background(.gray)
         }

@@ -33,8 +33,7 @@ struct TabHomeView: View {
                                     InformationView(restaurantName: restaurant.name,
                                                     restaurantRate: Int(restaurant.rating),
                                                     isReviewed: false,
-                                                    image: restaurant.images
-                                                        .first ?? Image(Assets.Images.placeholderPizza),
+                                                    images: restaurant.images,
                                                     address: restaurant.address,
                                                     price: restaurant.price)
                                 } label: {
@@ -67,8 +66,7 @@ struct TabHomeView: View {
                                              InformationView(restaurantName: restaurant.name,
                                                              restaurantRate: Int(restaurant.rating),
                                                              isReviewed: false,
-                                                             image: restaurant.images
-                                                                 .first ?? Image(Assets.Images.placeholderPizza),
+                                                             images: restaurant.images,
                                                              address: restaurant.address,
                                                              price: restaurant.price)
                                          })
