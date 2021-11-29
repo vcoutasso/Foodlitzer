@@ -52,3 +52,25 @@
 //New Review
 
 //Restaurant Infos
+"information.light.text" = "Light";
+"information.waitingtime.text" = "Waiting time";
+"information.sound.text" = "Sound";
+"information.finalscreen.text" = "What would you like to do now?";
+"information.saveButton.text" = "Save";
+"information.newReviewButton.text" = "New review";
+"information.dimLight.text" = "Dim";
+"information.brightLight.text" = "Bright";
+"information.veryFast.text" = "Very fast";
+"information.veryslow.text" = "Very slow";
+"information.quiet.text" = "Quiet";
+"information.noisy.text" = "Noisy";
+"information.allertBasic.text" = "These basic information about this restaurant is shared by Google.";
+
+//Settings
+"settings.title.text" = "Settings";
+"settings.conta.text" = "Account";
+"settings.logoutButton.text" = "Logout";
+
+//Edit Profile
+"editProfile.title.text" = "Edit Profile";
+"editProfile.saveChangesButton" = "Save Changes";

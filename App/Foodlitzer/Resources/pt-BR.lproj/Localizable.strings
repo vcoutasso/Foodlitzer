@@ -54,4 +54,25 @@
 //New Review
 
 //Restaurant Infos
+"information.light.text" = "Iluminacão";
+"information.waitingtime.text" = "Tempo de espera";
+"information.sound.text" = "Som ambiente";
+"information.finalscreen.text" = "O que você gostaria de fazer agora?";
+"information.saveButton.text" = "Salvar";
+"information.newReviewButton.text" = "Nova review";
+"information.dimLight.text" = "Pouco iluminado";
+"information.brightLight.text" = "Muito iluminado";
+"information.veryFast.text" = "Muito rápido";
+"information.veryslow.text" = "Muito demorado";
+"information.quiet.text" = "Silencioso";
+"information.noisy.text" = "Barulhento";
+"information.allertBasic.text" = "As informações básicas sobre este restaurante são fornecidas pela Google";
 
+//Settings
+"settings.title.text" = "Configuração";
+"settings.conta.text" = "Conta";
+"settings.logoutButton.text" = "Deslogar";
+
+//Edit Profile
+"editProfile.title.text" = "Editar Perfil";
+"editProfile.saveChangesButton" = "Salvar Mudanças";
