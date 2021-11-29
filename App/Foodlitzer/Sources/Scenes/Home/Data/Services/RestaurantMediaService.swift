@@ -59,9 +59,7 @@ final class RestaurantMediaService: RestaurantMediaServiceProtocol {
     }
 
     private func fetchImagesFromDatabase(for id: String) async -> [RestaurantImageDTO] {
-        let data = await databaseImageService.fetchCollection(from: "restaurants/\(id)/images")
-
-        return data
+        await databaseImageService.fetchCollection(from: "restaurants/\(id)/images")
     }
 
     private func lookUpPhotos(for id: String, completion: @escaping (GMSPlacePhotoMetadataList?, Error?) -> Void) {
@@ -93,14 +91,10 @@ final class RestaurantMediaService: RestaurantMediaServiceProtocol {
     // MARK: - Fetch videos
 
     func fetchVideos(for id: String) async -> [RestaurantVideoDTO] {
-        let videoDTOs = await fetchVideosFromDatabase(for: id)
-
-        return videoDTOs
+        await fetchVideosFromDatabase(for: id)
     }
 
     private func fetchVideosFromDatabase(for id: String) async -> [RestaurantVideoDTO] {
-        let data = await databaseVideoService.fetchCollection(from: "restaurants/\(id)/videos")
-
-        return data
+        await databaseVideoService.fetchCollection(from: "restaurants/\(id)/videos")
     }
 }

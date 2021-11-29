@@ -20,22 +20,21 @@ final class TabRestaurantViewModel: ObservableObject {
         userLocationUseCase.setup()
     }
 
-    func handleButtonTapped(completion: @escaping ([TabRestaurantsView.Model]) -> Void) {
+    func fetchRestaurants() async -> [TabRestaurantsView.Model] {
         if let (latitude, longitude) = userLocationUseCase.execute() {
             let latitudeDescription = latitude.description
             let longitudeDescription = longitude.description
 
-            Task {
-                let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitudeDescription,
-                                                                         longitude: longitudeDescription)
-                completion(restaurants.map { .init(id: $0.id,
-                                                   name: $0.name,
-                                                   address: $0.address,
-                                                   images: $0.images.compactMap { $0.asImage() },
-                                                   rating: $0.rating,
-                                                   price: $0.priceLevel)
-                })
-            }
+            let restaurants = await nearbyRestaurantsUseCase.execute(latitude: latitudeDescription,
+                                                                     longitude: longitudeDescription)
+            return restaurants.map { .init(id: $0.id,
+                                           name: $0.name,
+                                           address: $0.address,
+                                           images: $0.images.compactMap { $0.asImage() },
+                                           rating: $0.rating,
+                                           price: $0.priceLevel) }
+        } else {
+            return []
         }
     }
 }

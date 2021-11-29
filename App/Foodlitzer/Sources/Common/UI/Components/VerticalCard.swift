@@ -2,12 +2,12 @@ import SwiftUI
 
 struct VerticalCard: View {
     var restaurantName: String
-    var image: String
+    var image: Image
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             ZStack {
-                Image(image)
+                image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .imageFilter()

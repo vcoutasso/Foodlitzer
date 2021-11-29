@@ -6,45 +6,45 @@ struct TabHomeView: View {
     // MARK: - Properties
 
     @MainActor var viewModel: TabHomeViewModel
-    @State private(set) var restaurants: [Restaurants] = []
+    @State private var bestReviewedList = [Restaurants]()
+    @State private var placesToDiscoverList = [Restaurants]()
+
     var body: some View {
         VStack {
             ScrollView {
-                description
-
-                if restaurants.isEmpty {
+                if bestReviewedList.isEmpty || placesToDiscoverList.isEmpty {
                     ProgressView()
                         .padding(.top, 200)
-                        .onAppear {
-//                            DispatchQueue.main.async {
-//                                viewModel.handleButtonTapped { restaurants in
-//                                    self.restaurants = restaurants
-//                                }
-//                            }
-//                            viewModel.handleOnAppear()
+                        .task {
+                            bestReviewedList = await viewModel.fetchBestReviewedRestaurants()
+                            placesToDiscoverList = await viewModel.fetchRandomRestaurants()
                         }
                 } else {
+                    description
+
                     Spacer()
+
                     bestReviewed
 
-                    ScrollView(.vertical, showsIndicators: false) {
-                        ForEach(restaurants) { restaurant in
-                            MainCard(restaurantName: restaurant.name,
-                                     restaurantRate: Int(restaurant.rating),
-                                     isReviewed: false,
-                                     image: restaurant.images.first ?? Image(Assets.Images.placeholderPizza),
-                                     address: restaurant.address,
-                                     price: restaurant.price,
-                                     destination: {
-                                         InformationView(restaurantName: restaurant.name,
-                                                         restaurantRate: Int(restaurant.rating),
-                                                         isReviewed: false,
-                                                         image: restaurant.images
-                                                             .first ?? Image(Assets.Images.placeholderPizza),
-                                                         address: restaurant.address,
-                                                         price: restaurant.price)
-                                     })
-                                     .padding(.bottom, 20)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(bestReviewedList) { restaurant in
+                                NavigationLink {
+                                    InformationView(restaurantName: restaurant.name,
+                                                    restaurantRate: Int(restaurant.rating),
+                                                    isReviewed: false,
+                                                    image: restaurant.images
+                                                        .first ?? Image(Assets.Images.placeholderPizza),
+                                                    address: restaurant.address,
+                                                    price: restaurant.price)
+                                } label: {
+                                    VerticalCard(restaurantName: restaurant.name,
+                                                 image: restaurant.images
+                                                     .first ?? Image(Assets.Images.placeholderPizza))
+                                        .padding(.trailing, 30)
+                                        .foregroundColor(.black)
+                                }
+                            }
                         }
                     }
 
@@ -56,9 +56,14 @@ struct TabHomeView: View {
                                 .foregroundColor(.clear)
                                 .frame(width: 30, height: 30)
 
-                            ForEach(restaurants) { restaurant in
-                                MiniCard(restaurantName: restaurant.name, restaurantRate: 5, isReviewed: true,
-                                         image: Image(Assets.Images.placeholderPizza), destination: {
+                            ForEach(placesToDiscoverList) { restaurant in
+                                MainCard(restaurantName: restaurant.name,
+                                         restaurantRate: Int(restaurant.rating),
+                                         isReviewed: false,
+                                         image: restaurant.images.first ?? Image(Assets.Images.placeholderPizza),
+                                         address: restaurant.address,
+                                         price: restaurant.price,
+                                         destination: {
                                              InformationView(restaurantName: restaurant.name,
                                                              restaurantRate: Int(restaurant.rating),
                                                              isReviewed: false,
@@ -66,9 +71,8 @@ struct TabHomeView: View {
                                                                  .first ?? Image(Assets.Images.placeholderPizza),
                                                              address: restaurant.address,
                                                              price: restaurant.price)
-
                                          })
-                                         .padding(.trailing, 30)
+                                         .padding(.bottom, 20)
                             }
                         } // TODO: Implementar histórico de visita do usuário
                     }
