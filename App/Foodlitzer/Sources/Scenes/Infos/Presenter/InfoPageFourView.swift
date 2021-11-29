@@ -23,7 +23,7 @@ struct InfoPageFourView: View {
                     Button("Save") {}
                         .modifier(ButtonAction())
                     NavigationLink {
-                        NewReviewView(viewModel: NewReviewViewModelFactory.make())
+                        NewReviewView(viewModel: NewReviewViewModelFactory.make(), restaurant: RestaurantModel())
                     } label: {
                         Text("New review")
                             .font(.system(size: 12, weight: .light))
