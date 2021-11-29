@@ -34,8 +34,17 @@ struct TabHomeView: View {
                                      isReviewed: false,
                                      image: restaurant.images.first ?? Image(Assets.Images.placeholderPizza),
                                      address: restaurant.address,
-                                     price: restaurant.price)
-                                .padding(.bottom, 20)
+                                     price: restaurant.price,
+                                     destination: {
+                                         InformationView(restaurantName: restaurant.name,
+                                                         restaurantRate: Int(restaurant.rating),
+                                                         isReviewed: false,
+                                                         image: restaurant.images
+                                                             .first ?? Image(Assets.Images.placeholderPizza),
+                                                         address: restaurant.address,
+                                                         price: restaurant.price)
+                                     })
+                                     .padding(.bottom, 20)
                         }
                     }
 
@@ -49,8 +58,17 @@ struct TabHomeView: View {
 
                             ForEach(restaurants) { restaurant in
                                 MiniCard(restaurantName: restaurant.name, restaurantRate: 5, isReviewed: true,
-                                         image: Image(Assets.Images.placeholderPizza))
-                                    .padding(.trailing, 30)
+                                         image: Image(Assets.Images.placeholderPizza), destination: {
+                                             InformationView(restaurantName: restaurant.name,
+                                                             restaurantRate: Int(restaurant.rating),
+                                                             isReviewed: false,
+                                                             image: restaurant.images
+                                                                 .first ?? Image(Assets.Images.placeholderPizza),
+                                                             address: restaurant.address,
+                                                             price: restaurant.price)
+
+                                         })
+                                         .padding(.trailing, 30)
                             }
                         } // TODO: Implementar histórico de visita do usuário
                     }

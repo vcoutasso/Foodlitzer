@@ -8,20 +8,27 @@
 import SwiftUI
 
 struct InfoPageOneView: View {
+    var restaurantName: String
+    var restaurantRate: Int
+    var isReviewed: Bool
+    var image: Image
+    var address: String
+    var price: Int
     var body: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 0) {
+        ZStack {
+            VStack {
                 Spacer()
-                HStack {
-                    Image("locationicon")
-                        .resizable()
-                        .frame(width: 10, height: 15)
-                    Text("Avenida Getúlio Vargas, 3030")
-                }
-                .modifier(FontePadrao())
-                .frame(width: 350, height: 30)
-
                 HStack(spacing: 0) {
+                    Image(systemName: Strings.Symbols.address)
+                        .padding(.leading, 10)
+                        .font(.system(size: 12, weight: .light, design: .default))
+                    Text(address)
+                        .font(.sfCompactText(.light, size: 11))
+                        .padding(5)
+                }.background(Rectangle().foregroundColor(.white).border(Color.black, width: 0.3).frame(height: 33))
+                    .padding(.bottom, 15)
+
+                HStack(spacing: 20) {
                     HStack(spacing: 0) {
                         Image(Assets.Images.googleIcon)
                             .padding(.horizontal, 7)
@@ -31,38 +38,35 @@ struct InfoPageOneView: View {
                         Image(systemName: "star")
                         Image(systemName: "star")
                     }
-                    .modifier(FontePadrao())
-                    .frame(width: 175, height: 30)
 
+                    .background(Rectangle().foregroundColor(.white).border(Color.black, width: 0.3).frame(height: 33))
+                    .padding(.bottom, 15)
                     HStack {
                         Image(systemName: "dollarsign.circle")
-                        Text("$$$$")
+                        ForEach(0..<price) { _ in
+                            Text("$")
+                                .font(.sfCompactText(.light, size: 11))
+                        }
                     }
-                    .modifier(FontePadrao())
-                    .frame(width: 175, height: 30)
+
+                    .background(Rectangle().foregroundColor(.white).border(Color.black, width: 0.3).frame(height: 33))
+                    .padding(.bottom, 15)
                 }
                 HStack {
-                    Image(Assets.Images.foodlitzerSymbol)
-                        .frame(width: 10, height: 15)
-                        .padding(.horizontal, 7)
+//                    Image(Assets.Images.foodlitzerSymbol)
+//                        .frame(width: 10, height: 15)
+//                        .padding(.horizontal, 7)
                     Image(systemName: "hand.thumbsup.fill")
                     Image(systemName: "hand.thumbsup.fill")
                     Image(systemName: "hand.thumbsup.fill")
                     Image(systemName: "hand.thumbsup.fill")
                     Image(systemName: "hand.thumbsup")
                 }
-                .modifier(FontePadrao())
-                .frame(width: 175, height: 30)
+
+                .background(Rectangle().foregroundColor(.white).border(Color.black, width: 0.3).frame(height: 33))
+                .padding(.bottom, 15)
             }
             .padding(.vertical, 50)
         }
     }
 }
-
-#if DEBUG
-    struct InfoPageOneView_Previews: PreviewProvider {
-        static var previews: some View {
-            InfoPageOneView()
-        }
-    }
-#endif

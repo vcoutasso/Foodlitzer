@@ -22,8 +22,16 @@ struct InfoPageFourView: View {
                 HStack {
                     Button("Save") {}
                         .modifier(ButtonAction())
-                    Button("New Review") {}
-                        .modifier(ButtonAction())
+                    NavigationLink {
+                        NewReviewView(viewModel: NewReviewViewModelFactory.make())
+                    } label: {
+                        Text("New review")
+                            .font(.system(size: 12, weight: .light))
+                            .foregroundColor(.white)
+                            .padding(.vertical, 7)
+                            .frame(width: 142)
+                            .background(Color(.black))
+                    }
                 }
                 .padding(.top, 120)
             }
