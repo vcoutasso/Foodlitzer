@@ -19,3 +19,13 @@ struct RestaurantVideoDTO: Codable {
     let url: URL
     let videoData: Data?
 }
+
+struct RestaurantReviewDTO: Codable {
+    @DocumentID var id: String?
+    let restaurantID: String
+    let ambientLighting: Float
+    let waitingTime: Float
+    let ambientNoise: Float
+    let userTags: [String]
+    let userRating: Int
+}
