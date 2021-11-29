@@ -10,20 +10,20 @@ struct TabHomeView: View {
     var body: some View {
         VStack {
             ScrollView {
+                description
+
                 if restaurants.isEmpty {
                     ProgressView()
                         .padding(.top, 200)
                         .onAppear {
-                            DispatchQueue.main.async {
-                                viewModel.handleButtonTapped { restaurants in
-                                    self.restaurants = restaurants
-                                }
-                            }
-                            viewModel.handleOnAppear()
+//                            DispatchQueue.main.async {
+//                                viewModel.handleButtonTapped { restaurants in
+//                                    self.restaurants = restaurants
+//                                }
+//                            }
+//                            viewModel.handleOnAppear()
                         }
                 } else {
-                    description
-
                     Spacer()
                     bestReviewed
 
@@ -80,7 +80,7 @@ struct TabHomeView: View {
             HStack {
                 Image(systemName: "newspaper")
                 NavigationLink {
-                    NewReviewView(viewModel: NewReviewViewModelFactory.make())
+                    NewReviewView(viewModel: NewReviewViewModelFactory.make(), restaurant: .init())
                 } label: {
                     Text(Localizable.Home.NewReviewButton.text)
                         .font(.sfCompactText(.regular, size: 12))

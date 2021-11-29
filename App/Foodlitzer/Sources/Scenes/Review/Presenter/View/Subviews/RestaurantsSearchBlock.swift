@@ -2,17 +2,40 @@ import SwiftUI
 
 struct RestaurantsSearchBlock: View {
     @Binding var query: String
+    @Binding var selectedRestaurant: RestaurantModel
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Informações básicas")
+            Text(Localizable.NewReview.BasicInfo.text)
                 .font(.sfCompactText(.regular, size: 14))
                 .padding(.bottom, 15)
+                .padding(.horizontal, 40)
 
-            SearchBar(query: $query, showCancelButton: .constant(false))
-            // TODO: open search view!!!
+            NavigationLink {
+                SearchView(viewModel: SearchViewModelFactory.make(), selectedRestaurant: $selectedRestaurant)
+            } label: {
+                HStack {
+                    Image(systemName: Strings.Symbols.search)
+                        .frame(height: 35)
+                        .padding(10)
+                        .foregroundColor(Color.black.opacity(0.5))
+
+                    Text(Localizable.Search.Placeholder.text)
+                        .foregroundColor(Color.black.opacity(0.5))
+                        .font(.sfCompactText(.light, size: 14))
+
+                    Spacer()
+                }
+                .background(Rectangle()
+                    .foregroundColor(Color.clear)
+                    .customStroke()
+                    .font(.sfCompactText(.light, size: 14))
+                    .frame(height: 35))
+                .padding(.horizontal, 40)
+            }
+
+            // TODO: open search view!
         }
-        .padding(.horizontal, 40)
 
         HStack {
             Spacer()

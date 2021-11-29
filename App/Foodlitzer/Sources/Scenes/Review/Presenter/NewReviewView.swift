@@ -1,20 +1,42 @@
 import SwiftUI
 
+struct RestaurantModel {
+    var name: String
+    var address: String
+    var id: String
+
+    init() {
+        self.name = ""
+        self.id = ""
+        self.address = ""
+    }
+
+    init(name: String, address: String, id: String) {
+        self.id = id
+        self.name = name
+        self.address = address
+    }
+}
+
 struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewModelProtocol {
     @ObservedObject private(set) var viewModel: ViewModelType
+    @Environment(\.dismiss) var dismiss
     @Namespace var tagPosition
     @State var isTyping: Bool = false
     @State var query = ""
     @State var currentTag = ""
+    @State var restaurant: RestaurantModel
+
+    // passar id -> dimiss
 
     var body: some View {
         ScrollView {
-            ScrollViewReader { value in
+            ScrollViewReader { _ in
                 VStack(alignment: .leading, spacing: 40) {
                     HStack {
                         Spacer()
 
-                        Text("New Review")
+                        Text(Localizable.NewReview.Title.text)
                             .font(.lora(.regular, size: 36))
 
                         Spacer()
@@ -22,7 +44,37 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
                     .padding(.horizontal, 40)
                     .padding(.bottom, 15)
 
-                    RestaurantsSearchBlock(query: $viewModel.query)
+                    if restaurant.id.isEmpty {
+                        RestaurantsSearchBlock(query: $viewModel.query, selectedRestaurant: $restaurant)
+                    } else {
+                        VStack(alignment: .center) {
+                            Text(restaurant.name)
+                                .font(.sfCompactText(.regular, size: 24))
+                                .padding(.bottom, 10)
+
+                            Text(restaurant.address)
+                                .font(.sfCompactText(.light, size: 12))
+                        }
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 40)
+
+                        Button {
+                            restaurant = .init()
+                        } label: {
+                            VStack(alignment: .center) {
+                                HStack {
+                                    Spacer()
+                                    Image(systemName: Strings.Symbols.search)
+                                        .font(.system(size: 12))
+                                    Text(Localizable.Search.Placeholder.text)
+                                        .font(.sfCompactText(.regular, size: 10))
+                                    Spacer()
+                                }
+                                .foregroundColor(.black)
+                            }
+                            .padding(.horizontal, 40)
+                        }
+                    }
 
                     ItemEvaluation(item: $viewModel.ambientLighting, isEditing: viewModel.canSliderMove,
                                    restaurantFeatures: lightEvatuation)
@@ -36,14 +88,14 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
 
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: "waveform")
+                            Image(systemName: Strings.Symbols.waveform)
                                 .padding(4)
                                 .background(Circle()
                                     .strokeBorder(Color.black, lineWidth: 0.3)
                                     .foregroundColor(.white))
                                 .foregroundColor(.black)
 
-                            Text("Avaliação sonora:")
+                            Text(Localizable.NewReview.Sound.text)
                                 .font(.sfCompactText(.regular, size: 14))
                         }
                         .padding(.horizontal, 40)
@@ -59,11 +111,18 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
                             Spacer()
                         }
 
-                        DefaultButton(label: "Avaliar Agora") {
+                        Button {
                             viewModel.recordAudio()
+                        } label: {
+                            Text(Localizable.NewReview.SoundButton.text)
+                                .font(.sfCompactText(.regular, size: 14))
+                                .frame(width: UIScreen.main.bounds.width - 80, height: 40)
+                                .foregroundColor(!viewModel.isRecordingButtonActive ? .black.opacity(0.3) : .white)
+                                .background(!viewModel.isRecordingButtonActive ? Color.white : Color.black)
+                                .animation(.default, value: viewModel.isRecordingButtonActive)
                         }
+                        .buttonDisableAnimation(state: !viewModel.isRecordingButtonActive)
                         .padding(.horizontal, 40)
-                        .disabled(!viewModel.isRecordingButtonActive)
                     }
 
                     HStack {
@@ -78,36 +137,29 @@ struct NewReviewView<ViewModelType>: View where ViewModelType: NewReviewViewMode
 
                     UserReviewGalleryInputBlock(images: $viewModel.userPhotos, videos: $viewModel.userVideos)
 
-                    // TODO: verificar como passa os dados
-
-                    UserTagsInputBlock(currentTag: $viewModel.currentTag, tags: $viewModel.userTags,
-                                       isShowingKeyboard: $isTyping)
-                        .onChange(of: isTyping, perform: { _ in
-                            if isTyping {
-                                withAnimation(.linear(duration: 0.5)) {
-                                    value.scrollTo(tagPosition)
-                                }
-                            }
-                        })
-                        .padding(.horizontal, 40)
-                        .id(tagPosition)
-
                     UserRatingBlock(userRate: $viewModel.userRating)
                         .padding(.horizontal, 40)
 
                     Button {
-                        viewModel.sendReview()
+                        viewModel.sendReview(for: restaurant.id)
+                        dismiss()
                     } label: {
-                        Text("Próximo")
-                            .font(.system(size: 14, weight: .regular, design: .serif))
-                            .foregroundColor(.white)
+                        Text(Localizable.NewReview.Next.text)
+                            .font(.sfCompactText(.regular, size: 14))
                             .frame(width: UIScreen.main.bounds.width - 80, height: 40)
-                            .background(Color.black)
+                            .foregroundColor(restaurant.id.isEmpty ? .black.opacity(0.3) : .white)
+                            .background(restaurant.id.isEmpty ? Color.white : Color.black)
+                            .animation(.default, value: restaurant.id.isEmpty)
                     }
+                    .buttonDisableAnimation(state: restaurant.id.isEmpty)
                     .padding(.horizontal, 40)
                 }
             }
         }
+        .background(Color(Assets.Colors.backgroundGray)
+            .frame(width: UIScreen.main.bounds.width,
+                   height: UIScreen.main.bounds.height)
+            .edgesIgnoringSafeArea(.all))
     }
 
     // MARK: - Views
@@ -137,10 +189,11 @@ struct FeatureDefinition {
     var rate: [String]
 }
 
-let lightEvatuation = FeatureDefinition(question: "How do you rate the lighting in the place?", symbol: "lightbulb",
-                                        rate: ["Pouco iluminado", "Muito iluminado"])
+let lightEvatuation = FeatureDefinition(question: Localizable.NewReview.Light.text, symbol: Strings.Symbols.light,
+                                        rate: [
+                                            Localizable.NewReview.Lowlight.text,
+                                            Localizable.NewReview.Highlight.text,
+                                        ])
 
-let waitEvaluation = FeatureDefinition(question: "Como você avalia o tempo de esperar pela comida?", symbol: "clock",
-                                       rate: ["Muito rápido", "Muito demorado"])
-
-// let soundEvaluation: FeatureDefinition = FeatureDefinition(question: "Avaliação sonora:", symbol: "waveform")
+let waitEvaluation = FeatureDefinition(question: Localizable.NewReview.Time.text, symbol: Strings.Symbols.clock,
+                                       rate: [Localizable.NewReview.Fast.text, Localizable.NewReview.Slow.text])

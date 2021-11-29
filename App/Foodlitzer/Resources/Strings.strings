@@ -17,6 +17,10 @@
 "symbols.password" = "lock";
 "symbols.email" = "envelope";
 "symbols.person" = "person";
+"symbols.light" = "lightbulb";
+"symbols.clock" = "clock";
+"symbols.waveform" = "waveform";
+
 
 "tab.home" = "Home";
 "tab.restaurants" = "Restaurants";

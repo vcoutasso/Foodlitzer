@@ -21,6 +21,21 @@
 "register.confirmPassword.placeholder" = "Confirm password";
 "register.test.text" = "dkasljdasljdlaksd";
 
+"newReview.title.text" = "New review";
+"newReview.restaurant.text" = "What restaurant will you review?";
+"newReview.light.text" = "How would you rate this place's light?";
+"newReview.time.text" = "How would you rate this place's service?";
+"newReview.sound.text" = "Sound rating:";
+"newReview.soundButton.text" = "Measure Now";
+"newReview.mediaButton.text" = "Choose videos and images";
+"newReview.rate.text" = "Give the place your overall rating:";
+"newReview.next.text" = "Next";
+"newReview.highlight.text" = "Dim";
+"newReview.lowlight.text" = "Bright";
+"newReview.fast.text" = "Very fast";
+"newReview.slow.text" = "Very slow";
+"newReview.basicInfo.text" = "Informações básicas";
+
 "search.placeholder.text" = "Find a restaurant";
 
 "tag.reviewed.text" = "Reviewed";

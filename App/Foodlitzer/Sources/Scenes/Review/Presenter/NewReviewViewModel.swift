@@ -16,7 +16,7 @@ protocol NewReviewViewModelProtocol: ObservableObject {
     var readingsInfo: [SoundSampleInfo] { get }
 
     func getValue(_ value: CGFloat) -> CGFloat
-    func sendReview()
+    func sendReview(for id: String)
     func recordAudio()
 }
 
@@ -74,9 +74,7 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
         value / (UIScreen.main.bounds.width - 171) // main.bounds slider + raio do Circle
     }
 
-    func sendReview() {
-        // FIXME: This should represent the actual restaurant id
-        let id = "ChIJ09ULNYT73JQRH-GR32A5c18"
+    func sendReview(for id: String) {
         let review = Review(restaurantID: id,
                             ambientLighting: getValue(ambientLighting),
                             waitingTime: getValue(waitingTime),
