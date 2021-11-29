@@ -1,10 +1,3 @@
-//
-//  InfoPageTwoView.swift
-//  Foodlitzer
-//
-//  Created by Bruna Naomi Yamanaka Silva on 25/11/21.
-//
-
 import SwiftUI
 
 struct InfoPageTwoView: View {

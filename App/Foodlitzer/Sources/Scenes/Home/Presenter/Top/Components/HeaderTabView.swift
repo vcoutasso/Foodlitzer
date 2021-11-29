@@ -1,10 +1,3 @@
-//
-//  HeaderTabView.swift
-//  Foodlitzer
-//
-//  Created by Alessandra Souza da Silva on 24/11/21.
-//
-
 import SwiftUI
 
 struct Tab {

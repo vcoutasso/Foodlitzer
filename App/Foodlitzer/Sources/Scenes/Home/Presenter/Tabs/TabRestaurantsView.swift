@@ -11,6 +11,10 @@ struct TabRestaurantsView: View {
                     .padding(.top, 200)
                     .onAppear {
                         viewModel.handleOnAppear()
+                        Task {
+                            // FIXME: Should try again when permission is granted
+                            restaurants = await viewModel.fetchRestaurants()
+                        }
                     }
             } else {
                 Text(Localizable.Restaurants.Nearby.label)
@@ -54,9 +58,6 @@ struct TabRestaurantsView: View {
                 }
                 .padding(.bottom, 50)
             }
-        }
-        .task {
-            restaurants = await viewModel.fetchRestaurants()
         }
     }
 
