@@ -99,4 +99,18 @@ final class FirebaseDatabaseService<T>: RemoteDatabaseServiceProtocol where T: C
 
         return result
     }
+
+    // MARK: - Document count
+
+    func documentCount(from path: String) async -> Int? {
+        var result: Int?
+
+        do {
+            result = try await database.collection(path).getDocuments().count
+        } catch {
+            debugPrint("Error querying for document count: \(error.localizedDescription)")
+        }
+
+        return result
+    }
 }

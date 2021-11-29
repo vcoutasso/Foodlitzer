@@ -1,10 +1,3 @@
-//
-//  TemplateOnboardingPageView.swift
-//  Foodlitzer
-//
-//  Created by Alessandra Souza da Silva on 27/11/21.
-//
-
 import SwiftUI
 
 struct TemplateOnboardingPageView: View {
@@ -18,7 +11,6 @@ struct TemplateOnboardingPageView: View {
                 .font(.custom("Lora-Regular", size: 34))
                 .frame(width: 284, height: 139, alignment: .top)
                 .multilineTextAlignment(.center)
-
         }
     }
 }

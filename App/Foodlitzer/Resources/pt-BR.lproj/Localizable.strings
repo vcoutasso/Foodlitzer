@@ -8,6 +8,9 @@
 "signIn.signUp.text" = "AINDA NÃO POSSUI UMA CONTA?";
 
 "signUp.createAccountButton.text" = "Criar conta";
+
+"signIn.signInButtonMessage.placeholder" = "Continue com o email";
+
 "signUp.subtitle.text" = "Olá! Bem vindo(a) ao Foodlitzer!\nEstamos animados por ter você aqui compartilhando experiências em restaurantes!";
 "signUp.signIn.text" = "JÁ POSSUI UMA CONTA?";
 
@@ -35,3 +38,55 @@
 "search.placeholder.text" = "Busque por um restaurante";
 
 "tag.reviewed.text" = "Reviewed";
+
+//OnBoarding
+"onBoarding.pageOne.text" = "Acesse informações valiosas sobre restaurantes próximos";
+"onBoarding.pageTwo.text" = "Avalie os estabelecimentos que já conhece";
+"onBoarding.pageThree.text" = "E encontre novos restaurantes para experimentar!";
+"onBoarding.light.text" = "Iluminação";
+"onBoarding.waitingTime.text" = "Tempo de espera";
+"onBoarding.noise.text" = "Som ambiente";
+
+//Home
+"home.newReviewMessage.text" = "Conhecer bem um restaurante é essencial para ter uma boa experiência gastronômica. Fique à vontade para nos contar sobre as experiências que já teve!";
+"home.newReviewButton.text" = "Nova review";
+"home.bestReview.label" = "Mais bem avaliados";
+"home.bestReview.text" = "Confira as reviews desses restaurantes que você não conhece!";
+"home.placeDiscover.label" = "Lugares para descobrir";
+"home.placeDiscover.text" = "Aqui estão alguns restaurantes para você explorar";
+
+
+//Restaurants
+
+"restaurants.label" = "Restaurantes";
+"restaurants.nearby.label" = "Restaurantes próximos";
+"restaurants.nearby.text" = "Aqui estão alguns restaurantes perto de você";
+"restaurants.experienced.label" = "Restaurantes Avaliados";
+"restaurants.experienced.text" = "Aqui estão os ultimos restaurantes que você avaliou";
+"restaurants.showMore.text" = "Mostrar mais";
+
+//New Review
+
+//Restaurant Infos
+"information.light.text" = "Iluminacão";
+"information.waitingtime.text" = "Tempo de espera";
+"information.sound.text" = "Som ambiente";
+"information.finalscreen.text" = "O que você gostaria de fazer agora?";
+"information.saveButton.text" = "Salvar";
+"information.newReviewButton.text" = "Nova review";
+"information.dimLight.text" = "Pouco iluminado";
+"information.brightLight.text" = "Muito iluminado";
+"information.veryFast.text" = "Muito rápido";
+"information.veryslow.text" = "Muito demorado";
+"information.quiet.text" = "Silencioso";
+"information.noisy.text" = "Barulhento";
+"information.allertBasic.text" = "As informações básicas sobre este restaurante são fornecidas pela Google";
+
+//Settings
+"settings.title.text" = "Configuração";
+"settings.conta.text" = "Conta";
+"settings.logoutButton.text" = "Deslogar";
+
+//Edit Profile
+"editProfile.title.text" = "Editar Perfil";
+"editProfile.saveChangesButton" = "Salvar Mudanças";

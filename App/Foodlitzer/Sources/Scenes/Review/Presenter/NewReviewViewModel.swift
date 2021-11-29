@@ -107,7 +107,7 @@ final class NewReviewViewModel: NewReviewViewModelProtocol {
 
 enum NewReviewViewModelFactory {
     static func make() -> NewReviewViewModel {
-        let reviewDatabaseService = FirebaseDatabaseService<ReviewDTO>()
+        let reviewDatabaseService = FirebaseDatabaseService<RestaurantReviewDTO>()
         let saveReviewService = SaveReviewService(reviewsDatabaseService: reviewDatabaseService)
         let saveReviewUseCase = SaveReviewUseCase(saveReviewService: saveReviewService)
         let imageDatabaseService = FirebaseDatabaseService<RestaurantImageDTO>()

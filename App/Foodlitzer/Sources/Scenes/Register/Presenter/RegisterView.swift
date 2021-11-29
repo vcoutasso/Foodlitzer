@@ -9,7 +9,7 @@ private enum LayoutMetrics {
 struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelProtocol {
     // MARK: - Attributes
 
-    @Environment(\.presentationMode) var presentation
+    @Environment(\.dismiss) var dismiss
     @ObservedObject private(set) var viewModel: ViewModelType
     @Namespace var buttonPosion
 
@@ -43,7 +43,7 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
                             }
                         }
 
-                    registerButton
+                    signIn
                 }
                 .padding(.horizontal, 30)
             }
@@ -145,16 +145,17 @@ struct RegisterView<ViewModelType>: View where ViewModelType: RegisterViewModelP
         .padding(.bottom, 10)
     }
 
-    private var registerButton: some View {
+    private var signIn: some View {
         HStack {
             Text(Localizable.SignUp.SignIn.text)
                 .font(.system(size: 12, weight: .light))
 
-            OpenSignInView {
-                SignInView(viewModel: SignInViewModelFactory.make())
-                    .onAppear {
-                        viewModel.handleRegisterButtonTapped()
-                    }
+            Button {
+                dismiss()
+            } label: {
+                Text("Sign In")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.black)
             }
         }
     }

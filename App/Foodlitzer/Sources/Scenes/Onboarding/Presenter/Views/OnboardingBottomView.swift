@@ -6,13 +6,13 @@ struct OnboardingBottomView: View {
     var body: some View {
         VStack {
 //            SignWithAppleButtonView()
-            ButtonsOnboadingView(text: "Continue with email") {
+            ButtonsOnboadingView(text: Localizable.SignIn.SignInButtonMessage.placeholder) {
                 SignInView(viewModel: SignInViewModelFactory.make())
             }
             Rectangle()
                 .frame(width: 64, height: 2)
                 .background(Color.black)
-            ButtonsOnboadingView(text: "Create new account") {
+            ButtonsOnboadingView(text: Localizable.SignIn.RegisterButton.text) {
                 RegisterView(viewModel: RegisterViewModelFactory.make())
             }
 

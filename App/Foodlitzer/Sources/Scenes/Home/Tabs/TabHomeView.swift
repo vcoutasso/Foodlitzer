@@ -69,7 +69,7 @@ struct TabHomeView: View {
     private var description: some View {
         VStack(alignment: .center) {
             VStack {
-                Text("Getting to know a restaurant is key to having a good dining experience. But you already knew that! Wanna tell us about an experience you've had!")
+                Text(Localizable.Home.NewReviewMessage.text)
                     .font(.sfCompactText(.light, size: 14))
                     .lineSpacing(10)
                     .frame(width: 291, height: 98, alignment: .center)
@@ -82,7 +82,7 @@ struct TabHomeView: View {
                 NavigationLink {
                     NewReviewView(viewModel: NewReviewViewModelFactory.make(), restaurant: .init())
                 } label: {
-                    Text("New review")
+                    Text(Localizable.Home.NewReviewButton.text)
                         .font(.sfCompactText(.regular, size: 12))
                         .foregroundColor(Color.white)
                         .background(Rectangle()
@@ -97,10 +97,10 @@ struct TabHomeView: View {
 
     private var bestReviewed: some View {
         VStack {
-            Text("Best Reviewed")
+            Text(Localizable.Home.BestReview.label)
                 .font(.custom("Lora-Regular", size: 24))
                 .padding(.top, 30)
-            Text("Check out these reviews about restaurants you don't know yet!")
+            Text(Localizable.Home.BestReview.text)
                 .font(.sfCompactText(.light, size: 14))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color("textGray"))
@@ -110,9 +110,9 @@ struct TabHomeView: View {
 
     private var placesToDiscover: some View {
         VStack {
-            Text("Places to Discover")
+            Text(Localizable.Home.PlaceDiscover.label)
                 .font(.custom("Lora-Regular", size: 24))
-            Text("Here are the latest restaurants you've reviewed.")
+            Text(Localizable.Home.PlaceDiscover.text)
 
                 .font(.sfCompactText(.light, size: 14))
                 .foregroundColor(Color("textGray"))

@@ -18,11 +18,11 @@ struct TabRestaurantsView: View {
                         viewModel.handleOnAppear()
                     }
             } else {
-                Text("Nearby Restaurants")
+                Text(Localizable.Restaurants.Nearby.label)
                     .font(.lora(.regular, size: 24))
                     .padding(.top, 55)
 
-                Text("Here are some restaurants near you.")
+                Text(Localizable.Restaurants.Nearby.text)
                     .font(.sfCompactText(.regular, size: 14))
                     .padding(.bottom, 30)
 
@@ -43,7 +43,7 @@ struct TabRestaurantsView: View {
                 NavigationLink {
                     // destination
                 } label: {
-                    Text("Show More")
+                    Text(Localizable.Restaurants.ShowMore.text)
                         .font(.sfCompactText(.regular, size: 14))
                         .foregroundColor(.white)
                         .frame(width: UIScreen.main.bounds.width - 80, height: 40)
@@ -51,10 +51,10 @@ struct TabRestaurantsView: View {
                 }
                 .padding(.bottom, 50)
 
-                Text("Experienced Restaurants")
+                Text(Localizable.Restaurants.Experienced.label)
                     .font(.lora(.regular, size: 24))
 
-                Text("Here are the latest restaurants you've reviewed.")
+                Text(Localizable.Restaurants.Experienced.text)
                     .font(.sfCompactText(.regular, size: 14))
                     .padding(.bottom, 20)
 
@@ -76,7 +76,7 @@ struct TabRestaurantsView: View {
                 NavigationLink {
                     // destination
                 } label: {
-                    Text("Show More")
+                    Text(Localizable.Restaurants.ShowMore.text)
                         .font(.sfCompactText(.light, size: 14))
                         .foregroundColor(.white)
                         .frame(width: UIScreen.main.bounds.width - 80, height: 40)
