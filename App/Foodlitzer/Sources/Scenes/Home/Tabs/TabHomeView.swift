@@ -10,6 +10,8 @@ struct TabHomeView: View {
     var body: some View {
         VStack {
             ScrollView {
+                description
+
                 if restaurants.isEmpty {
                     ProgressView()
                         .padding(.top, 200)
@@ -22,8 +24,6 @@ struct TabHomeView: View {
 //                            viewModel.handleOnAppear()
                         }
                 } else {
-                    description
-
                     Spacer()
                     bestReviewed
 
@@ -80,7 +80,7 @@ struct TabHomeView: View {
             HStack {
                 Image(systemName: "newspaper")
                 NavigationLink {
-                    NewReviewView(viewModel: NewReviewViewModelFactory.make())
+                    NewReviewView(viewModel: NewReviewViewModelFactory.make(), restaurant: .init())
                 } label: {
                     Text("New review")
                         .font(.sfCompactText(.regular, size: 12))

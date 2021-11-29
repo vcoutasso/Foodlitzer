@@ -68,5 +68,6 @@ struct ListCard: View {
         let rating: Int
         let address: String
         let price: Int
+        let restaurantID: String
     }
 }

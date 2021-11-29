@@ -11,6 +11,6 @@ struct UserRatingBlock: View {
 
             UserRate(rating: $userRate)
         }
-        .padding(.bottom, 100)
+        .padding(.bottom, 50)
     }
 }

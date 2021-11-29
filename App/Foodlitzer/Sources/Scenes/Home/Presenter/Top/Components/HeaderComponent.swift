@@ -4,7 +4,8 @@ struct HeaderComponent: View {
     var body: some View {
         HStack {
             HeaderButtonView(text: "magnifyingglass") {
-                SearchView(viewModel: SearchViewModelFactory.make())
+                EmptyView()
+//                SearchView(viewModel: SearchViewModelFactory.make(), selectedRestaurant: .init())
 //                SearchBar(query: $query, showCancelButton: $showCancelButton)
             }
 

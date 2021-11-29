@@ -25,7 +25,12 @@
 "newReview.soundButton.text" = "Measure Now";
 "newReview.mediaButton.text" = "Choose videos and images";
 "newReview.rate.text" = "Give the place your overall rating:";
-"newReview.next.text" = "Próximo";
+"newReview.next.text" = "Next";
+"newReview.highlight.text" = "Dim";
+"newReview.lowlight.text" = "Bright";
+"newReview.fast.text" = "Very fast";
+"newReview.slow.text" = "Very slow";
+"newReview.basicInfo.text" = "Informações básicas";
 
 "search.placeholder.text" = "Find a restaurant";
 

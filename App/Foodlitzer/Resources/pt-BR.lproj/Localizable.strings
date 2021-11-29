@@ -24,7 +24,12 @@
 "newReview.soundButton.text" = "Avaliar agora";
 "newReview.mediaButton.text" = "Selecionar imagens e vídeos";
 "newReview.rate.text" = "Dê sua nota geral para o restaurante";
-"newReview.next.text" = "Next";
+"newReview.next.text" = "Próximo";
+"newReview.highlight.text" = "Muito iluminado";
+"newReview.lowlight.text" = "Pouco iluminado";
+"newReview.fast.text" = "Muito rápido";
+"newReview.slow.text" = "Muito demorado";
+"newReview.basicInfo.text" = "What restaurant will you review?";
 
 
 "search.placeholder.text" = "Busque por um restaurante";

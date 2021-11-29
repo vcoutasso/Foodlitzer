@@ -53,11 +53,12 @@ final class SearchViewModel: SearchViewModelProtocol {
         let field = "name"
         let dtos = await restaurantQueryUseCase.execute(query: searchText, for: field)
 
-        DispatchQueue.main.async { [weak self] in
-            self?.cardModels = dtos.map { .init(name: $0.name,
-                                                rating: Int($0.rating),
-                                                address: $0.address,
-                                                price: $0.priceLevel) }
+        DispatchQueue.main.async {
+            self.cardModels = dtos.map { .init(name: $0.name,
+                                               rating: Int($0.rating),
+                                               address: $0.address,
+                                               price: $0.priceLevel,
+                                               restaurantID: $0.id!) }
         }
     }
 }
