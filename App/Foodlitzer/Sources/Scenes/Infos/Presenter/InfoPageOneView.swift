@@ -15,58 +15,66 @@ struct InfoPageOneView: View {
     var address: String
     var price: Int
     var body: some View {
-        ZStack {
-            VStack {
+        ZStack(alignment: .bottom) {
+            VStack(spacing: 0) {
                 Spacer()
-                HStack(spacing: 0) {
+
+                HStack {
+                    Spacer()
                     Image(systemName: Strings.Symbols.address)
-                        .padding(.leading, 10)
-                        .font(.system(size: 12, weight: .light, design: .default))
+                        .font(.system(size: 11))
+
                     Text(address)
                         .font(.sfCompactText(.light, size: 11))
-                        .padding(5)
-                }.background(Rectangle().foregroundColor(.white).border(Color.black, width: 0.3).frame(height: 33))
-                    .padding(.bottom, 15)
+                    Spacer()
+                }
+                .padding(.vertical, 5)
 
-                HStack(spacing: 20) {
-                    HStack(spacing: 0) {
+                HStack {
+                    HStack {
+                        Spacer()
                         Image(Assets.Images.googleIcon)
                             .padding(.horizontal, 7)
-                        Image(systemName: "star")
-                        Image(systemName: "star")
-                        Image(systemName: "star")
-                        Image(systemName: "star")
-                        Image(systemName: "star")
-                    }
 
-                    .background(Rectangle().foregroundColor(.white).border(Color.black, width: 0.3).frame(height: 33))
-                    .padding(.bottom, 15)
+                        ForEach(1..<5) { _ in
+                            Image(systemName: "star")
+                                .font(.system(size: 11))
+                        }
+                        Spacer()
+                    }
+                    Spacer()
+                    Rectangle()
+                        .frame(width: 0.4)
+                    Spacer()
+
                     HStack {
+                        Spacer()
                         Image(systemName: "dollarsign.circle")
+
                         ForEach(0..<price) { _ in
                             Text("$")
                                 .font(.sfCompactText(.light, size: 11))
                         }
+                        Spacer()
                     }
-
-                    .background(Rectangle().foregroundColor(.white).border(Color.black, width: 0.3).frame(height: 33))
-                    .padding(.bottom, 15)
                 }
+                .padding(.vertical, 5)
+                .background(Color.white.border(Color.black, width: 0.3))
+
                 HStack {
-//                    Image(Assets.Images.foodlitzerSymbol)
-//                        .frame(width: 10, height: 15)
-//                        .padding(.horizontal, 7)
-                    Image(systemName: "hand.thumbsup.fill")
-                    Image(systemName: "hand.thumbsup.fill")
-                    Image(systemName: "hand.thumbsup.fill")
-                    Image(systemName: "hand.thumbsup.fill")
-                    Image(systemName: "hand.thumbsup")
+                    Spacer()
+                    ForEach(1..<5) { _ in
+                        Image(systemName: "hand.thumbsup.fill")
+                            .font(.system(size: 11))
+                    }
+                    Spacer()
                 }
-
-                .background(Rectangle().foregroundColor(.white).border(Color.black, width: 0.3).frame(height: 33))
-                .padding(.bottom, 15)
+                .padding(.vertical, 5)
             }
-            .padding(.vertical, 50)
+            .background(Color.white.border(Color.black, width: 0.3))
+            .frame(height: 90)
+            .padding(40)
         }
+        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 115, alignment: .bottom)
     }
 }

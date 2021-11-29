@@ -16,6 +16,7 @@ struct InformationView: View {
     var image: Image
     var address: String
     var price: Int
+
     var body: some View {
         ZStack {
             PlayerView()
@@ -36,5 +37,22 @@ struct InformationView: View {
         }
         .tabViewStyle(PageTabViewStyle())
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+        .onAppear {
+            UINavigationBar.appearance().tintColor = .white
+        }
+        .onDisappear {
+            UINavigationBar.appearance().tintColor = .black
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    // action here
+
+                } label: {
+                    Image("info.circle")
+                        .font(.system(size: 24))
+                }
+            }
+        }
     }
 }
