@@ -1,10 +1,3 @@
-//
-//  TabHomeViewModel.swift
-//  Foodlitzer
-//
-//  Created by Alessandra Souza da Silva on 26/11/21.
-//
-
 import Combine
 
 final class TabHomeViewModel: ObservableObject {
