@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TopInfoView: View {
+    var restaurantName: String
+
     @State private var showAlert = false
 
     var body: some View {
@@ -20,7 +22,7 @@ struct TopInfoView: View {
                         .modifier(SimbolosPadrao())
                 }
                 Spacer()
-                Text("Bar do seu zé")
+                Text(restaurantName)
                     .frame(height: 33)
                     .padding(.horizontal, 10)
                     .modifier(FontePadrao())
@@ -52,11 +54,3 @@ struct TopInfoView: View {
         .padding(.top, 10)
     }
 }
-
-#if DEBUG
-    struct TopInfoView_Previews: PreviewProvider {
-        static var previews: some View {
-            TopInfoView()
-        }
-    }
-#endif

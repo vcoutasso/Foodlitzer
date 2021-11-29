@@ -26,7 +26,8 @@ class QueuePlayerUIView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         // Load Video
-        let fileUrl = Bundle.main.url(forResource: "food", withExtension: "mp4")!
+        let randomInt = Int.random(in: 1..<6)
+        let fileUrl = Bundle.main.url(forResource: String(randomInt), withExtension: "mp4")!
         let playerItem = AVPlayerItem(url: fileUrl)
 
         // Setup Player
